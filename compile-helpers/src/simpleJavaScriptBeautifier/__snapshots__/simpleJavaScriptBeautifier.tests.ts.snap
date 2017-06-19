@@ -1,0 +1,93 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`call multiline 1`] = `
+"__CMP_ATTRS[\\"name\\"] = (x);
+var __x1 = __STDDOM_CMP_CREATE_INLINE(__CMP_INLINE_STORE,
+
+	__frag,
+	__this__,
+	\\"Icon\\",
+	__CMP_ATTRS,
+	null
+);"
+`;
+
+exports[`function > function 1`] = `
+"function foo() {
+	function bar() {
+	}
+	return bar;
+}"
+`;
+
+exports[`function > return function 1`] = `
+"function templateFactory() {
+	\\"use strict\\"
+	return function compiledTemplate(__SCOPE__) {
+		__SCOPE__ = __SCOPE__ || {};
+		// CODE:START
+		var __ROOT = \\"<!DOCTYPE html>\\";
+		return __ROOT
+		// CODE:END
+	}
+}"
+`;
+
+exports[`function 1`] = `
+"function foo() {
+	var a = 1;
+	var b = 2;
+	var c = 3;
+	return a + b + c;
+}"
+`;
+
+exports[`if 1`] = `
+"if (expr) {
+	expr = false;
+}"
+`;
+
+exports[`if/else 1`] = `
+"if (expr) {
+	expr = false;
+} else {
+	expr = true;
+}"
+`;
+
+exports[`if/else if 1`] = `
+"if (expr) {
+	expr = false;
+} else if (!expr) {
+	expr = true;
+}"
+`;
+
+exports[`if/else if/else 1`] = `
+"if (expr) {
+	expr = false;
+} else if (!expr) {
+	expr = true;
+} else {
+	// LOL!
+}"
+`;
+
+exports[`invoke 1`] = `
+"call(
+	a,
+	b,
+	c
+);"
+`;
+
+exports[`var object 1`] = `
+"function () {
+	var __ctx = __STDDOM_CONTEXT();
+	var __super__ = {
+		\\"children\\": __PE_children_2
+	};
+	var __frag = __STDDOM_FRAGMENT();
+}"
+`;

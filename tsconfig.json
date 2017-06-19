@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "outDir": "dist/",
+    "target": "es2017",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "declaration": false,
+    "lib": [
+		"dom",
+		"es5",
+		"es2015.promise",
+		"es2016.array.include"
+	]
+  },
+  "exclude": ["dist", "node_modules"]
+}

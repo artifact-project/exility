@@ -1,0 +1,37 @@
+{
+  "name": "@exility/compile-helpers",
+  "version": "0.1.0",
+  "description": "Exility compile helpers",
+  "main": "index.ts",
+  "scripts": {
+    "test": "jest --coverage"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "^19.2.3",
+    "jest": "^20.0.3",
+    "ts-jest": "^20.0.4",
+    "typescript": "^2.3.3"
+  },
+  "peerDependencies": {
+    "@exility/block": "*",
+    "@exility/parser": "*"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.ts$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!@exility|skeletik)"
+    ],
+    "testRegex": "\\.tests\\.ts$",
+    "setupTestFrameworkScriptFile": "<rootDir>/__jest__/extensions.ts",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "json"
+    ]
+  }
+}

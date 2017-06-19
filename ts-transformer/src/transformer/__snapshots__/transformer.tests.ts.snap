@@ -1,0 +1,374 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`arrow function 1`] = `
+"import _exility_compile_helpers_src_stdlib_stdlib from \\"@exility/compile-helpers/src/stdlib/stdlib\\";
+import _exility_dom_src_stddom_stddom from \\"@exility/dom/src/stddom/stddom\\";
+class ArrowFunction extends Block<null> {
+    static prototype.__template__ = (function templateFactory(__DEPS__) {
+	\\"use strict\\";
+	var __STDDOM = __DEPS__.stddom;
+	var __STDDOM_CONTEXT = __STDDOM.CONTEXT;
+	var __STDDOM_FRAGMENT = __STDDOM.FRAGMENT;
+	var __STDDOM_NODE = __STDDOM.NODE;
+	var __STDDOM_VALUE = __STDDOM.VALUE;
+	var __STDDOM_TEXT = __STDDOM.TEXT;
+	var __STDDOM_LIFECYCLE = __STDDOM.LIFECYCLE;
+	var __STDDOM_UPD_VALUE = __STDDOM.UPD_VALUE;
+	return function compiledTemplate(__SCOPE__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var attrs = __SCOPE__.attrs;
+		var __blocks__ = __SCOPE__.__blocks__;
+		var __this__ = __SCOPE__.__this__;
+		var __slots__ = __SCOPE__.__slots__;
+
+		var __ctx = __STDDOM_CONTEXT();
+
+		var __frag = __STDDOM_FRAGMENT();
+		var __x1 = __STDDOM_NODE(__frag, \\"h1\\");
+		__STDDOM_VALUE(__x1, __ctx, 2, attrs.text);
+		__STDDOM_TEXT(__x1, \\"!\\");
+
+		return {
+			ctx: __ctx,
+			frag: __frag,
+			container: null,
+			mountTo: function (container) {
+				this.container = container;
+				__frag.mountTo(container);
+				__STDDOM_LIFECYCLE(__ctx, 'connectedCallback');
+				return this;
+			},
+			update: function (__NEWSCOPE__) {
+				__SCOPE__ = __NEWSCOPE__;
+				attrs = __NEWSCOPE__.attrs;
+				__blocks__ = __NEWSCOPE__.__blocks__;
+				__this__ = __NEWSCOPE__.__this__;
+				__slots__ = __NEWSCOPE__.__slots__;
+				__STDDOM_UPD_VALUE(__ctx[2], attrs.text);
+			}
+		}
+	}
+})({ stdlib: stdlib_1.default, stddom: stddom_1.default });
+}
+"
+`;
+
+exports[`arrow function: for (item in items) 1`] = `
+"import _exility_compile_helpers_src_stdlib_stdlib from \\"@exility/compile-helpers/src/stdlib/stdlib\\";
+import _exility_dom_src_stddom_stddom from \\"@exility/dom/src/stddom/stddom\\";
+class ArrowFor extends Block<null> {
+    static prototype.__template__ = (function templateFactory(__DEPS__) {
+	\\"use strict\\";
+	var __STDDOM = __DEPS__.stddom;
+	var __STDDOM_CONTEXT = __STDDOM.CONTEXT;
+	var __STDDOM_FRAGMENT = __STDDOM.FRAGMENT;
+	var __STDDOM_FOR = __STDDOM.FOR;
+	var __STDDOM_NODE = __STDDOM.NODE;
+	var __STDDOM_VALUE = __STDDOM.VALUE;
+	var __STDDOM_UPD_VALUE = __STDDOM.UPD_VALUE;
+	var __STDDOM_LIFECYCLE = __STDDOM.LIFECYCLE;
+	var __STDDOM_UPD_FOR = __STDDOM.UPD_FOR;
+	return function compiledTemplate(__SCOPE__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var attrs = __SCOPE__.attrs;
+		var __blocks__ = __SCOPE__.__blocks__;
+		var __this__ = __SCOPE__.__this__;
+		var __slots__ = __SCOPE__.__slots__;
+
+		var __ctx = __STDDOM_CONTEXT();
+
+		var __frag = __STDDOM_FRAGMENT();
+		__STDDOM_FOR(__frag, __ctx, 2, attrs.items, undefined, __FOR_ITERATOR_1);
+
+		function __FOR_ITERATOR_1(__parent, item, $index) {
+			var __ctx = __STDDOM_CONTEXT(__parent);
+			var __fragFor = __STDDOM_FRAGMENT();
+			var __x3 = __STDDOM_NODE(__fragFor, \\"div\\");
+			__STDDOM_VALUE(__x3, __ctx, 4, item);
+
+			return {
+				ctx: __ctx,
+				frag: __fragFor,
+				data: item,
+				index: $index,
+				update: function (__item, __$index) {
+					item = __item
+					$index = __$index
+					__STDDOM_UPD_VALUE(__ctx[4], item);
+				}
+			};
+		}
+
+		return {
+			ctx: __ctx,
+			frag: __frag,
+			container: null,
+			mountTo: function (container) {
+				this.container = container;
+				__frag.mountTo(container);
+				__STDDOM_LIFECYCLE(__ctx, 'connectedCallback');
+				return this;
+			},
+			update: function (__NEWSCOPE__) {
+				__SCOPE__ = __NEWSCOPE__;
+				attrs = __NEWSCOPE__.attrs;
+				__blocks__ = __NEWSCOPE__.__blocks__;
+				__this__ = __NEWSCOPE__.__this__;
+				__slots__ = __NEWSCOPE__.__slots__;
+				__STDDOM_UPD_FOR(__ctx, 2, attrs.items, undefined, __FOR_ITERATOR_1);
+			}
+		}
+	}
+})({ stdlib: stdlib_1.default, stddom: stddom_1.default });
+}
+"
+`;
+
+exports[`arrow function: if 1`] = `
+"import _exility_compile_helpers_src_stdlib_stdlib from \\"@exility/compile-helpers/src/stdlib/stdlib\\";
+import _exility_dom_src_stddom_stddom from \\"@exility/dom/src/stddom/stddom\\";
+class ArrowIf extends Block<null> {
+    static prototype.__template__ = (function templateFactory(__DEPS__) {
+	\\"use strict\\";
+	var __STDDOM = __DEPS__.stddom;
+	var __STDDOM_CONTEXT = __STDDOM.CONTEXT;
+	var __STDDOM_FRAGMENT = __STDDOM.FRAGMENT;
+	var __STDDOM_IF = __STDDOM.IF;
+	var __STDDOM_NODE = __STDDOM.NODE;
+	var __STDDOM_LIFECYCLE = __STDDOM.LIFECYCLE;
+	var __STDDOM_UPD_IF = __STDDOM.UPD_IF;
+	return function compiledTemplate(__SCOPE__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var attrs = __SCOPE__.attrs;
+		var __blocks__ = __SCOPE__.__blocks__;
+		var __this__ = __SCOPE__.__this__;
+		var __slots__ = __SCOPE__.__slots__;
+
+		var __ctx = __STDDOM_CONTEXT();
+
+		var __frag = __STDDOM_FRAGMENT();
+		__STDDOM_IF(__frag, __ctx, 1, [__IF_2]);
+
+		function __IF_2(frag) {
+			return attrs.text ? frag || __IF_2_exec(__ctx) : null;
+		}
+
+		function __IF_2_exec(__parent) {
+			var __ctx = __STDDOM_CONTEXT(__parent);
+			var __fragIf = __STDDOM_FRAGMENT();
+			var __x3 = __STDDOM_NODE(__fragIf, \\"h1\\");
+
+			return {
+				ctx: __ctx,
+				frag: __fragIf,
+				update: function () {
+				}
+			};
+		}
+
+		return {
+			ctx: __ctx,
+			frag: __frag,
+			container: null,
+			mountTo: function (container) {
+				this.container = container;
+				__frag.mountTo(container);
+				__STDDOM_LIFECYCLE(__ctx, 'connectedCallback');
+				return this;
+			},
+			update: function (__NEWSCOPE__) {
+				__SCOPE__ = __NEWSCOPE__;
+				attrs = __NEWSCOPE__.attrs;
+				__blocks__ = __NEWSCOPE__.__blocks__;
+				__this__ = __NEWSCOPE__.__this__;
+				__slots__ = __NEWSCOPE__.__slots__;
+				__STDDOM_UPD_IF(__ctx, 1);
+			}
+		}
+	}
+})({ stdlib: stdlib_1.default, stddom: stddom_1.default });
+}
+"
+`;
+
+exports[`blocks 1`] = `
+"import _exility_compile_helpers_src_stdlib_stdlib from \\"@exility/compile-helpers/src/stdlib/stdlib\\";
+import _exility_dom_src_stddom_stddom from \\"@exility/dom/src/stddom/stddom\\";
+class App extends Block<{
+        username: string;
+    }> {
+    static blocks = { Button };
+    static prototype.__template__ = (function templateFactory(__DEPS__) {
+	\\"use strict\\";
+	var __STDDOM = __DEPS__.stddom;
+	var __STDDOM_CMP_SET_COMPILER = __STDDOM.CMP_SET_COMPILER;
+	var __STDDOM_CMP_INIT = __STDDOM.CMP_INIT;
+	var __STDDOM_CONTEXT = __STDDOM.CONTEXT;
+	var __STDDOM_FRAGMENT = __STDDOM.FRAGMENT;
+	var __STDDOM_CMP_CREATE = __STDDOM.CMP_CREATE;
+	var __STDDOM_LIFECYCLE = __STDDOM.LIFECYCLE;
+	
+	return function compiledTemplate(__SCOPE__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var attrs = __SCOPE__.attrs;
+		var __blocks__ = __SCOPE__.__blocks__;
+		var __this__ = __SCOPE__.__this__;
+		var __slots__ = __SCOPE__.__slots__;
+
+		__STDDOM_CMP_INIT(__blocks__, [\\"Button\\"]);
+
+		var __ctx = __STDDOM_CONTEXT();
+
+		var __frag = __STDDOM_FRAGMENT();
+		var __CMP_ATTRS = {};
+		__CMP_ATTRS[\\"value\\"] = \\"Foo\\";
+		var __x1 = __STDDOM_CMP_CREATE(__ctx, __blocks__,
+
+			__frag,
+			__this__,
+			\\"Button\\",
+			__CMP_ATTRS,
+			null,
+			null
+		);
+
+		return {
+			ctx: __ctx,
+			frag: __frag,
+			container: null,
+			mountTo: function (container) {
+				this.container = container;
+				__frag.mountTo(container);
+				__STDDOM_LIFECYCLE(__ctx, 'connectedCallback');
+				return this;
+			},
+			update: function (__NEWSCOPE__) {
+				__SCOPE__ = __NEWSCOPE__;
+				attrs = __NEWSCOPE__.attrs;
+				__blocks__ = __NEWSCOPE__.__blocks__;
+				__this__ = __NEWSCOPE__.__this__;
+				__slots__ = __NEWSCOPE__.__slots__;
+				var __CMP_ATTRS = {};
+				__x1.update(__CMP_ATTRS);
+			}
+		}
+	}
+})({ stdlib: stdlib_1.default, stddom: stddom_1.default });
+}
+"
+`;
+
+exports[`classNames 1`] = `
+"import _exility_compile_helpers_src_stdlib_stdlib from \\"@exility/compile-helpers/src/stdlib/stdlib\\";
+import _exility_dom_src_stddom_stddom from \\"@exility/dom/src/stddom/stddom\\";
+class App extends Block<{
+        username: string;
+    }> {
+    static classNames = css;
+    static prototype.__template__ = (function templateFactory(__DEPS__) {
+	\\"use strict\\";
+	var __STDDOM = __DEPS__.stddom;
+	var __STDDOM_CONTEXT = __STDDOM.CONTEXT;
+	var __STDDOM_FRAGMENT = __STDDOM.FRAGMENT;
+	var __STDDOM_LIVE_NODE = __STDDOM.LIVE_NODE;
+	var __STDDOM_D_PROP = __STDDOM.D_PROP;
+	var __STDDOM_TEXT = __STDDOM.TEXT;
+	var __STDDOM_LIFECYCLE = __STDDOM.LIFECYCLE;
+	var __STDLIB = __DEPS__.stdlib;
+	var __STDLIB_CSS_MODULE = __STDLIB.CSS_MODULE;
+	return function compiledTemplate(__SCOPE__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var attrs = __SCOPE__.attrs;
+		var __blocks__ = __SCOPE__.__blocks__;
+		var __this__ = __SCOPE__.__this__;
+		var __slots__ = __SCOPE__.__slots__;
+		var __classNames__ = __SCOPE__.__classNames__;
+
+		var __CLN = __STDLIB_CSS_MODULE(__classNames__);
+
+		var __ctx = __STDDOM_CONTEXT();
+
+		var __frag = __STDDOM_FRAGMENT();
+		var __x1 = __STDDOM_LIVE_NODE(__frag, __ctx, 1, \\"div\\");
+		__STDDOM_D_PROP(__ctx[1], \\"className\\", __CLN(\\"foo\\"))
+		__STDDOM_TEXT(__x1, \\"bar\\");
+
+		return {
+			ctx: __ctx,
+			frag: __frag,
+			container: null,
+			mountTo: function (container) {
+				this.container = container;
+				__frag.mountTo(container);
+				__STDDOM_LIFECYCLE(__ctx, 'connectedCallback');
+				return this;
+			},
+			update: function (__NEWSCOPE__) {
+				__SCOPE__ = __NEWSCOPE__;
+				attrs = __NEWSCOPE__.attrs;
+				__blocks__ = __NEWSCOPE__.__blocks__;
+				__this__ = __NEWSCOPE__.__this__;
+				__slots__ = __NEWSCOPE__.__slots__;
+				__classNames__ = __NEWSCOPE__.__classNames__;
+				__CLN.upd(__classNames__);
+				__STDDOM_D_PROP(__ctx[1], \\"className\\", __CLN(\\"foo\\"))
+			}
+		}
+	}
+})({ stdlib: stdlib_1.default, stddom: stddom_1.default });
+}
+"
+`;
+
+exports[`string 1`] = `
+"import _exility_compile_helpers_src_stdlib_stdlib from \\"@exility/compile-helpers/src/stdlib/stdlib\\";
+import _exility_dom_src_stddom_stddom from \\"@exility/dom/src/stddom/stddom\\";
+class Str extends Block {
+    static prototype.__template__ = (function templateFactory(__DEPS__) {
+	\\"use strict\\";
+	var __STDDOM = __DEPS__.stddom;
+	var __STDDOM_CONTEXT = __STDDOM.CONTEXT;
+	var __STDDOM_FRAGMENT = __STDDOM.FRAGMENT;
+	var __STDDOM_NODE = __STDDOM.NODE;
+	var __STDDOM_VALUE = __STDDOM.VALUE;
+	var __STDDOM_TEXT = __STDDOM.TEXT;
+	var __STDDOM_LIFECYCLE = __STDDOM.LIFECYCLE;
+	var __STDDOM_UPD_VALUE = __STDDOM.UPD_VALUE;
+	return function compiledTemplate(__SCOPE__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var attrs = __SCOPE__.attrs;
+		var __blocks__ = __SCOPE__.__blocks__;
+		var __this__ = __SCOPE__.__this__;
+		var __slots__ = __SCOPE__.__slots__;
+
+		var __ctx = __STDDOM_CONTEXT();
+
+		var __frag = __STDDOM_FRAGMENT();
+		var __x1 = __STDDOM_NODE(__frag, \\"h1\\");
+		__STDDOM_VALUE(__x1, __ctx, 2, attrs.text);
+		__STDDOM_TEXT(__x1, \\"!\\");
+
+		return {
+			ctx: __ctx,
+			frag: __frag,
+			container: null,
+			mountTo: function (container) {
+				this.container = container;
+				__frag.mountTo(container);
+				__STDDOM_LIFECYCLE(__ctx, 'connectedCallback');
+				return this;
+			},
+			update: function (__NEWSCOPE__) {
+				__SCOPE__ = __NEWSCOPE__;
+				attrs = __NEWSCOPE__.attrs;
+				__blocks__ = __NEWSCOPE__.__blocks__;
+				__this__ = __NEWSCOPE__.__this__;
+				__slots__ = __NEWSCOPE__.__slots__;
+				__STDDOM_UPD_VALUE(__ctx[2], attrs.text);
+			}
+		}
+	}
+})({ stdlib: stdlib_1.default, stddom: stddom_1.default });
+}
+"
+`;

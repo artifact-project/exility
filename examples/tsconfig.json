@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "outDir": "dist/",
+    "target": "es5",
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "lib": [
+      "dom",
+      "es5",
+      "es2015.promise",
+      "es2016.array.include"
+    ],
+    "plugins": [
+      {
+        "name": "@exility/ts-plugin",
+        "remove": [
+          "caller",
+          "callee",
+          "getDay"
+        ]
+      }
+    ]
+  },
+  "exclude": [
+    "dist",
+    "node_modules"
+  ]
+}

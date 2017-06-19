@@ -1,0 +1,487 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+Object {
+  "nodes": Array [
+    Object {
+      "nodes": Array [],
+      "raw": Object {
+        "attrs": Object {
+          "class": Array [
+            Array [
+              "foo",
+            ],
+          ],
+        },
+        "name": "b",
+      },
+      "type": "tag",
+    },
+  ],
+  "raw": null,
+  "type": "#root",
+}
+`;
+
+exports[` 2`] = `
+Object {
+  "nodes": Array [
+    Object {
+      "nodes": Array [],
+      "raw": Object {
+        "attrs": Object {
+          "class": Array [
+            Array [
+              "foo",
+            ],
+            Array [
+              "bar",
+            ],
+          ],
+        },
+        "name": "b",
+      },
+      "type": "tag",
+    },
+  ],
+  "raw": null,
+  "type": "#root",
+}
+`;
+
+exports[` 3`] = `
+Object {
+  "nodes": Array [
+    Object {
+      "nodes": Array [],
+      "raw": Object {
+        "attrs": Object {
+          "class": Array [
+            Array [
+              Object {
+                "raw": "foo",
+                "type": "expression",
+              },
+            ],
+            Array [
+              "b",
+              Object {
+                "raw": "a",
+                "type": "expression",
+              },
+              "r",
+            ],
+          ],
+        },
+        "name": "b",
+      },
+      "type": "tag",
+    },
+  ],
+  "raw": null,
+  "type": "#root",
+}
+`;
+
+exports[` 4`] = `
+Object {
+  "nodes": Array [
+    Object {
+      "nodes": Array [],
+      "raw": Object {
+        "attrs": Object {
+          "class": Array [
+            Array [
+              Object {
+                "raw": "foo",
+                "type": "expression",
+              },
+            ],
+            Array [
+              "b",
+              Object {
+                "raw": "a",
+                "type": "expression",
+              },
+              "r",
+            ],
+          ],
+        },
+        "name": "b",
+      },
+      "type": "tag",
+    },
+  ],
+  "raw": null,
+  "type": "#root",
+}
+`;
+
+exports[`syntax / xml <![CDATA[foo]]> 1`] = `
+Object {
+  "nodes": Array [
+    Object {
+      "nodes": Array [],
+      "raw": Object {
+        "value": "foo",
+      },
+      "type": "cdata",
+    },
+  ],
+  "raw": null,
+  "type": "#root",
+}
+`;
+
+exports[`syntax / xml <b></b> 1`] = `
+Object {
+  "nodes": Array [
+    Object {
+      "nodes": Array [],
+      "raw": Object {
+        "attrs": Object {},
+        "name": "b",
+      },
+      "type": "tag",
+    },
+  ],
+  "raw": null,
+  "type": "#root",
+}
+`;
+
+exports[`syntax / xml <b>foo</b> 1`] = `
+Object {
+  "nodes": Array [
+    Object {
+      "nodes": Array [
+        Object {
+          "nodes": Array [],
+          "raw": Object {
+            "value": "foo",
+          },
+          "type": "text",
+        },
+      ],
+      "raw": Object {
+        "attrs": Object {},
+        "name": "b",
+      },
+      "type": "tag",
+    },
+  ],
+  "raw": null,
+  "type": "#root",
+}
+`;
+
+exports[`syntax / xml <img src=".." align=".."/> 1`] = `
+Object {
+  "nodes": Array [
+    Object {
+      "nodes": Array [],
+      "raw": Object {
+        "attrs": Object {
+          "align": Array [
+            Array [
+              "bottom",
+            ],
+          ],
+          "src": Array [
+            Array [
+              "foo.gif",
+            ],
+          ],
+        },
+        "name": "img",
+      },
+      "type": "tag",
+    },
+  ],
+  "raw": null,
+  "type": "#root",
+}
+`;
+
+exports[`syntax / xml <img src=".." align=".."/> 1`] = `
+Object {
+  "nodes": Array [
+    Object {
+      "nodes": Array [],
+      "raw": Object {
+        "attrs": Object {
+          "align": Array [
+            Array [
+              "bottom",
+            ],
+          ],
+          "src": Array [
+            Array [
+              "foo.gif",
+            ],
+          ],
+        },
+        "name": "img",
+      },
+      "type": "tag",
+    },
+  ],
+  "raw": null,
+  "type": "#root",
+}
+`;
+
+exports[`syntax / xml <input checked type="checkbox"/>! 1`] = `2`;
+
+exports[`syntax / xml <input type="checkbox" checked/>! 1`] = `2`;
+
+exports[`syntax / xml foo<b>bar</b>qux 1`] = `
+Object {
+  "nodes": Array [
+    Object {
+      "nodes": Array [],
+      "raw": Object {
+        "value": "foo",
+      },
+      "type": "text",
+    },
+    Object {
+      "nodes": Array [
+        Object {
+          "nodes": Array [],
+          "raw": Object {
+            "value": "bar",
+          },
+          "type": "text",
+        },
+      ],
+      "raw": Object {
+        "attrs": Object {},
+        "name": "b",
+      },
+      "type": "tag",
+    },
+    Object {
+      "nodes": Array [],
+      "raw": Object {
+        "value": "qux",
+      },
+      "type": "text",
+    },
+  ],
+  "raw": null,
+  "type": "#root",
+}
+`;
+
+exports[`syntax / xml form 1`] = `
+Object {
+  "nodes": Array [
+    Object {
+      "nodes": Array [],
+      "raw": Object {
+        "value": "
+			",
+      },
+      "type": "text",
+    },
+    Object {
+      "nodes": Array [
+        Object {
+          "nodes": Array [],
+          "raw": Object {
+            "value": "
+				",
+          },
+          "type": "text",
+        },
+        Object {
+          "nodes": Array [],
+          "raw": Object {
+            "value": "list",
+          },
+          "type": "comment",
+        },
+        Object {
+          "nodes": Array [],
+          "raw": Object {
+            "value": "
+				",
+          },
+          "type": "text",
+        },
+        Object {
+          "nodes": Array [
+            Object {
+              "nodes": Array [],
+              "raw": Object {
+                "value": "Todos",
+              },
+              "type": "text",
+            },
+          ],
+          "raw": Object {
+            "attrs": Object {},
+            "name": "h1",
+          },
+          "type": "tag",
+        },
+        Object {
+          "nodes": Array [],
+          "raw": Object {
+            "value": "
+				",
+          },
+          "type": "text",
+        },
+        Object {
+          "nodes": Array [
+            Object {
+              "nodes": Array [],
+              "raw": Object {
+                "value": "
+					",
+              },
+              "type": "text",
+            },
+            Object {
+              "nodes": Array [
+                Object {
+                  "nodes": Array [],
+                  "raw": Object {
+                    "value": "
+						",
+                  },
+                  "type": "text",
+                },
+                Object {
+                  "nodes": Array [],
+                  "raw": Object {
+                    "attrs": Object {
+                      "checked": Array [
+                        Array [
+                          true,
+                        ],
+                      ],
+                      "type": Array [
+                        Array [
+                          "checkbox",
+                        ],
+                      ],
+                    },
+                    "name": "input",
+                  },
+                  "type": "tag",
+                },
+                Object {
+                  "nodes": Array [],
+                  "raw": Object {
+                    "value": "
+						item ",
+                  },
+                  "type": "text",
+                },
+                Object {
+                  "nodes": Array [
+                    Object {
+                      "nodes": Array [],
+                      "raw": Object {
+                        "value": "2",
+                      },
+                      "type": "text",
+                    },
+                  ],
+                  "raw": Object {
+                    "attrs": Object {},
+                    "name": "b",
+                  },
+                  "type": "tag",
+                },
+                Object {
+                  "nodes": Array [],
+                  "raw": Object {
+                    "value": "
+					",
+                  },
+                  "type": "text",
+                },
+              ],
+              "raw": Object {
+                "attrs": Object {},
+                "name": "li",
+              },
+              "type": "tag",
+            },
+            Object {
+              "nodes": Array [],
+              "raw": Object {
+                "value": "
+					",
+              },
+              "type": "text",
+            },
+            Object {
+              "nodes": Array [
+                Object {
+                  "nodes": Array [],
+                  "raw": Object {
+                    "value": " details ",
+                  },
+                  "type": "cdata",
+                },
+              ],
+              "raw": Object {
+                "attrs": Object {},
+                "name": "li",
+              },
+              "type": "tag",
+            },
+            Object {
+              "nodes": Array [],
+              "raw": Object {
+                "value": "
+				",
+              },
+              "type": "text",
+            },
+          ],
+          "raw": Object {
+            "attrs": Object {},
+            "name": "ul",
+          },
+          "type": "tag",
+        },
+        Object {
+          "nodes": Array [],
+          "raw": Object {
+            "value": "
+			",
+          },
+          "type": "text",
+        },
+      ],
+      "raw": Object {
+        "attrs": Object {
+          "action": Array [
+            Array [
+              "/foo",
+            ],
+          ],
+        },
+        "name": "form",
+      },
+      "type": "tag",
+    },
+    Object {
+      "nodes": Array [],
+      "raw": Object {
+        "value": "
+		",
+      },
+      "type": "text",
+    },
+  ],
+  "raw": null,
+  "type": "#root",
+}
+`;

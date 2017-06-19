@@ -1,0 +1,277 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`COMMON_TEST Custom element {"text":"Wow!","href":null} 1`] = `
+function templateFactory(__DEPS__) {
+	"use strict";
+	var __STDLIB = __DEPS__.stdlib;
+	var __STDLIB_HTML_ENCODE = __STDLIB.HTML_ENCODE;
+	function btn(attrs, __slots) {
+		var __super = {attrs: attrs},
+		text = attrs.text,
+		url = attrs.url
+		return "<" + __STDLIB_HTML_ENCODE(url ? "a" : "button") + " class=\\"btn\\" href=\\"" + __STDLIB_HTML_ENCODE(url) + "\\">" + __STDLIB_HTML_ENCODE(text) + "</" + __STDLIB_HTML_ENCODE(url ? "a" : "button") + ">";
+	}
+
+	return function compiledTemplate(__SCOPE__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var text = __SCOPE__.text;
+		var href = __SCOPE__.href;
+
+		return btn({text: (text), url: (href)});
+	}
+}
+`;
+
+exports[`COMMON_TEST FOR statement {"data":[1,2]} 1`] = `
+function templateFactory(__DEPS__) {
+	"use strict";
+	var __STDLIB = __DEPS__.stdlib;
+	var __STDLIB_EACH = __STDLIB.EACH;
+	var __STDLIB_HTML_ENCODE = __STDLIB.HTML_ENCODE;
+	return function compiledTemplate(__SCOPE__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var data = __SCOPE__.data;
+
+		var __ROOT = "";
+		__STDLIB_EACH(data, function EACH_ITERATOR(val, $index) {
+			__ROOT += __STDLIB_HTML_ENCODE(val) + ",";
+		});
+
+		return __ROOT
+	}
+}
+`;
+
+exports[`COMMON_TEST FOR statement with key {"data":[1,2]} 1`] = `
+function templateFactory(__DEPS__) {
+	"use strict";
+	var __STDLIB = __DEPS__.stdlib;
+	var __STDLIB_EACH = __STDLIB.EACH;
+	var __STDLIB_HTML_ENCODE = __STDLIB.HTML_ENCODE;
+	return function compiledTemplate(__SCOPE__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var data = __SCOPE__.data;
+
+		var __ROOT = "";
+		__STDLIB_EACH(data, function EACH_ITERATOR(val, key) {
+			__ROOT += __STDLIB_HTML_ENCODE(key) + ":" + __STDLIB_HTML_ENCODE(val) + ",";
+		});
+
+		return __ROOT
+	}
+}
+`;
+
+exports[`COMMON_TEST IF statement {"x":null} 1`] = `
+function templateFactory() {
+	"use strict";
+	return function compiledTemplate(__SCOPE__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var x = __SCOPE__.x;
+
+		var __ROOT = "<foo></foo>";
+		if (x) {
+			__ROOT += "<bar></bar>";
+		}
+
+		return __ROOT
+	}
+}
+`;
+
+exports[`COMMON_TEST IF/ELSE IF/ELSE statement {"x":1} 1`] = `
+function templateFactory() {
+	"use strict";
+	return function compiledTemplate(__SCOPE__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var x = __SCOPE__.x;
+
+		var __ROOT = "";
+		if (x == 1) {
+			__ROOT += "<a></a>";
+		}else if (x == 2) {
+			__ROOT += "<b></b>";
+		}else {
+			__ROOT += "<c></c>";
+		}
+
+		return __ROOT
+	}
+}
+`;
+
+exports[`COMMON_TEST IF/ELSE statement {"x":true} 1`] = `
+function templateFactory() {
+	"use strict";
+	return function compiledTemplate(__SCOPE__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var x = __SCOPE__.x;
+
+		var __ROOT = "";
+		if (x) {
+			__ROOT += "<a></a>";
+		}else {
+			__ROOT += "<b></b>";
+		}
+
+		return __ROOT
+	}
+}
+`;
+
+exports[`doctype 1`] = `
+function templateFactory() {
+	"use strict";
+	return function compiledTemplate(__SCOPE__) {
+		return "<!DOCTYPE html>";
+	}
+}
+`;
+
+exports[`html encoding 1`] = `
+function templateFactory(__DEPS__) {
+	"use strict";
+	var __STDLIB = __DEPS__.stdlib;
+	var __STDLIB_HTML_ENCODE = __STDLIB.HTML_ENCODE;
+	return function compiledTemplate(__SCOPE__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var value = __SCOPE__.value;
+
+		return __STDLIB_HTML_ENCODE(value);
+	}
+}
+`;
+
+exports[`inherit + interpolate 1`] = `
+function templateFactory(__DEPS__) {
+	"use strict";
+	var __STDLIB = __DEPS__.stdlib;
+	var __STDLIB_HTML_ENCODE = __STDLIB.HTML_ENCODE;
+	return function compiledTemplate(__SCOPE__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var x = __SCOPE__.x;
+
+		return "<div class=\\"" + __STDLIB_HTML_ENCODE(x) + "\\"><div class=\\"" + __STDLIB_HTML_ENCODE(x) + "__text\\"></div></div>";
+	}
+}
+`;
+
+exports[`inherit + interpolate 2`] = `<div class="btn"><div class="btn__text"></div></div>`;
+
+exports[`inherit 1`] = `
+function templateFactory() {
+	"use strict";
+	return function compiledTemplate(__SCOPE__) {
+		return "<div class=\\"btn\\"><div class=\\"btn__icon\\"></div></div>";
+	}
+}
+`;
+
+exports[`interpolate 1`] = `
+function templateFactory(__DEPS__) {
+	"use strict";
+	var __STDLIB = __DEPS__.stdlib;
+	var __STDLIB_HTML_ENCODE = __STDLIB.HTML_ENCODE;
+	return function compiledTemplate(__SCOPE__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var user = __SCOPE__.user;
+		var size = __SCOPE__.size;
+
+		return "<h1 class=\\"title-" + __STDLIB_HTML_ENCODE(size) + "\\">Hi, " + __STDLIB_HTML_ENCODE(user) + "!</h1>";
+	}
+}
+`;
+
+exports[`interpolate 2`] = `<h1 class="title-xxl">Hi, %name%!</h1>`;
+
+exports[`page / prettify 1`] = `
+function templateFactory() {
+	"use strict";
+	return function compiledTemplate(__SCOPE__) {
+		return "<html>\\n  <head>\\n    <title>foo</title>\\n  </head>\\n  <body>\\n    <h1 class=\\"title\\">Bar</h1>\\n  </body>\\n</html>\\n";
+	}
+}
+`;
+
+exports[`page / prettify 2`] = `
+<html>
+  <head>
+    <title>foo</title>
+  </head>
+  <body>
+    <h1 class="title">Bar</h1>
+  </body>
+</html>
+
+`;
+
+exports[`panel = [title] + default slot 1`] = `
+function templateFactory(__DEPS__) {
+	"use strict";
+	var __STDLIB = __DEPS__.stdlib;
+	var __STDLIB_HTML_ENCODE = __STDLIB.HTML_ENCODE;
+	function panel(attrs, __slots) {
+		var __super = {attrs: attrs},
+		title = attrs.title,
+		__default = __slots && __slots.__default || __super.__default
+		var __ROOT = "<h1>" + __STDLIB_HTML_ENCODE(title) + "</h1><p>";
+		if (__default) {
+			__ROOT += __default.call(__super);
+		}
+		__ROOT += "</p>";
+		return __ROOT
+	}
+
+	return function compiledTemplate(__SCOPE__) {
+		var __ROOT = panel({title: "?!"}) + panel({title: "Wow!"}, {__default: function __default() {
+			return "Done";
+			}});
+
+			return __ROOT
+		}
+	}
+`;
+
+exports[`panel = [title] + default slot 2`] = `<h1>?!</h1><p></p><h1>Wow!</h1><p>Done</p>`;
+
+exports[`pure 1`] = `
+function templateFactory() {
+	"use strict";
+	var __STDLIB = new (function () {
+		var R_HTML_ENTITES = /[&<>"]/;
+		var R_HTML_ENTITY_AMP = /&/g;
+		var R_HTML_ENTITY_LT = /</g;
+		var R_HTML_ENTITY_GT = />/g;
+		var R_HTML_ENTITY_QUOTE = /"/g;
+		this.HTML_ENCODE = function (value) {
+			if (value == null) {
+				return '';
+			}
+			if (R_HTML_ENTITES.test(value)) {
+				if (value.indexOf('&') !== -1) {
+					value = value.replace(R_HTML_ENTITY_AMP, '&amp;');
+				}
+				if (value.indexOf('<') !== -1) {
+					value = value.replace(R_HTML_ENTITY_LT, '&lt;');
+				}
+				if (value.indexOf('>') !== -1) {
+					value = value.replace(R_HTML_ENTITY_GT, '&gt;');
+				}
+				if (value.indexOf('"') !== -1) {
+					value = value.replace(R_HTML_ENTITY_QUOTE, '&quot;');
+				}
+				return value;
+			}
+			return value.toString();
+		};
+	});
+
+	var __STDLIB_HTML_ENCODE = __STDLIB.HTML_ENCODE;
+	return function compiledTemplate(__SCOPE__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var text = __SCOPE__.text;
+
+		return "<i class=\\"foo\\">" + __STDLIB_HTML_ENCODE(text) + "!</i>";
+	}
+}
+`;

@@ -1,0 +1,124 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`empty 1`] = `
+function templateFactory(__DEPS__) {
+	"use strict";
+	var __STDDOM = __DEPS__.stddom;
+	var __STDDOM_FRAGMENT = __STDDOM.FRAGMENT;
+	var __STDLIB = __DEPS__.stdlib;
+	var __STDLIB_NOOP = __STDLIB.NOOP;
+	return function compiledTemplate(__SCOPE__) {
+		var __frag = __STDDOM_FRAGMENT();
+
+		return {
+			ctx: null,
+			frag: __frag,
+			container: null,
+			mountTo: function (container) {
+				this.container = container;
+				__frag.mountTo(container);
+
+				return this;
+			},
+			update: __STDLIB_NOOP
+		}
+	}
+}
+`;
+
+exports[`if + текст 1`] = `
+function templateFactory(__DEPS__) {
+	"use strict";
+	var __STDDOM = __DEPS__.stddom;
+	var __STDDOM_CONTEXT = __STDDOM.CONTEXT;
+	var __STDDOM_FRAGMENT = __STDDOM.FRAGMENT;
+	var __STDDOM_IF = __STDDOM.IF;
+	var __STDDOM_VALUE = __STDDOM.VALUE;
+	var __STDDOM_UPD_VALUE = __STDDOM.UPD_VALUE;
+	var __STDDOM_LIFECYCLE = __STDDOM.LIFECYCLE;
+	var __STDDOM_UPD_IF = __STDDOM.UPD_IF;
+	return function compiledTemplate(__SCOPE__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var x = __SCOPE__.x;
+
+		var __ctx = __STDDOM_CONTEXT();
+
+		var __frag = __STDDOM_FRAGMENT();
+		__STDDOM_IF(__frag, __ctx, 1, [__IF_2]);
+
+		function __IF_2(frag) {
+			return x ? frag || __IF_2_exec(__ctx) : null;
+		}
+
+		function __IF_2_exec(__parent) {
+			var __ctx = __STDDOM_CONTEXT(__parent);
+			var __fragIf = __STDDOM_FRAGMENT();
+			__STDDOM_VALUE(__fragIf, __ctx, 3, x);
+			return {
+				ctx: __ctx,
+				frag: __fragIf,
+				update: function () {
+					__STDDOM_UPD_VALUE(__ctx[3], x);
+				}
+			};
+		}
+
+		return {
+			ctx: __ctx,
+			frag: __frag,
+			container: null,
+			mountTo: function (container) {
+				this.container = container;
+				__frag.mountTo(container);
+				__STDDOM_LIFECYCLE(__ctx, 'connectedCallback');
+				return this;
+			},
+			update: function (__NEWSCOPE__) {
+				__SCOPE__ = __NEWSCOPE__;
+				x = __NEWSCOPE__.x;
+				__STDDOM_UPD_IF(__ctx, 1);
+			}
+		}
+	}
+}
+`;
+
+exports[`text + interpolate 1`] = `
+function templateFactory(__DEPS__) {
+	"use strict";
+	var __STDDOM = __DEPS__.stddom;
+	var __STDDOM_CONTEXT = __STDDOM.CONTEXT;
+	var __STDDOM_FRAGMENT = __STDDOM.FRAGMENT;
+	var __STDDOM_TEXT = __STDDOM.TEXT;
+	var __STDDOM_VALUE = __STDDOM.VALUE;
+	var __STDDOM_LIFECYCLE = __STDDOM.LIFECYCLE;
+	var __STDDOM_UPD_VALUE = __STDDOM.UPD_VALUE;
+	return function compiledTemplate(__SCOPE__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var x = __SCOPE__.x;
+
+		var __ctx = __STDDOM_CONTEXT();
+
+		var __frag = __STDDOM_FRAGMENT();
+		__STDDOM_TEXT(__frag, "foo-");
+		__STDDOM_VALUE(__frag, __ctx, 1, x);
+
+		return {
+			ctx: __ctx,
+			frag: __frag,
+			container: null,
+			mountTo: function (container) {
+				this.container = container;
+				__frag.mountTo(container);
+				__STDDOM_LIFECYCLE(__ctx, 'connectedCallback');
+				return this;
+			},
+			update: function (__NEWSCOPE__) {
+				__SCOPE__ = __NEWSCOPE__;
+				x = __NEWSCOPE__.x;
+				__STDDOM_UPD_VALUE(__ctx[1], x);
+			}
+		}
+	}
+}
+`;

@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "outDir": "dist/",
+    "target": "es5",
+    "declaration": true,
+    "moduleResolution": "node",
+    "experimentalDecorators": true
+  },
+  "exclude": ["dist", "node_modules"]
+}

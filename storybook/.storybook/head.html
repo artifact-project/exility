@@ -1,0 +1,55 @@
+<style>
+	.block-dummy-failed {
+		color: #fff;
+		background: #fc5420;
+		padding: 2px 8px;
+		font-size: 12px;
+		font-family: monospace;
+		display: inline-block;
+		vertical-align: middle;
+		border-radius: 3px;
+	}
+
+	.block-dummy-failed::before {
+		content: attr(data-block)': 'attr(data-block-error);
+		display: block;
+		white-space: pre;
+	}
+
+	.exility-storybook-list {
+		margin: 10px;
+	}
+
+	.exility-storybook-list-item {
+		position: relative;
+		padding: 5px;
+		margin-top: 20px;
+		border: 1px dotted #ccc;
+	}
+
+	.exility-storybook-list-item-title {
+		right: -5px;
+		top: 0;
+		transform: translate(0, -50%);
+		position: absolute;
+		background: #eee;
+		border-radius: 3px;
+		color: #333;
+		padding: 0 5px 1px;
+		font-size: 12px;
+		font-family: monospace;
+	}
+
+	.exility-storybook-items {
+		margin: 10px;
+		display: flex;
+	}
+
+	.exility-storybook-items > * {
+		flex-grow: 1;
+	}
+
+	.exility-storybook-items > * + * {
+		margin-left: 10px;
+	}
+</style>

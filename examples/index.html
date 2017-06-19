@@ -1,0 +1,21 @@
+<style>
+	.block-dummy-failed {
+		color: #fff;
+		background: #c00;
+		padding: 10px;
+		font-size: 11px;
+		font-family: monospace;
+	}
+
+	.block-dummy-failed::before {
+		content: attr(data-block-error);
+		display: block;
+		white-space: pre;
+	}
+</style>
+<p>&nbsp;</p>
+<div class="container">
+	<div id="root"></div>
+</div>
+<script src="dist/vendor.bundle.js"></script>
+<script src="dist/app.bundle.js"></script>

@@ -1,0 +1,17 @@
+{
+  "name": "exility",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Exility lang",
+  "scripts": {
+    "test": "node __scripts__/jest.ts",
+    "peer-deps-links": "node __scripts__/peer-deps-links.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^7.0.23",
+    "ts-node": "^3.0.4",
+    "typescript": "^2.3.3"
+  }
+}

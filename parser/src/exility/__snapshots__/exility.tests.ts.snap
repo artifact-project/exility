@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`syntax / exility div + HTML fragment 1`] = `
+Object {
+  "nodes": Array [
+    Object {
+      "nodes": Array [
+        Object {
+          "nodes": Array [],
+          "raw": Object {
+            "value": "Foo",
+          },
+          "type": "text",
+        },
+      ],
+      "raw": Object {
+        "attrs": Object {},
+        "name": "b",
+      },
+      "type": "tag",
+    },
+    Object {
+      "nodes": Array [],
+      "raw": Object {
+        "value": "-bar",
+      },
+      "type": "text",
+    },
+  ],
+  "raw": Object {
+    "attrs": Object {},
+    "name": "div",
+  },
+  "type": "tag",
+}
+`;

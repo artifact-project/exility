@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "outDir": "dist/",
+    "target": "es5",
+    "declaration": true,
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+	"lib": [
+		"es5",
+		"es2016.array.include"
+	]
+  },
+  "exclude": ["dist", "node_modules"]
+}

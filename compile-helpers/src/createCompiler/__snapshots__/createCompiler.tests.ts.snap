@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`success 1`] = `
+"function templateFactory() {
+	\\"use strict\\";
+	return function compiledTemplate(__SCOPE__) {
+		alert(1)
+	}
+}"
+`;

@@ -1,0 +1,38 @@
+{
+  "name": "@exility/dom",
+  "version": "0.1.0",
+  "description": "Exility DOM",
+  "main": "index.ts",
+  "scripts": {
+    "test": "jest --coverage --collectCoverageFrom=src/compiler/*.ts"
+  },
+  "author": "RubaXa <trash@rubaxa.org>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "^19.2.3",
+    "jest": "^20.0.3",
+    "ts-jest": "^20.0.4",
+    "typescript": "^2.3.3"
+  },
+  "peerDependencies": {
+    "@exility/block": "*",
+    "@exility/parser": "*",
+    "@exility/compile-helpers": "*"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "\\.tests\\.ts$",
+    "transformIgnorePatterns": [
+      "node_modules/(?!@exility|skeletik)"
+    ],
+    "setupTestFrameworkScriptFile": "<rootDir>/__jest__/extensions.ts",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "json"
+    ]
+  }
+}
