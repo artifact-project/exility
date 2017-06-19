@@ -209,7 +209,6 @@ panel
 <div class="panel">
 	<div class="panel__head"><h2>Wow!</h2></div>
 	<div class="panel__body"><p>Bla-bla-bla...</p></div>
-	<div class="panel__footer-empty"><p>Bla-bla-bla...</p></div>
 </div>
 ```
 
