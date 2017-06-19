@@ -10,9 +10,11 @@ module.exports = {
 	entry: {
 		vendor: [
 			'@exility/block',
-			'@exility/ui-bootstrap/blocks/Core/Core',
 			'@exility/dom/src/stddom/stddom',
 			'@exility/compile-helpers/src/stdlib/stdlib',
+		],
+		bootstrap: [
+			'@exility/ui-bootstrap/blocks/Core/Core',
 		],
 		app: ['./index.ts'],
 	},
@@ -51,7 +53,7 @@ module.exports = {
 		],
 	},
 	plugins: [
-		new webpack.optimize.CommonsChunkPlugin({name: 'vendor', filename: 'vendor.bundle.js'}),
+		new webpack.optimize.CommonsChunkPlugin({name: 'vendor'}),
 		new webpack.DefinePlugin({
 			'process.env': {NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development')}
 		})
