@@ -4,7 +4,22 @@ Exility
 (Если знате Slim/Jade/Pug, то проблем с понимание не встанет)
 
 
-### Быстрый старт
+---
+
+
+### ВНИМАНИЕ
+Проект находится активной в разработки и собрать его можно только одним способом:
+
+ - `git clone git@github.com:artifact-project/exility.git`
+ - `cd exility`
+ - `npm run peer-deps-links`
+ - после чего запускаем в каждой подпапке `npm i`
+
+
+---
+
+
+### Быстрый старт (todo)
 
  - `git clone git@github.com:artifact-project/exility-scaffold.git && cd exility-scaffold && npm run startup`
 
@@ -184,8 +199,8 @@ box
 
 ```html
 <div class="box">
-	h2 | News
-	p | ...
+	<h2>News</h2>
+	<p>...</p>
 </div>
 ```
 
