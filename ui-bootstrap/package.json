@@ -15,28 +15,38 @@
     "@types/jest": "^19.2.3",
     "@types/node": "^7.0.28",
     "awesome-typescript-loader": "^3.1.3",
+    "ibi": "^0.3.0",
     "jest": "^20.0.3",
     "ts-jest": "^20.0.4",
-    "typescript": "^2.3.3"
+    "tx-reflector": "^0.3.0",
+    "typescript": "^2.4.1"
   },
   "peerDependencies": {
     "@exility/block": "*",
     "@exility/dom": "*",
     "@exility/storybook": "*",
-    "@exility/compile-helpers": "*"
+    "@exility/compile-helpers": "*",
+    "@exility/jacket": "*",
+    "@exility/ts-transformer": "*"
   },
   "jest": {
     "transform": {
-      "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+      "^.+\\.tsx?$": "<rootDir>/__jest__/preprocessor.js"
     },
     "testRegex": "\\.tests\\.ts$",
     "transformIgnorePatterns": [],
     "setupTestFrameworkScriptFile": "<rootDir>/__jest__/extensions.ts",
+    "setupFiles": [
+      "<rootDir>/__jest__/regression.ts"
+    ],
     "moduleFileExtensions": [
       "ts",
       "tsx",
       "js",
       "json"
-    ]
+    ],
+    "moduleNameMapper": {
+      "\\.(css|less)$": "<rootDir>/__mocks__/css.ts"
+    }
   }
 }
