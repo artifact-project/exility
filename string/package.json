@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest --coverage"
   },
-  "author": "",
+  "author": "RubaXa <trash@rubaxa.org>",
   "license": "MIT",
   "devDependencies": {
     "@types/jest": "^19.2.3",
