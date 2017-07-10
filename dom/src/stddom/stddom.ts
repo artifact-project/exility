@@ -92,12 +92,17 @@ function LIFECYCLE(ctx, name: 'connectedCallback' | 'disconnectedCallback') {
 }
 
 function ATTR(el, name, value) {
-	el.setAttribute(name, value);
+	(value != null) && el.setAttribute(name, value);
 }
 
 function D_ATTR(node, name, value) {
 	if (node.attrs[name] !== value) {
-		node.el.setAttribute(name, value);
+		if (value == null) {
+			node.el.removeAttribute(name);
+		} else {
+			node.el.setAttribute(name, value);
+		}
+
 		node.attrs[name] = value;
 	}
 }
@@ -108,7 +113,7 @@ function PROP(el, name, value) {
 
 function D_PROP(node, name, value) {
 	if (node.attrs[name] !== value) {
-		node.el[name] = value;
+		node.el[name] = value == null ? '' : value;
 		node.attrs[name] = value;
 	}
 }

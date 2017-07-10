@@ -108,8 +108,8 @@ const compiler = createCompiler<IDOMCompilerOptions>((options: IDOMCompilerOptio
 
 				if (remitArgs.length) {
 					value += `{${remitArgs.map(prop => {
-						const value = stringifyParsedValue(prop);
-						return `${prop.raw}: ${value}`;
+						const compiledProp = stringifyParsedValue(prop);
+						return `${prop.raw.split('.').pop()}: ${compiledProp.value}`;
 					}).join(', ')}}`;
 				} else {
 					value += 'null';
@@ -152,7 +152,9 @@ const compiler = createCompiler<IDOMCompilerOptions>((options: IDOMCompilerOptio
 
 		let compiledAttrs: Array<COMPILED_ATTR> = Object.keys(attrs).map((name: string): COMPILED_ATTR => {
 			const useCLN = name === 'class' && useCSSModule;
-			const encode = useCLN || BOOL_ATTRS[name] || isCustomElem || R_IS_EVENT_ATTR.test(name) ? null : TO_STR;
+			const encode = (useCLN || BOOL_ATTRS[name] || isCustomElem || R_IS_EVENT_ATTR.test(name) || !/^class/.test(name))
+				? null
+				: TO_STR;
 			const attr = stringifyAttributeValue(
 				name,
 				attrs[name],

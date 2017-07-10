@@ -95,6 +95,36 @@ it('Btn -> Sync', () => {
 	expect(view.container.innerHTML).toBe('<button>Wow!1</button>');
 });
 
+it('Btn / Events', () => {
+	const events = [];
+	const view = fromString('Btn[value=\${val}]', {val: 'Wow'}, null, {
+		'Btn': {
+			template: 'button[@click @mousedown="down" @mouseup="up ${attrs}"]',
+			'@click'(evt) {
+				events.push(evt);
+			},
+			'@down'(evt) {
+				events.push(evt);
+			},
+			'@up'(evt) {
+				events.push(evt);
+			}
+		}
+	});
+
+	view.container.firstChild.dispatchEvent(new Event('click'));
+	expect(events[0].type).toBe('click');
+	expect(events[0].detail).toBe(null);
+
+	view.container.firstChild.dispatchEvent(new Event('mousedown'));
+	expect(events[1].type).toBe('down');
+	expect(events[1].detail).toBe(null);
+
+	view.container.firstChild.dispatchEvent(new Event('mouseup'));
+	expect(events[2].type).toBe('up');
+	expect(events[2].detail).toEqual({attrs: {value: 'Wow'}});
+});
+
 it('Btn -> Async', async () => {
 	const view = fromString('Btn[value=${val}]', {val: 'Wow'}, null, {
 		'Btn': () => Promise.resolve({
@@ -241,5 +271,4 @@ it('CSS Module', () => {
 	Foo.classNames = {'alert': '__$alert$__'};
 	view.update({});
 	expect(view.container.innerHTML).toBe('<div class=\"__$alert$__ [warn: null] [warn: is-null]\"></div>');
-
 });
