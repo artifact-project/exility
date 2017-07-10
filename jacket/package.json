@@ -1,0 +1,36 @@
+{
+  "name": "@exility/jacket",
+  "version": "0.1.0",
+  "description": "Exility Jacket is a testing utility for your blocks.",
+  "main": "index.ts",
+  "scripts": {
+    "test": "jest --coverage"
+  },
+  "author": "RubaXa <trash@rubaxa.org>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "^19.2.3",
+    "jest": "^20.0.3",
+    "ts-jest": "^20.0.4",
+    "typescript": "^2.4.0"
+  },
+  "peerDependencies": {
+    "@exility/ts-transformer": "*",
+    "@exility/block": "*",
+    "@exility/dom": "*"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "<rootDir>/__jest__/preprocessor.js"
+    },
+    "testRegex": "\\.tests\\.ts$",
+    "transformIgnorePatterns": [],
+    "setupTestFrameworkScriptFile": "<rootDir>/__jest__/extensions.ts",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "json"
+    ]
+  }
+}
