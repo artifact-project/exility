@@ -4,9 +4,13 @@
   "description": "TypeScript transformer for Exility",
   "main": "index.ts",
   "scripts": {
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "build": "",
+    "clean": "git clean -f",
+    "prepublish": "npm run test && npm run build",
+    "postpublish": "npm run clean"
   },
-  "author": "",
+  "author": "RubaXa <trash@rubaxa.org>",
   "license": "MIT",
   "devDependencies": {
     "@types/jest": "^19.2.3",

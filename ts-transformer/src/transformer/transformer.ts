@@ -52,7 +52,6 @@ function hasExtends(node) {
 }
 
 function isStringTemplate({kind}) {
-
 	return (
 		kind === ts.SyntaxKind.StringLiteral ||
 		kind === ts.SyntaxKind.TemplateExpression ||
