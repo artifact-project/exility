@@ -28,6 +28,14 @@ export interface IPlainBlock<A> {
 	attributeChangedCallback?<K extends keyof A>(attrName: K, oldValue: A[K], newValue: A[K]): void;
 }
 
+export const requiredScopeKeys = [
+	'attrs',
+	'__this__',
+	'__blocks__',
+	'__slots__',
+	'__classNames__',
+];
+
 export default class Block<A> implements IEmitter<IBlock> {
 	static classify<X>(ClassOrLike: string | IPlainBlock<X> | IBlock): typeof Block {
 		if (typeof ClassOrLike === 'string') {
@@ -98,8 +106,11 @@ export default class Block<A> implements IEmitter<IBlock> {
 			__slots__: options.slots,
 		};
 
-		// console.log(this.__template__.toString());
-		this.__view__ = this.__template__(this.__scope__);
+		if (this.__template__ === void 0) {
+			throw new Error(`[@exility/block] Not compiled`);
+		} else {
+			this.__view__ = this.__template__(this.__scope__);
+		}
 	}
 
 	isBlock() {
@@ -147,6 +158,8 @@ export default class Block<A> implements IEmitter<IBlock> {
 
 				// todo: relatedTarget
 				const nextEvent = new XEvent(fn, detail, event.originalEvent);
+
+				nextEvent.setTarget(this);
 
 				if (ctx.dispatchEvent) {
 					ctx.dispatchEvent(nextEvent);

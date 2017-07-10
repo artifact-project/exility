@@ -1,4 +1,4 @@
-import Block, {IBlock} from './src/block/block';
+import Block, {IBlock, requiredScopeKeys} from './src/block/block';
 
-export {IBlock};
+export {IBlock, requiredScopeKeys};
 export default Block;
