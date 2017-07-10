@@ -1,10 +1,8 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import {
-	stdlib,
-	stddom,
-	createCompiler,
-	mountTo
+	mountTo,
+	runtimeBlockActivate,
 } from '@exility/dom';
 import Block from '@exility/block';
 
@@ -31,19 +29,7 @@ export default function wrap(Target, slots, blocks: object = {}, events = {}) {
 		);
 	}
 
-	const compile = createCompiler({
-		blocks: Object.keys(TargetWithSlots.blocks),
-		scope: [
-			'attrs',
-			'__this__',
-			'__blocks__',
-			'__slots__',
-			'__classNames__',
-		]
-	});
-	const templateFactory = compile(TargetWithSlots.template);
-
-	TargetWithSlots.prototype['__template__'] = templateFactory({stddom, stdlib});
+	runtimeBlockActivate(TargetWithSlots);
 
 	class ReactExilityWrapper extends Component<any, any> {
 		block;
