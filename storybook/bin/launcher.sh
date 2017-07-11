@@ -9,5 +9,6 @@ if [ "$command" == "start" ]; then
 fi
 
 if [ "$command" == "build" ]; then
-	echo "START BUILDING"
+	cd node_modules/@exility/storybook/node_modules/.bin/
+	npm build-storybook
 fi
