@@ -1,8 +1,13 @@
 import Block from '../Core/Core';
+import Clickable from '../../interfaces/Clickable';
 
 export interface IAlertAttrs {
 	type?: 'success' | 'info' | 'warning' | 'danger';
 	dismissible?: boolean;
+}
+
+export interface IAlertCloseAttrs extends Clickable {
+	'@close'?(evt: Event);
 }
 
 export interface IAlertLinkAttrs {
@@ -11,7 +16,7 @@ export interface IAlertLinkAttrs {
 	target?: string;
 }
 
-export class AlertClose extends Block<null> {
+export class AlertClose extends Block<IAlertCloseAttrs> {
 	static template = `
 		button.close[
 			@click="close"
