@@ -110,7 +110,7 @@ i.left + i.right
 
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  :arrow_double_down:  :arrow_double_down:  :arrow_double_down:
 
-```sass
+```html
 <i class="left"></i><i class="right"></i>
 ```
 
