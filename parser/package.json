@@ -4,9 +4,18 @@
   "description": "Parser for Exility language",
   "main": "index.ts",
   "scripts": {
-    "build": "tsc",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "ts-build": "tsc",
+    "ts-clean": "git clean -f",
+    "prepublish": "npm run test && npm run ts-build",
+    "postpublish": "npm run ts-clean"
   },
+  "files": [
+    "*.js",
+    "*.d.ts",
+    "src/*/*.js",
+    "src/*/*.d.ts"
+  ],
   "author": "RubaXa <tarsh@rubaxa.org>",
   "license": "MIT",
   "dependencies": {
