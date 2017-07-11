@@ -111,8 +111,7 @@ i.left + i.right
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  :arrow_double_down:  :arrow_double_down:  :arrow_double_down:
 
 ```sass
-<i class="left"></i>
-<i class="right"></i>
+<i class="left"></i><i class="right"></i>
 ```
 
 ---
