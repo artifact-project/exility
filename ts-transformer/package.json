@@ -10,6 +10,12 @@
     "prepublish": "npm run test && npm run build",
     "postpublish": "npm run clean"
   },
+  "files": [
+    "*.js",
+    "*.d.ts",
+    "src/*/*.js",
+    "src/*/*.d.ts"
+  ],
   "author": "RubaXa <trash@rubaxa.org>",
   "license": "MIT",
   "devDependencies": {
