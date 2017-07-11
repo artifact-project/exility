@@ -9,7 +9,7 @@
     "storybook": "exility-storybook start -p 5111",
     "build-storybook": "exility-storybook build"
   },
-  "author": "",
+  "author": "RubaXa <trash@rubaxa.org>",
   "license": "MIT",
   "devDependencies": {
     "@types/jest": "^19.2.3",

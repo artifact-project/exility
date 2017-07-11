@@ -38,12 +38,8 @@ wrapper.attr('aria-disabled'); // 'true'
  - update(attrs: `object`)
 
 
-### Разработка
+### Development
 
  - `npm i`
- - `npm test`
+ - `npm test`, [code coverage](./coverage/lcov-report/index.html)
 
-
-### Code coverage
-
- - [coverage/lcov-report/index.html](./coverage/lcov-report/index.html)

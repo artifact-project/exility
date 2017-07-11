@@ -3,12 +3,7 @@ Exility Storybook
 Спец. враппер над оригинальным storybook.
 
 
-### Разработка
+### Development
 
  - `npm i`
- - `npm test`
-
-
-### Code coverage
-
- - [coverage/lcov-report/index.html](./coverage/lcov-report/index.html)
+ - `npm test`, [code coverage](./coverage/lcov-report/index.html)

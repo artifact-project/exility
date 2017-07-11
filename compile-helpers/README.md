@@ -2,7 +2,7 @@ Exility lang compile helpers
 ----------------------------
 Вспомогательные функции для компиляции.
 
- ### Константы
+### Константы
 
   - [SELF_CLOSED_TAGS](./src/SELF_CLOSED_TAGS/SELF_CLOSED_TAGS.ts)
 
@@ -14,11 +14,8 @@ Exility lang compile helpers
  - [simpleJavaScriptBeautifier](./src/simpleJavaScriptBeautifier/simpleJavaScriptBeautifier.ts)
 
 
-### Разработка
+### Development
 
  - `npm i`
- - `npm test`
+ - `npm test`, [code coverage](./coverage/lcov-report/index.html)
 
-### Code coverage
-
- - [coverage/lcov-report/index.html](./coverage/lcov-report/index.html)

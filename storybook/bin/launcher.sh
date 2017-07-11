@@ -9,5 +9,5 @@ if [ "$command" == "start" ]; then
 fi
 
 if [ "$command" == "build" ]; then
-	echo "START."
+	echo "START BUILDING"
 fi
