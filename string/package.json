@@ -1,5 +1,5 @@
 {
-  "name": "@exility/strong",
+  "name": "@exility/string",
   "version": "0.1.0",
   "description": "Exility Compiler to Pure String",
   "main": "index.ts",
@@ -24,7 +24,7 @@
     },
     "testRegex": "\\.tests\\.ts$",
     "transformIgnorePatterns": [
-      "node_modules/(?!@exility)"
+      "node_modules/(?!@exility|skeletik)"
     ],
     "setupTestFrameworkScriptFile": "<rootDir>/__jest__/extensions.ts",
     "moduleFileExtensions": [

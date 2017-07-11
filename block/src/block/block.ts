@@ -107,7 +107,7 @@ export default class Block<A> implements IEmitter<IBlock> {
 		};
 
 		if (this.__template__ === void 0) {
-			throw new Error(`[@exility/block] Not compiled`);
+			console.warn(`[@exility/block] Not compiled`);
 		} else {
 			this.__view__ = this.__template__(this.__scope__);
 		}

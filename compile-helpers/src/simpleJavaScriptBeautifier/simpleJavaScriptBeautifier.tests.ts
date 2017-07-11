@@ -117,3 +117,24 @@ __CMP_ATTRS["name"] = (x);
 	);
 	`)).toMatchSnapshot();
 });
+
+it('panel', () => {
+	expect(simpleJavaScriptBeautifier(`
+function templateFactory(__DEPS__) {
+	function panel(attrs, __slots) {
+		var __super = {attrs: attrs},
+	__default = __slots && __slots.__default || __super.__default
+		var __ROOT = "<h1>" + __STDLIB_HTML_ENCODE(title) + "</h1><p>";
+		return __ROOT
+	}
+
+	return function compiledTemplate(__SCOPE__) {
+		var __ROOT = panel({title: "?!"}) + panel({title: "Wow!"}, {__default: function __default() {
+				return "Done";
+			}});
+
+			return __ROOT
+		}
+		}
+	`)).toMatchSnapshot();
+});

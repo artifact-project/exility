@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "description": "Exility lang",
   "scripts": {
-    "test": "node __scripts__/jest.ts",
+    "test": "node __scripts__/test.js",
     "peer-deps-links": "node __scripts__/peer-deps-links.js"
   },
   "author": "",
