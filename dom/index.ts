@@ -6,17 +6,19 @@ import stddom from './src/stddom/stddom';
 import mountTo from './src/mountTo/mountTo';
 
 function runtimeBlockActivate(Block) {
-	const compile = createCompiler({
-		blocks: Object.keys(Block.blocks),
-		scope: requiredScopeKeys
-	});
-	const templateFactory = compile(Block.template);
+	if (!Block.prototype['__template__']) {
+		const compile = createCompiler({
+			blocks: Object.keys(Block.blocks),
+			scope: requiredScopeKeys
+		});
+		const templateFactory = compile(Block.template);
 
-	Block.prototype['name'] = Block.prototype['name'] || Block.name;
-	Block.prototype['__template__'] = templateFactory({
-		stddom,
-		stdlib,
-	});
+		Block.prototype['name'] = Block.prototype['name'] || Block.name;
+		Block.prototype['__template__'] = templateFactory({
+			stddom,
+			stdlib,
+		});
+	}
 }
 
 export {
