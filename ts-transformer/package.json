@@ -5,7 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "test": "jest --coverage",
-    "build": "",
+    "build": "tsc",
     "clean": "git clean -f",
     "prepublish": "npm run test && npm run build",
     "postpublish": "npm run clean"
