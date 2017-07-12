@@ -1,3 +1,5 @@
-import module from './src/module/module';
+import core from './src/core/core';
 
-export default module;
+export {
+	core,
+};
