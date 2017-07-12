@@ -47,8 +47,6 @@ it('EACH(array)', () => {
 it('EACH(object)', () => {
 	const result = {};
 
-	core.EACH({x: 1, y: 2}, (val, key) => {
-		result[val] = key;
-	});
+	core.EACH({x: 1, y: 2}, (val, key) => {result[val] = key;});
 	expect(result).toEqual({1: 'x', 2: 'y'});
 });
