@@ -27,7 +27,7 @@
   "peerDependencies": {
     "@exility/block": "*",
     "@exility/parser": "*",
-    "@exility/compile-helpers": "*"
+    "@exility/compile": "*"
   },
   "jest": {
     "transform": {

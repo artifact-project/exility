@@ -38,6 +38,6 @@
   "peerDependencies": {
     "@exility/block": "*",
     "@exility/dom": "*",
-    "@exility/compile-helpers": "*"
+    "@exility/compile": "*"
   }
 }

@@ -25,6 +25,7 @@
     "typescript": "^2.3.3"
   },
   "peerDependencies": {
+    "@exility/compile": "*",
     "@exility/dom": "*"
   },
   "jest": {

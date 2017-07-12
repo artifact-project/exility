@@ -30,7 +30,7 @@
     "@exility/block": "*",
     "@exility/ui-bootstrap": "*",
     "@exility/dom": "*",
-    "@exility/compile-helpers": "*",
+    "@exility/compile": "*",
     "@exility/ts-transformer": "*"
   }
 }

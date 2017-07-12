@@ -11,7 +11,7 @@ module.exports = {
 		vendor: [
 			'@exility/block',
 			'@exility/dom/src/stddom/stddom',
-			'@exility/compile-helpers/src/stdlib/stdlib',
+			'@exility/compile/src/stdlib/stdlib',
 		],
 		bootstrap: [
 			'@exility/ui-bootstrap/blocks/Core/Core',

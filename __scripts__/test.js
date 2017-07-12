@@ -36,7 +36,7 @@ function fetchPackages(path) {
 
 function runTest({path, meta: {name}}) {
 	process.stdout.write(` - ${name}...`);
-	return exec('npm test', {cwd: path})
+	return exec('npm test -- --no-cache', {cwd: path})
 		.then((result) => {
 			process.stdout.write('OK\n');
 			return result;

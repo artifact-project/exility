@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`arrow function 1`] = `
-"import _exility_compile_helpers_src_stdlib_stdlib from \\"@exility/compile-helpers/src/stdlib/stdlib\\";
+"import _exility_compile_src_stdlib_stdlib from \\"@exility/compile/src/stdlib/stdlib\\";
 import _exility_dom_src_stddom_stddom from \\"@exility/dom/src/stddom/stddom\\";
 class ArrowFunction extends Block<null> {
     static prototype.__template__ = (function templateFactory(__DEPS__) {
@@ -54,7 +54,7 @@ class ArrowFunction extends Block<null> {
 `;
 
 exports[`arrow function: for (item in items) 1`] = `
-"import _exility_compile_helpers_src_stdlib_stdlib from \\"@exility/compile-helpers/src/stdlib/stdlib\\";
+"import _exility_compile_src_stdlib_stdlib from \\"@exility/compile/src/stdlib/stdlib\\";
 import _exility_dom_src_stddom_stddom from \\"@exility/dom/src/stddom/stddom\\";
 class ArrowFor extends Block<null> {
     static prototype.__template__ = (function templateFactory(__DEPS__) {
@@ -125,7 +125,7 @@ class ArrowFor extends Block<null> {
 `;
 
 exports[`arrow function: if 1`] = `
-"import _exility_compile_helpers_src_stdlib_stdlib from \\"@exility/compile-helpers/src/stdlib/stdlib\\";
+"import _exility_compile_src_stdlib_stdlib from \\"@exility/compile/src/stdlib/stdlib\\";
 import _exility_dom_src_stddom_stddom from \\"@exility/dom/src/stddom/stddom\\";
 class ArrowIf extends Block<null> {
     static prototype.__template__ = (function templateFactory(__DEPS__) {
@@ -192,7 +192,7 @@ class ArrowIf extends Block<null> {
 `;
 
 exports[`blocks 1`] = `
-"import _exility_compile_helpers_src_stdlib_stdlib from \\"@exility/compile-helpers/src/stdlib/stdlib\\";
+"import _exility_compile_src_stdlib_stdlib from \\"@exility/compile/src/stdlib/stdlib\\";
 import _exility_dom_src_stddom_stddom from \\"@exility/dom/src/stddom/stddom\\";
 class App extends Block<{
         username: string;
@@ -259,7 +259,7 @@ class App extends Block<{
 `;
 
 exports[`classNames 1`] = `
-"import _exility_compile_helpers_src_stdlib_stdlib from \\"@exility/compile-helpers/src/stdlib/stdlib\\";
+"import _exility_compile_src_stdlib_stdlib from \\"@exility/compile/src/stdlib/stdlib\\";
 import _exility_dom_src_stddom_stddom from \\"@exility/dom/src/stddom/stddom\\";
 class App extends Block<{
         username: string;
@@ -321,7 +321,7 @@ class App extends Block<{
 `;
 
 exports[`string 1`] = `
-"import _exility_compile_helpers_src_stdlib_stdlib from \\"@exility/compile-helpers/src/stdlib/stdlib\\";
+"import _exility_compile_src_stdlib_stdlib from \\"@exility/compile/src/stdlib/stdlib\\";
 import _exility_dom_src_stddom_stddom from \\"@exility/dom/src/stddom/stddom\\";
 class Str extends Block {
     static prototype.__template__ = (function templateFactory(__DEPS__) {

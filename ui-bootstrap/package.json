@@ -35,7 +35,7 @@
     "@exility/block": "*",
     "@exility/dom": "*",
     "@exility/storybook": "*",
-    "@exility/compile-helpers": "*",
+    "@exility/compile": "*",
     "@exility/jacket": "*",
     "@exility/ts-transformer": "*"
   },

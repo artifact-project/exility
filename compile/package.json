@@ -1,5 +1,5 @@
 {
-  "name": "@exility/compile-helpers",
+  "name": "@exility/compile",
   "version": "0.1.0",
   "description": "Exility compile helpers",
   "main": "index.ts",

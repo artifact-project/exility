@@ -1,7 +1,7 @@
 import {requiredScopeKeys} from '@exility/block';
 import createCompiler from './src/compiler/compiler';
 
-import {stdlib} from '@exility/compile-helpers';
+import {stdlib} from '@exility/compile';
 import stddom from './src/stddom/stddom';
 import mountTo from './src/mountTo/mountTo';
 

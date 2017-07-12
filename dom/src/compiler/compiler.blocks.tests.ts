@@ -1,5 +1,5 @@
 import Block from '@exility/block';
-import {stdlib} from '@exility/compile-helpers';
+import {stdlib} from '@exility/compile';
 
 import compilter from './compiler';
 import stddom from './../stddom/stddom';

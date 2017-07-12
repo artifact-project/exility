@@ -1,4 +1,4 @@
-import {stdlib, COMMON_TEST} from '@exility/compile-helpers';
+import {stdlib, COMMON_TEST} from '@exility/compile';
 
 import compilter from './compiler';
 import stddom from './../stddom/stddom';

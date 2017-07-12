@@ -8,7 +8,7 @@ import {
 	stringifyObjectKey,
 	stringifyParsedValue,
 	stringifyAttributeValue,
-} from '@exility/compile-helpers';
+} from '@exility/compile';
 
 import {XNode, IXNode, XNodeConstructor, utils} from '@exility/parser';
 

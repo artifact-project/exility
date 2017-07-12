@@ -25,6 +25,7 @@
     "typescript": "^2.4.0"
   },
   "peerDependencies": {
+    "@exility/compile": "*",
     "@exility/ts-transformer": "*",
     "@exility/block": "*",
     "@exility/dom": "*"

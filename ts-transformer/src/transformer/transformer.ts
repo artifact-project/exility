@@ -131,7 +131,7 @@ function visitNode(node, imports) {
 			ts.createParen(ts.createIdentifier(code)),
 			undefined,
 			[generateDepsObject(imports, {
-				'stdlib': '@exility/compile-helpers/src/stdlib/stdlib',
+				'stdlib': '@exility/compile/src/stdlib/stdlib',
 				'stddom': '@exility/dom/src/stddom/stddom',
 			})]
 		)
