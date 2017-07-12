@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
+    "wp-build": "webpack",
     "ts-clean": "git clean -f",
-    "prepublish": "npm run build",
+    "prepublish": "npm run wp-build",
     "postpublish": "npm run ts-clean"
   },
   "files": [
@@ -28,6 +28,7 @@
   },
   "peerDependencies": {
     "@exility/block": "*",
+    "@exility/stdlib": "*",
     "@exility/ui-bootstrap": "*",
     "@exility/dom": "*",
     "@exility/compile": "*",

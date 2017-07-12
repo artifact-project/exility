@@ -26,6 +26,7 @@
   },
   "peerDependencies": {
     "@exility/block": "*",
+    "@exility/stdlib": "*",
     "@exility/parser": "*",
     "@exility/compile": "*"
   },

@@ -1,5 +1,4 @@
 import {
-	stdlib,
 	ICompilerOptions,
 	createCompiler,
 
@@ -9,7 +8,10 @@ import {
 } from '@exility/compile';
 import {XNode, IXNode, XNodeConstructor, utils} from '@exility/parser';
 
-import stddom from '../stddom/stddom';
+import {
+	core as stdlib,
+	dom as stddom,
+} from '@exility/stdlib';
 
 type COMPILED_ATTR = [string, string, boolean];
 

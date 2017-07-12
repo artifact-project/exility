@@ -28,7 +28,8 @@
     "@exility/compile": "*",
     "@exility/ts-transformer": "*",
     "@exility/block": "*",
-    "@exility/dom": "*"
+    "@exility/dom": "*",
+    "@exility/stdlib": "*"
   },
   "jest": {
     "transform": {

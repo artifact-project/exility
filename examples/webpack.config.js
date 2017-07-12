@@ -10,8 +10,7 @@ module.exports = {
 	entry: {
 		vendor: [
 			'@exility/block',
-			'@exility/dom/src/stddom/stddom',
-			'@exility/compile/src/stdlib/stdlib',
+			'@exility/stdlib',
 		],
 		bootstrap: [
 			'@exility/ui-bootstrap/blocks/Core/Core',

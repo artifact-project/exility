@@ -1,7 +1,10 @@
-import {stdlib, COMMON_TEST} from '@exility/compile';
+import {COMMON_TEST} from '@exility/compile';
+import {
+	core as stdlib,
+	dom as stddom,
+} from '@exility/stdlib';
 
 import compilter from './compiler';
-import stddom from './../stddom/stddom';
 
 function serialize(view) {
 	if (view.mountTo) {

@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`arrow function 1`] = `
-"import _exility_compile_src_stdlib_stdlib from \\"@exility/compile/src/stdlib/stdlib\\";
-import _exility_dom_src_stddom_stddom from \\"@exility/dom/src/stddom/stddom\\";
+"import _exility_stdlib_src_core_core from \\"@exility/stdlib/src/core/core\\";
+import _exility_stdlib_src_dom_dom from \\"@exility/stdlib/src/dom/dom\\";
 class ArrowFunction extends Block<null> {
     static prototype.__template__ = (function templateFactory(__DEPS__) {
 	\\"use strict\\";
@@ -48,14 +48,14 @@ class ArrowFunction extends Block<null> {
 			}
 		}
 	}
-})({ stdlib: stdlib_1.default, stddom: stddom_1.default });
+})({ stdlib: core_1.default, stddom: dom_1.default });
 }
 "
 `;
 
 exports[`arrow function: for (item in items) 1`] = `
-"import _exility_compile_src_stdlib_stdlib from \\"@exility/compile/src/stdlib/stdlib\\";
-import _exility_dom_src_stddom_stddom from \\"@exility/dom/src/stddom/stddom\\";
+"import _exility_stdlib_src_core_core from \\"@exility/stdlib/src/core/core\\";
+import _exility_stdlib_src_dom_dom from \\"@exility/stdlib/src/dom/dom\\";
 class ArrowFor extends Block<null> {
     static prototype.__template__ = (function templateFactory(__DEPS__) {
 	\\"use strict\\";
@@ -119,14 +119,14 @@ class ArrowFor extends Block<null> {
 			}
 		}
 	}
-})({ stdlib: stdlib_1.default, stddom: stddom_1.default });
+})({ stdlib: core_1.default, stddom: dom_1.default });
 }
 "
 `;
 
 exports[`arrow function: if 1`] = `
-"import _exility_compile_src_stdlib_stdlib from \\"@exility/compile/src/stdlib/stdlib\\";
-import _exility_dom_src_stddom_stddom from \\"@exility/dom/src/stddom/stddom\\";
+"import _exility_stdlib_src_core_core from \\"@exility/stdlib/src/core/core\\";
+import _exility_stdlib_src_dom_dom from \\"@exility/stdlib/src/dom/dom\\";
 class ArrowIf extends Block<null> {
     static prototype.__template__ = (function templateFactory(__DEPS__) {
 	\\"use strict\\";
@@ -186,14 +186,14 @@ class ArrowIf extends Block<null> {
 			}
 		}
 	}
-})({ stdlib: stdlib_1.default, stddom: stddom_1.default });
+})({ stdlib: core_1.default, stddom: dom_1.default });
 }
 "
 `;
 
 exports[`blocks 1`] = `
-"import _exility_compile_src_stdlib_stdlib from \\"@exility/compile/src/stdlib/stdlib\\";
-import _exility_dom_src_stddom_stddom from \\"@exility/dom/src/stddom/stddom\\";
+"import _exility_stdlib_src_core_core from \\"@exility/stdlib/src/core/core\\";
+import _exility_stdlib_src_dom_dom from \\"@exility/stdlib/src/dom/dom\\";
 class App extends Block<{
         username: string;
     }> {
@@ -253,14 +253,14 @@ class App extends Block<{
 			}
 		}
 	}
-})({ stdlib: stdlib_1.default, stddom: stddom_1.default });
+})({ stdlib: core_1.default, stddom: dom_1.default });
 }
 "
 `;
 
 exports[`classNames 1`] = `
-"import _exility_compile_src_stdlib_stdlib from \\"@exility/compile/src/stdlib/stdlib\\";
-import _exility_dom_src_stddom_stddom from \\"@exility/dom/src/stddom/stddom\\";
+"import _exility_stdlib_src_core_core from \\"@exility/stdlib/src/core/core\\";
+import _exility_stdlib_src_dom_dom from \\"@exility/stdlib/src/dom/dom\\";
 class App extends Block<{
         username: string;
     }> {
@@ -315,14 +315,14 @@ class App extends Block<{
 			}
 		}
 	}
-})({ stdlib: stdlib_1.default, stddom: stddom_1.default });
+})({ stdlib: core_1.default, stddom: dom_1.default });
 }
 "
 `;
 
 exports[`string 1`] = `
-"import _exility_compile_src_stdlib_stdlib from \\"@exility/compile/src/stdlib/stdlib\\";
-import _exility_dom_src_stddom_stddom from \\"@exility/dom/src/stddom/stddom\\";
+"import _exility_stdlib_src_core_core from \\"@exility/stdlib/src/core/core\\";
+import _exility_stdlib_src_dom_dom from \\"@exility/stdlib/src/dom/dom\\";
 class Str extends Block {
     static prototype.__template__ = (function templateFactory(__DEPS__) {
 	\\"use strict\\";
@@ -368,7 +368,7 @@ class Str extends Block {
 			}
 		}
 	}
-})({ stdlib: stdlib_1.default, stddom: stddom_1.default });
+})({ stdlib: core_1.default, stddom: dom_1.default });
 }
 "
 `;

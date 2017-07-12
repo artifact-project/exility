@@ -1,7 +1,7 @@
 {
-  "name": "@exility/stdlibs",
+  "name": "@exility/stdlib",
   "version": "0.1.0",
-  "description": "Exility stdlibs",
+  "description": "Exility stdlib",
   "author": "RubaXa <trash@rubaxa.org>",
   "license": "MIT",
   "main": "index.ts",

@@ -1,7 +1,6 @@
 import {
 	SELF_CLOSED_TAGS,
 
-	stdlib,
 	ICompilerOptions,
 	createCompiler,
 
@@ -9,6 +8,7 @@ import {
 	stringifyParsedValue,
 	stringifyAttributeValue,
 } from '@exility/compile';
+import {core as stdlib} from '@exility/stdlib';
 
 import {XNode, IXNode, XNodeConstructor, utils} from '@exility/parser';
 

@@ -1,8 +1,10 @@
 import Block from '@exility/block';
-import {stdlib} from '@exility/compile';
+import {
+	core as stdlib,
+	dom as stddom,
+} from '@exility/stdlib';
 
 import compilter from './compiler';
-import stddom from './../stddom/stddom';
 
 export function fromString(template, scope = {}, pure?: boolean, blocks?) {
 	if (blocks) {

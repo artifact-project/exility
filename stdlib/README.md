@@ -1,4 +1,4 @@
-Exility STDLibs
+Exility STDLib
 ---------------
 Набор стандартных библиотек.
 

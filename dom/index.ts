@@ -1,8 +1,9 @@
 import {requiredScopeKeys} from '@exility/block';
+import {
+	core as stdlib,
+	dom as stddom,
+} from '@exility/stdlib';
 import createCompiler from './src/compiler/compiler';
-
-import {stdlib} from '@exility/compile';
-import stddom from './src/stddom/stddom';
 import mountTo from './src/mountTo/mountTo';
 
 function runtimeBlockActivate(Block) {
@@ -22,8 +23,6 @@ function runtimeBlockActivate(Block) {
 }
 
 export {
-	stdlib,
-	stddom,
 	mountTo,
 	createCompiler,
 	runtimeBlockActivate,

@@ -1,4 +1,5 @@
-import {stdlib, COMMON_TEST} from '@exility/compile';
+import {COMMON_TEST} from '@exility/compile';
+import {core as stdlib} from '@exility/stdlib';
 import compilerFactory from './compiler';
 
 const prettifyCompiler = compilerFactory({debug: true, prettify: true, scope: []});
