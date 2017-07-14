@@ -7,7 +7,7 @@
     "test": "node __scripts__/test.js",
     "peer-deps-links": "node __scripts__/peer-deps-links.js"
   },
-  "author": "RubaXa <trash@rubaxa.org>",
+  "author": "RubaXa <ibnRubaXa@gmail.com>",
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^7.0.23",

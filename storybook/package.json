@@ -21,7 +21,7 @@
     "src/*/*.js",
     "src/*/*.d.ts"
   ],
-  "author": "RubaXa <trash@rubaxa.org>",
+  "author": "RubaXa <ibnRubaXa@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "@storybook/addon-options": "^3.0.1",

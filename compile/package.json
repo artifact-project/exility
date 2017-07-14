@@ -2,7 +2,7 @@
   "name": "@exility/compile",
   "version": "0.1.0",
   "description": "Exility compile helpers",
-  "main": "index.ts",
+  "main": "index.js",
   "scripts": {
     "test": "jest --coverage",
     "ts-build": "tsc",
@@ -16,15 +16,13 @@
     "src/*/*.js",
     "src/*/*.d.ts"
   ],
-  "author": "RubaXa <trash@rubaxa.org>",
+  "author": "RubaXa <ibnRubaXa@gmail.com>",
   "license": "MIT",
   "devDependencies": {
     "@types/jest": "^19.2.3",
     "jest": "^20.0.3",
     "ts-jest": "^20.0.4",
     "typescript": "^2.3.3"
-  },
-  "peerDependencies": {
     "@exility/block": "*",
     "@exility/parser": "*"
   },

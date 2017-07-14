@@ -16,7 +16,7 @@
     "src/*/*.js",
     "src/*/*.d.ts"
   ],
-  "author": "RubaXa <trash@rubaxa.org>",
+  "author": "RubaXa <ibnRubaXa@gmail.com>",
   "license": "MIT",
   "devDependencies": {
     "@types/jest": "^19.2.3",
