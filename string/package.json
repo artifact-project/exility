@@ -2,12 +2,13 @@
   "name": "@exility/string",
   "version": "0.1.0",
   "description": "Exility Compiler to Pure String",
-  "main": "index.ts",
+  "main": "index.js",
   "scripts": {
     "test": "jest --coverage",
     "ts-build": "tsc",
     "ts-clean": "git clean -f",
-    "prepublish": "npm run test && npm run ts-build",
+    "prepublish-only": "npm run test && npm run ts-build",
+    "prepublish": "[ -f index.js ] || npm run prepublish-only",
     "postpublish": "npm run ts-clean"
   },
   "files": [
@@ -22,9 +23,7 @@
     "@types/jest": "^19.2.3",
     "jest": "^20.0.3",
     "ts-jest": "^20.0.4",
-    "typescript": "^2.3.3"
-  },
-  "peerDependencies": {
+    "typescript": "^2.4.0",
     "@exility/parser": "*",
     "@exility/compile": "*",
     "@exility/stdlib": "*"
@@ -34,9 +33,6 @@
       "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
     "testRegex": "\\.tests\\.ts$",
-    "transformIgnorePatterns": [
-      "node_modules/(?!@exility|skeletik)"
-    ],
     "setupTestFrameworkScriptFile": "<rootDir>/__jest__/extensions.ts",
     "moduleFileExtensions": [
       "ts",

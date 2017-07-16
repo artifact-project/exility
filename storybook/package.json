@@ -5,14 +5,15 @@
   "bin": {
     "exility-storybook": "./bin/launcher.sh"
   },
-  "main": "index.ts",
+  "main": "index.js",
   "scripts": {
     "start": "npm run storybook",
     "storybook": "start-storybook -p 5111",
     "build-storybook": "build-storybook",
     "ts-build": "tsc",
     "ts-clean": "git clean -f",
-    "prepublish": "npm run ts-build",
+    "prepublish-only": "npm run test && npm run ts-build",
+    "prepublish": "[ -f index.js ] || npm run prepublish-only",
     "postpublish": "npm run ts-clean"
   },
   "files": [
@@ -35,9 +36,8 @@
     "awesome-typescript-loader": "^3.1.3",
     "style-loader": "^0.18.2"
   },
-  "peerDependencies": {
+  "devDependencies": {
     "@exility/block": "*",
-    "@exility/dom": "*",
-    "@exility/compile": "*"
+    "@exility/dom": "*"
   }
 }
