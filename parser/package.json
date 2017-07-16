@@ -19,7 +19,7 @@
   "author": "RubaXa <tarsh@rubaxa.org>",
   "license": "MIT",
   "dependencies": {
-    "skeletik": "0.6.0"
+    "skeletik": "0.7.0"
   },
   "devDependencies": {
     "@types/jest": "^19.2.3",
