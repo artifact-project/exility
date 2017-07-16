@@ -1,0 +1,12 @@
+{
+  "@exility/block": "./block",
+  "@exility/compile": "./compile",
+  "@exility/dom": "./dom",
+  "@exility/jacket": "./jacket",
+  "@exility/parser": "./parser",
+  "@exility/stdlib": "./stdlib",
+  "@exility/storybook": "./storybook",
+  "@exility/string": "./string",
+  "@exility/ts-transformer": "./ts-transformer",
+  "@exility/ui-bootstrap": "./ui-bootstrap"
+}
