@@ -5,12 +5,13 @@
   "description": "Exility lang",
   "scripts": {
     "test": "node __scripts__/test.js",
-    "peer-deps-links": "node __scripts__/peer-deps-links.js"
+    "dev": "npmy . --include=*"
   },
   "author": "RubaXa <ibnRubaXa@gmail.com>",
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^7.0.23",
+    "npmy": "^0.2.1",
     "ts-node": "^3.0.4",
     "typescript": "^2.3.3"
   }

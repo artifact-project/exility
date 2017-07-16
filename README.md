@@ -1,7 +1,7 @@
 Exility
 -------
 Язык разметки основанный на CSS-like синтаксисе с вставками JS и XHTML.<br/>
-<em>Если знате Slim/Jade/Pug, то проблем с понимание не встанет.</em>
+<em>Если знакомы Slim/Jade/Pug, то проблем с понимание не встанет.</em>
 
 
 ---
@@ -12,8 +12,8 @@ Exility
 
  - `git clone git@github.com:artifact-project/exility.git`
  - `cd exility`
- - `npm run peer-deps-links`
- - после чего запускаем в каждой подпапке `npm i`
+ - `npm i`
+ - `npm run dev`
 
 
 ---
@@ -21,7 +21,10 @@ Exility
 
 ### Быстрый старт (todo)
 
- - `git clone git@github.com:artifact-project/exility-scaffold.git && cd exility-scaffold && npm run startup`
+ - `git clone git@github.com:artifact-project/exility/scaffold.git my-project-name`
+ - `cd my-project-name`
+ - `npm i`
+ - `npm run init`
 
 
 
@@ -31,6 +34,10 @@ Exility
  - Несколько режимов компиляции: `string`, `dom`
  - Компиляция в чистую функцию без зависимостей
  - Генерация минимального кода с предварительными оптимизациями
+ - [Storybook](./storybook) для работадотки ui блоков (обертка на оригинальным [storybook](https://storybook.js.org/))
+ - Тестирование из коробки, смотрите [jacket](./jacket)
+ - Готовые UI библиотеки:
+   - [ui-bootstrap](./ui-bootstrap)
  - Единая экосистема на TypeScript
  - и т.п.
 
