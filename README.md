@@ -14,6 +14,7 @@ Exility
  - `cd exility`
  - `npm i`
  - `npm run dev`
+ - `npm test` — запуск всех тестов
 
 
 ---

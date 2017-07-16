@@ -28,10 +28,6 @@ class App extends Block<null> {
 `npm i --save-dev style-loader css-loader`
 
 ```js
-require('ts-node').register({
-	ignore: /node_modules\/(?!skeletik|@exility)/,
-});
-
 const path = require('path');
 const webpack = require('webpack');
 const {default:exilityTransformer} = require('@exility/ts-transformer');

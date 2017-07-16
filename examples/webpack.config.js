@@ -1,7 +1,3 @@
-require('ts-node').register({
-	ignore: /node_modules\/(?!skeletik|@exility)/,
-});
-
 const path = require('path');
 const webpack = require('webpack');
 const {default:exilityTransformer} = require('@exility/ts-transformer');

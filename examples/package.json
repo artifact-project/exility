@@ -4,9 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "test": "echo 'SKIPPED'",
     "wp-build": "webpack",
     "ts-clean": "git clean -f",
-    "prepublish": "npm run wp-build",
+    "prepublish-only": "npm run test && npm wp-build",
+    "prepublish": "[ -f index.js ] || npm run prepublish-only",
     "postpublish": "npm run ts-clean"
   },
   "files": [
@@ -22,8 +24,7 @@
     "awesome-typescript-loader": "^3.1.3",
     "css-loader": "^0.28.4",
     "style-loader": "^0.18.2",
-    "ts-node": "^3.0.6",
-    "typescript": "^2.3.4",
+    "typescript": "^2.4.0",
     "webpack": "^2.6.1"
   },
   "peerDependencies": {

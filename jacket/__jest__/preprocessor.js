@@ -1,8 +1,3 @@
-// todo: Удалить после публикации `ts-transformer`!
-require('ts-node').register({
-	ignore: /node_modules\/(?!skeletik|@exility)/,
-});
-
 const tsc = require('typescript');
 const tsConfig = require('../tsconfig.json');
 const {default:exilityTransformer} = require('@exility/ts-transformer');

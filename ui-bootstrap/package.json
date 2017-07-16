@@ -26,7 +26,7 @@
     "@types/jest": "^19.2.3",
     "@types/node": "^7.0.28",
     "awesome-typescript-loader": "^3.1.3",
-    "ibi": "^0.3.0",
+    "ibi": "^0.3.2",
     "jest": "^20.0.3",
     "ts-jest": "^20.0.4",
     "tx-reflector": "^0.3.0",
