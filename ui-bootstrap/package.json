@@ -9,10 +9,9 @@
     "storybook": "exility-storybook start -p 5111",
     "build-storybook": "exility-storybook build",
     "ts-build": "tsc",
-    "ts-clean": "git clean -f",
-    "prepublish-only": "npm run test && npm run ts-build",
-    "prepublish": "[ -f index.js ] || npm run prepublish-only",
-    "postpublish": "npm run ts-clean"
+    "git-clean": "git clean -f",
+    "prepublish": "npm run test && npm run ts-build",
+    "postpublish": "npm run git-clean"
   },
   "files": [
     "*.js",

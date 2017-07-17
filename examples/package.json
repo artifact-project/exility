@@ -6,10 +6,9 @@
   "scripts": {
     "test": "echo 'SKIPPED'",
     "wp-build": "webpack",
-    "ts-clean": "git clean -f",
-    "prepublish-only": "npm run test && npm wp-build",
-    "prepublish": "[ -f index.js ] || npm run prepublish-only",
-    "postpublish": "npm run ts-clean"
+    "git-clean": "git clean -f",
+    "prepublish": "npm run test && npm run wp-build",
+    "postpublish": "npm run git-clean"
   },
   "files": [
     "*.js",
