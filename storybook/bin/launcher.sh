@@ -10,5 +10,5 @@ fi
 
 if [ "$command" == "build" ]; then
 	cd node_modules/@exility/storybook/node_modules/.bin/
-	npm build-storybook
+	npm run build-storybook
 fi
