@@ -1,3 +1,5 @@
+/// <reference types="@types/jest" />
+
 import regression from './_regression';
 import CanDisabled from './CanDisabled';
 
