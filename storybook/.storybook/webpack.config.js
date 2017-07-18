@@ -1,3 +1,4 @@
+const {join} = require('path');
 const webpack = require('webpack');
 
 module.exports = {
@@ -5,8 +6,11 @@ module.exports = {
 		rules: [
 			{
 				test: /\.tsx?$/,
-				exclude: /node_modules\/(?!@exility|skeletik)/,
+				exclude: /node_modules/,
 				loader: 'awesome-typescript-loader',
+				options: {
+					configFileName: join(process.env.EXILITY_STORYBOOK_DIRNAME, 'tsconfig.json'),
+				},
 			},
 			{
 				test: /\.css$/,
