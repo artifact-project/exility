@@ -7,12 +7,12 @@
     "declaration": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-     "lib": [
+    "lib": [
       "dom",
       "es5",
       "es2015.promise",
       "es2016.array.include"
     ]
   },
- "exclude": ["dist", "node_modules"]
+  "exclude": ["dist", "node_modules"]
 }

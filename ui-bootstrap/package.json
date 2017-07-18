@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest --coverage",
     "start": "npm run storybook",
-    "storybook": "exility-storybook start -p 5111",
+    "storybook": "exility-storybook start 5123",
     "build-storybook": "exility-storybook build",
     "ts-build": "tsc",
     "git-clean": "git clean -f",

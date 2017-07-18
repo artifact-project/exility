@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import {
 	mountTo,
 	runtimeBlockActivate,
@@ -31,7 +31,7 @@ export default function wrap(Target, slots, blocks: object = {}, events = {}) {
 
 	runtimeBlockActivate(TargetWithSlots);
 
-	class ReactExilityWrapper extends Component<any, any> {
+	class ReactExilityWrapper extends React.Component<any, any> {
 		block;
 		displayName = Target.name;
 

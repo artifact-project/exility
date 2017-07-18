@@ -9,7 +9,7 @@
   "scripts": {
     "start": "npm run storybook",
     "storybook": "start-storybook -p 5111",
-    "build-storybook": "build-storybook",
+    "build-storybook": "build-storybook -o $EXILITY_STORYBOOK_OUT_DIRNAME",
     "ts-build": "tsc",
     "git-clean": "git clean -f",
     "prepublish": "npm run test && npm run ts-build",

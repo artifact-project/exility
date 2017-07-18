@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { storiesOf as originalStoriesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import { linkTo } from '@storybook/addon-links';
@@ -10,7 +10,7 @@ export interface ISlots {
 }
 
 export interface ISpec<A> {
-	attrs: A;
+	attrs: A | A[];
 	slots?: ISlots;
 	events?: object;
 }
