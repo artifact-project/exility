@@ -6,7 +6,6 @@ const stories = storiesOf('Button', module);
 function getAttrs(extra: ButtonAttrs = {}): Spec<ButtonAttrs>[] {
 	return [{
 		attrs: ['primary', 'secondary', 'success', 'info', 'warning', 'danger', 'link'].map(type => ({
-
 			type,
 			value: type.charAt(0).toUpperCase() + type.substr(1),
 			...extra

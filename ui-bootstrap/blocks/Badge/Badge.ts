@@ -1,18 +1,18 @@
 import Block from '../Core/Core';
 
-export interface IBadgeAttrs {
+export interface BadgeAttrs {
 	type?: 'default' | 'primary' | 'success' | 'info' | 'warning' | 'danger';
 	pill?: boolean;
 }
 
-export default class Badge extends Block<IBadgeAttrs> {
+export default class Badge extends Block<BadgeAttrs> {
 	static template = `
 		.badge.badge-\${attrs.type}[
 			class.badge-pill=\${attrs.pill}
 		] > ::children
 	`;
 
-	getDefaults(): IBadgeAttrs {
+	getDefaults(): BadgeAttrs {
 		return {
 			type: 'default',
 		};
