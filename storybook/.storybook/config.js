@@ -5,7 +5,10 @@ import {setOptions} from '@storybook/addon-options';
 // 	name: 'UI Bootstrap / Exility storybook',
 // });
 
-configure(() => {
+configure(function () {
 	const req = require.context('blocks/', true, /\.stories\.ts$/);
-	req.keys().forEach(entry => req(entry));
+
+	req.keys().forEach(function (entry) {
+		req(entry)
+	});
 }, module);
