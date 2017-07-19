@@ -14,7 +14,7 @@ The project is in active development and it can be collected only in one way:
  - `cd exility`
  - `npm i`
  - `npm run dev`
- - `npm test` — запуск всех тестов
+ - `npm test` — running all tests
 
 
 ---
