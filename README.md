@@ -7,7 +7,7 @@ The language is based on the CSS-like syntax with JS and XHTML inserts.<br/>
 ---
 
 
-### WARINIG
+### WARNING
 The project is in active development and it can be collected only in one way:
 
  - `git clone git@github.com:artifact-project/exility.git`
