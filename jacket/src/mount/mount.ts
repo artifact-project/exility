@@ -1,5 +1,5 @@
 import Block from '@exility/block';
-import mountTo from '@exility/dom/src/mountTo/mountTo';
+import {mountTo} from '@exility/dom';
 
 export class DOMWrapper {
 	constructor(public target: Block<any>, private el: Element) {

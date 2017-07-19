@@ -36,6 +36,7 @@ function fetchPackages(path) {
 
 function runTest({path, meta: {name}}) {
 	process.stdout.write(` - ${name}...`);
+
 	return exec('npm test -- --no-cache', {cwd: path})
 		.then((result) => {
 			process.stdout.write('OK\n');
@@ -48,13 +49,21 @@ function runTest({path, meta: {name}}) {
 	;
 }
 
+function pause(ms) {
+	return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 function runAllTests(packages) {
-	return packages.reduce((flow, pkg) => flow.then(() => runTest(pkg)), Promise.resolve());
+	return packages.reduce((flow, pkg) => (
+		flow
+			.then(() => runTest(pkg))
+			.then(() => pause(1000))
+	), Promise.resolve());
 }
 
 // Main
 fetchPackages(join(__dirname, '..', ''))
-	// .then(packages => packages.slice(0, 2))
+	// .then(packages => packages.slice(1, 5))
 	.then(runAllTests)
 	.catch(err => {
 		console.error(err);
