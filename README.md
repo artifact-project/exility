@@ -1,14 +1,14 @@
 Exility
 -------
-Язык разметки основанный на CSS-like синтаксисе с вставками JS и XHTML.<br/>
-<em>Если знакомы Slim/Jade/Pug, то проблем с понимание не встанет.</em>
+The language is based on the CSS-like syntax with JS and XHTML inserts.<br/>
+<em>If you are familiar with Slim/Jade/Pug, then problems with understanding will not arise.</em>
 
 
 ---
 
 
-### ВНИМАНИЕ
-Проект находится в активной разработке и собрать его можно только одним способом:
+### WARINIG
+The project is in active development and it can be collected only in one way:
 
  - `git clone git@github.com:artifact-project/exility.git`
  - `cd exility`
@@ -20,7 +20,7 @@ Exility
 ---
 
 
-### Быстрый старт (todo)
+### Quick start (todo)
 
  - `git clone git@github.com:artifact-project/exility/scaffold.git my-project-name`
  - `cd my-project-name`
@@ -29,21 +29,22 @@ Exility
 
 
 
-### Возможности
+### Features
 
- - Гибкий и лёгкий синтаксис
- - Несколько режимов компиляции: `string`, `dom`
- - Компиляция в чистую функцию без зависимостей
- - Генерация минимального кода с предварительными оптимизациями
- - [Storybook](./storybook) для работадотки ui блоков (обертка на оригинальным [storybook](https://storybook.js.org/))
- - Тестирование из коробки, смотрите [jacket](./jacket)
- - Готовые UI библиотеки:
+ - Flexible and easy syntax
+ - Several compilation modes: `string`, `dom`
+ - Compiling into a pure function without dependencies
+ - Generating a minimum code with preliminary optimizations
+ - [Storybook](./storybook) for development ui-blocks (Wrapper over the original [storybook](https://storybook.js.org/))
+ - Testing out of the box, see [jacket](./jacket)
+ - Ready UI libraries:
    - [ui-bootstrap](./ui-bootstrap)
- - Единая экосистема на TypeScript
- - и т.п.
+ - Single ecosystem on TypeScript
+ - Without slowly VirtualDOM
+ - etc.
 
 
-### Синтаксис
+### Syntax
 
 #### Basic
 
@@ -237,7 +238,7 @@ panel
 ---
 
 
-### Space between the tags
+### Space around the tag
 
  - `a[<]` — before
  - `a[>]` — after
@@ -255,7 +256,7 @@ p > img[<] + img[<>] + img[>]
 
 ---
 
-### Разработка
+### Development
 
- - `npm test` — запуск тестов по всем подпроектам
- - `npm run release -- [major|minor|patch]` — публикация актуальной версии и проставление тега
+ - `npm test` — run tests on all subprojects
+ - `npm run release -- [major|minor|patch]` — publish the current version and put the tag
