@@ -3,7 +3,7 @@
 exports[`success 1`] = `
 "function templateFactory() {
 	\\"use strict\\";
-	return function compiledTemplate(__SCOPE__) {
+	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
 		alert(1)
 	}
 }"

@@ -54,22 +54,35 @@ function extractLib(input, libName, [prefix, lib], pure) {
 
 		if (pure) {
 			const vars: string[] = [];
+
+			let collectVars = (source) => {
+				const matches = source.match(/\b[A-Z_]+\b/g);
+
+				if (matches) {
+					matches.forEach(name => {
+						const mSource = serialize(lib[name]);
+						const value = `var ${name} = ${mSource};`;
+
+						if (!vars.includes(value)) {
+							vars.push(value);
+							(typeof lib[name] === 'function') && collectVars(mSource.replace(/^function[^(]+/, ''));
+						}
+					});
+				}
+			};
+
 			let exports = methods.map(name => {
 				if (!lib[name]) {
 					throw `${libName}.${name} — not found`;
 				}
 
 				const source = serialize(lib[name]);
-				const matches = source.match(/\b[A-Z_]+\b/g);
+				const varValue = `var ${name} = ${source};`;
 
-				if (matches) {
-					matches.forEach(name => {
-						const value = `var ${name} = ${serialize(lib[name])};`;
-						!vars.includes(value) && vars.push(value);
-					});
-				}
+				collectVars(source);
+				!vars.includes(varValue) && vars.push(varValue);
 
-				return `this.${name} = ${source};`;
+				return `this.${name} = ${name};`;
 			}).join('\n');
 
 			if (vars.length) {
@@ -112,7 +125,7 @@ export default function createCompiler<O extends ICompilerOptions>(factory: ICom
 
 			artifact.before && source.push(artifact.before, '');
 
-			source.push('return function compiledTemplate(__SCOPE__) {');
+			source.push('return function compiledTemplate(__SCOPE__, __OPTIONS__) {');
 
 			if (options.scope && options.scope.length) {
 				source.push('__SCOPE__ = __SCOPE__ || {};');
