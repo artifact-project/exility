@@ -2,7 +2,6 @@ import {COMMON_TEST} from '@exility/compile';
 import {core as stdlib} from '@exility/stdlib';
 import compilerFactory from './compiler';
 
-const prettifyCompiler = compilerFactory({debug: true, prettify: true, scope: []});
 const fromString = function (input: string, scope?: string[], pure?: boolean) {
 	const compiler = compilerFactory({
 		debug: true,
@@ -21,6 +20,11 @@ it('doctype', () => {
 });
 
 it('page / prettify', () => {
+	const prettifyCompiler = compilerFactory({
+		debug: true,
+		prettify: true,
+		scope: [],
+	});
 	const factory = prettifyCompiler(`html\n\thead > title | foo\n\tbody > h1.title | Bar`);
 
 	expect(factory).toMatchSnapshot();
@@ -34,20 +38,49 @@ it('interpolate', () => {
 	expect(factory({stdlib})({user: '%name%', size: 'xxl'})).toMatchSnapshot();
 });
 
+describe('meta-comments for isomorphic', () => {
+	const withMetaCommentsCompiler = compilerFactory({
+		scope: ['x', 'y'],
+		metaComments: true,
+	});
+
+	it('value', () => {
+		const template = withMetaCommentsCompiler('| ${x} ${y}?')({stdlib});
+
+		expect(template({x: '', y: 'bar'})).toBe('<!--(--><!--)--> <!--(-->bar<!--)-->?');
+		expect(template({x: 'foo', y: 'bar'})).toBe('<!--(-->foo<!--)--> <!--(-->bar<!--)-->?');
+	});
+
+	it('if', () => {
+		const template = withMetaCommentsCompiler('if (x) > | \${y}?')({stdlib});
+
+		expect(template({x: false})).toBe('<!--if1--><!--/if1-->');
+		expect(template({x: true, y: 'ok'})).toBe('<!--if1--><!--(-->ok<!--)-->?<!--/if1-->');
+	});
+
+	it('for', () => {
+		const template = withMetaCommentsCompiler('for (i in x) > | ${i}')({stdlib});
+
+		expect(template({})).toBe('<!--for1--><!--/for1-->');
+		expect(template({x: [1, 2]})).toBe('<!--for1--><!--(-->1<!--)--><!--(-->2<!--)--><!--/for1-->');
+	});
+});
+
 it('html encoding', () => {
 	const factory = fromString('| ${value}', ['value']);
+	const template = factory({stdlib});
 	const date = new Date();
 
 	expect(factory).toMatchSnapshot();
-	expect(factory({stdlib})({})).toBe('');
-	expect(factory({stdlib})({value: null})).toBe('');
-	expect(factory({stdlib})({value: date})).toBe(date.toString());
-	expect(factory({stdlib})({value: 123})).toBe('123');
-	expect(factory({stdlib})({value: '<'})).toBe('&lt;');
-	expect(factory({stdlib})({value: '>'})).toBe('&gt;');
-	expect(factory({stdlib})({value: '&'})).toBe('&amp;');
-	expect(factory({stdlib})({value: '"'})).toBe('&quot;');
-	expect(factory({stdlib})({value: '<script>alert("&")</script>'})).toBe('&lt;script&gt;alert(&quot;&amp;&quot;)&lt;/script&gt;');
+	expect(template({})).toBe('');
+	expect(template({value: null})).toBe('');
+	expect(template({value: date})).toBe(date.toString());
+	expect(template({value: 123})).toBe('123');
+	expect(template({value: '<'})).toBe('&lt;');
+	expect(template({value: '>'})).toBe('&gt;');
+	expect(template({value: '&'})).toBe('&amp;');
+	expect(template({value: '"'})).toBe('&quot;');
+	expect(template({value: '<script>alert("&")</script>'})).toBe('&lt;script&gt;alert(&quot;&amp;&quot;)&lt;/script&gt;');
 });
 
 it('inherit', () => {
@@ -77,7 +110,7 @@ it('panel = [title] + default slot', () => {
 });
 
 it('panel = [title] + content slot', () => {
-	var factory = fromString([
+	const factory = fromString([
 		'panel = [title]',
 		'  content(title.toUpperCase(), "?")',
 		'panel[title="wow!"]',

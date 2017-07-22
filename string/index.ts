@@ -1,5 +1,5 @@
-import stringCompilerFactory from './src/compiler/compiler';
+import createCompiler from './src/compiler/compiler';
 
 export {
-	stringCompilerFactory
+	createCompiler,
 };

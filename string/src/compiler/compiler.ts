@@ -24,6 +24,7 @@ const {
 	QUOTE_CODE,
 } = utils;
 
+let mcid = 0;
 const KEYWORDS = {
 	'if': ({test}) => [`if (${test}) {`, '}'],
 
@@ -42,6 +43,7 @@ const KEYWORDS = {
 export interface StringModeOptions extends ICompilerOptions {
 	prettify?: boolean;
 	comment?: boolean;
+	metaComments?: boolean;
 }
 
 function clean(content): string {
@@ -71,18 +73,26 @@ function clean(content): string {
 }
 
 const compiler = createCompiler<StringModeOptions>((options) => (node: XNode) => {
-	const {prettify} = options;
+	const {prettify, metaComments} = options;
 	const NL = prettify ? '\n' : '';
 	const CUSTOM_ELEMENTS = {};
 	const customElemets = [];
 	const NodeClass = <XNodeConstructor>node.constructor;
+	const HTML_ENCODE = '__STDLIB_HTML_ENCODE';
+	const HTML_TEXT_ENCODE = metaComments ? `${HTML_ENCODE}_MC` : HTML_ENCODE;
+
+	mcid = 0;
 
 	function push(value: string, raw?: boolean): string {
-		return `__ROOT += ${raw ? value : stringifyParsedValue(value, '__STDLIB_HTML_ENCODE').value};\n`;
+		return `__ROOT += ${raw ? value : stringifyParsedValue(value, HTML_ENCODE).value};\n`;
+	}
+
+	function pushText(value: string): string {
+		return `__ROOT += ${stringifyParsedValue(value, HTML_TEXT_ENCODE).value};\n`;
 	}
 
 	function pushAttr(name, values, bone): string {
-		let {value} = stringifyAttributeValue(name, values, '__STDLIB_HTML_ENCODE', bone);
+		let {value} = stringifyAttributeValue(name, values, HTML_ENCODE, bone);
 
 		value = (value.charCodeAt(0) === QUOTE_CODE) ? `"\\${value}` : `"\\"" + ${value}`;
 		value = (value.charCodeAt(value.length - 1) === QUOTE_CODE) ? `${value.slice(0, -1)}\\""` : `${value} + "\\""`;
@@ -146,7 +156,13 @@ const compiler = createCompiler<StringModeOptions>((options) => (node: XNode) =>
 				code = content;
 			} else if (KEYWORD_TYPE === type) {
 				const pair = KEYWORDS[name](raw.attrs);
+
 				code = `${pair[0]}\n${content}\n${pair[1]}`;
+
+				if (metaComments) {
+					const cid = ++mcid;
+					code = `\n__ROOT += "<!--${name}${cid}-->";\n${code}\n__ROOT += "<!--/${name}${cid}-->";`;
+				}
 			} else if (CALL_TYPE === type) {
 				callList.push(name);
 
@@ -191,7 +207,7 @@ const compiler = createCompiler<StringModeOptions>((options) => (node: XNode) =>
 					);
 				}
 			} else if (TEXT_TYPE === type) {
-				code = push(raw.value);
+				code = pushText(raw.value);
 			} else if (COMMENT_TYPE === type) {
 				code = options.comment ? push(`${pad}<!--${raw.value}-->${NL}`) : NL;
 			} else if (HIDDEN_CLASS_TYPE === type) {
