@@ -6,6 +6,34 @@ const R_HTML_ENTITY_QUOTE = /"/g;
 
 function NOOP() {}
 
+function HTML_ENCODE(value?) {
+	if (value == null) {
+		return '';
+	}
+
+	if (R_HTML_ENTITES.test(value)) {
+		if (value.indexOf('&') !== -1) {
+			value = value.replace(R_HTML_ENTITY_AMP, '&amp;');
+		}
+
+		if (value.indexOf('<') !== -1) {
+			value = value.replace(R_HTML_ENTITY_LT, '&lt;');
+		}
+
+		if (value.indexOf('>') !== -1) {
+			value = value.replace(R_HTML_ENTITY_GT, '&gt;');
+		}
+
+		if (value.indexOf('"') !== -1) {
+			value = value.replace(R_HTML_ENTITY_QUOTE, '&quot;');
+		}
+
+		return value;
+	}
+
+	return value.toString();
+}
+
 export default {
 	NIL: null,
 
@@ -25,32 +53,10 @@ export default {
 		return '';
 	},
 
-	HTML_ENCODE(value?) {
-		if (value == null) {
-			return '';
-		}
+	HTML_ENCODE,
 
-		if (R_HTML_ENTITES.test(value)) {
-			if (value.indexOf('&') !== -1) {
-				value = value.replace(R_HTML_ENTITY_AMP, '&amp;');
-			}
-
-			if (value.indexOf('<') !== -1) {
-				value = value.replace(R_HTML_ENTITY_LT, '&lt;');
-			}
-
-			if (value.indexOf('>') !== -1) {
-				value = value.replace(R_HTML_ENTITY_GT, '&gt;');
-			}
-
-			if (value.indexOf('"') !== -1) {
-				value = value.replace(R_HTML_ENTITY_QUOTE, '&quot;');
-			}
-
-			return value;
-		}
-
-		return value.toString();
+	HTML_ENCODE_MC(value?) {
+		return `<!--(-->${HTML_ENCODE(value)}<!--)-->`;
 	},
 
 	EACH(data, callback: (value, key) => void) {
