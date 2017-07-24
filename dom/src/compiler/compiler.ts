@@ -60,6 +60,7 @@ interface Node {
 }
 
 export interface IDOMCompilerOptions extends ICompilerOptions {
+	isomorphic?: boolean;
 }
 
 const compiler = createCompiler<IDOMCompilerOptions>((options: IDOMCompilerOptions) => (bone: XNode, {scope: scopeVars, cssModule}) => {
@@ -73,6 +74,7 @@ const compiler = createCompiler<IDOMCompilerOptions>((options: IDOMCompilerOptio
 	const superSlots = [];
 	const hasScopeSlots = scopeVars.includes('__slots__');
 	const useCSSModule = cssModule && scopeVars.includes('__classNames__');
+	const {isomorphic} = options;
 
 	let gid = 0;
 	let varMax = 0;
@@ -580,6 +582,15 @@ const compiler = createCompiler<IDOMCompilerOptions>((options: IDOMCompilerOptio
 		let res = `var __frag = __STDDOM_FRAGMENT();\n`;
 
 		if (ROOT_TYPE === node.type) {
+			if (isomorphic) {
+				res += `
+					if (!__OPTIONS__.isomorphic) {
+						throw new Error('Undefined "isomorphic" option');
+					}
+					__STDDOM_ISOMORPHIC(__OPTIONS__.isomorphic);
+				`;
+			}
+
 			if (length === 0) {
 				// ...
 			} else if (length === 1 && (first.type === TEXT_TYPE && first.hasComputedValue && first.value.length > 1)) {
@@ -634,7 +645,7 @@ const compiler = createCompiler<IDOMCompilerOptions>((options: IDOMCompilerOptio
 				container: null,
 				mountTo: function (container) {
 					this.container = container;
-					__frag.mountTo(container);
+					__frag.mountTo(container);${isomorphic ? '\n__STDDOM_ISOMORPHIC(null);' : ''}
 					${computed ? `__STDDOM_LIFECYCLE(__ctx, 'connectedCallback');` : ''}
 					return this;
 				},
@@ -683,6 +694,8 @@ const compiler = createCompiler<IDOMCompilerOptions>((options: IDOMCompilerOptio
 			globals.push(`__STDDOM_CMP_INLINE(__CMP_INLINE_STORE, ${node.compiledName}, ${compileFragment(node).trim()});`);
 		});
 	}
+
+	// globals.push('__OPTIONS__.container')
 
 	constObjects.forEach((code, idx) => {
 		globalVars.push(`${constPrefix + (idx + 1)} = ${code}`);

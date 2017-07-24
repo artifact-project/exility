@@ -24,6 +24,7 @@
     "ts-jest": "^20.0.4",
     "typescript": "^2.4.0",
     "@exility/block": "*",
+    "@exility/string": "*",
     "@exility/stdlib": "*",
     "@exility/parser": "*",
     "@exility/compile": "*"

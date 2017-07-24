@@ -14,7 +14,7 @@ function templateFactory(__DEPS__) {
 	var __STDLIB_CLONE_OBJECT = __STDLIB.CLONE_OBJECT;
 	__STDDOM_CMP_SET_COMPILER(__COMPILER__);
 
-	return function compiledTemplate(__SCOPE__) {
+	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
 		__SCOPE__ = __SCOPE__ || {};
 		var attrs = __SCOPE__.attrs;
 		var val = __SCOPE__.val;
@@ -74,7 +74,7 @@ function templateFactory(__DEPS__) {
 	var __STDDOM_LIFECYCLE = __STDDOM.LIFECYCLE;
 	__STDDOM_CMP_SET_COMPILER(__COMPILER__);
 
-	return function compiledTemplate(__SCOPE__) {
+	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
 		__SCOPE__ = __SCOPE__ || {};
 		var val = __SCOPE__.val;
 		var __blocks__ = __SCOPE__.__blocks__;
@@ -121,7 +121,7 @@ function templateFactory(__DEPS__) {
 `;
 
 exports[`CSS Module 1`] = `
-function compiledTemplate(__SCOPE__) {
+function compiledTemplate(__SCOPE__, __OPTIONS__) {
 		__SCOPE__ = __SCOPE__ || {};
 		var __this__ = __SCOPE__.__this__;
 		var __slots__ = __SCOPE__.__slots__;
@@ -201,7 +201,7 @@ function templateFactory(__DEPS__) {
 		};
 	});
 
-	return function compiledTemplate(__SCOPE__) {
+	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
 		__SCOPE__ = __SCOPE__ || {};
 		var x = __SCOPE__.x;
 		var __this__ = __SCOPE__;
@@ -275,7 +275,7 @@ function templateFactory(__DEPS__) {
 		};
 	});
 
-	return function compiledTemplate(__SCOPE__) {
+	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
 		__SCOPE__ = __SCOPE__ || {};
 		var x = __SCOPE__.x;
 		var __this__ = __SCOPE__;
@@ -318,7 +318,7 @@ function templateFactory(__DEPS__) {
 `;
 
 exports[`Pseudo Elements: super 1`] = `
-function compiledTemplate(__SCOPE__) {
+function compiledTemplate(__SCOPE__, __OPTIONS__) {
 		__SCOPE__ = __SCOPE__ || {};
 		var __this__ = __SCOPE__.__this__;
 		var __slots__ = __SCOPE__.__slots__;

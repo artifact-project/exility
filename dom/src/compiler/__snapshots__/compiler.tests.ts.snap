@@ -7,7 +7,7 @@ function templateFactory(__DEPS__) {
 	var __STDDOM_FRAGMENT = __STDDOM.FRAGMENT;
 	var __STDLIB = __DEPS__.stdlib;
 	var __STDLIB_NOOP = __STDLIB.NOOP;
-	return function compiledTemplate(__SCOPE__) {
+	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
 		var __frag = __STDDOM_FRAGMENT();
 
 		return {
@@ -37,7 +37,7 @@ function templateFactory(__DEPS__) {
 	var __STDDOM_UPD_VALUE = __STDDOM.UPD_VALUE;
 	var __STDDOM_LIFECYCLE = __STDDOM.LIFECYCLE;
 	var __STDDOM_UPD_IF = __STDDOM.UPD_IF;
-	return function compiledTemplate(__SCOPE__) {
+	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
 		__SCOPE__ = __SCOPE__ || {};
 		var x = __SCOPE__.x;
 
@@ -93,7 +93,7 @@ function templateFactory(__DEPS__) {
 	var __STDDOM_VALUE = __STDDOM.VALUE;
 	var __STDDOM_LIFECYCLE = __STDDOM.LIFECYCLE;
 	var __STDDOM_UPD_VALUE = __STDDOM.UPD_VALUE;
-	return function compiledTemplate(__SCOPE__) {
+	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
 		__SCOPE__ = __SCOPE__ || {};
 		var x = __SCOPE__.x;
 

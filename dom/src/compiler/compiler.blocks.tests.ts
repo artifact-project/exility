@@ -5,6 +5,7 @@ import {
 } from '@exility/stdlib';
 
 import compilter from './compiler';
+import runBlockTest from '../../../compile/src/COMMON_TEST/BLOCK_TEST';
 
 export function fromString(template, scope = {}, pure?: boolean, blocks?) {
 	if (blocks) {
@@ -38,34 +39,7 @@ async function pause(ms: number = 16) {
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-it('Icon', () => {
-	const view = fromString(`
-		Icon = [name]
-			i.icon-\${name}
-
-		Icon[name=\${x}]
-	`, {x: 'foo'});
-
-	expect(view.templateFactory).toMatchSnapshot();
-	expect(view.container.innerHTML).toBe('<i class="icon-foo"></i>');
-
-	view.update({x: 'bar'});
-	expect(view.container.innerHTML).toBe('<i class="icon-bar"></i>');
-});
-
-it('Icon (short)', () => {
-	const view = fromString(`
-		Icon = [name] > i.icon-\${name}
-
-		Icon[name=\${x}]
-	`, {x: 'foo'});
-
-	expect(view.templateFactory).toMatchSnapshot();
-	expect(view.container.innerHTML).toBe('<i class="icon-foo"></i>');
-
-	view.update({x: 'bar'});
-	expect(view.container.innerHTML).toBe('<i class="icon-bar"></i>');
-});
+runBlockTest(fromString);
 
 it('XIf', () => {
 	const view = fromString(`
