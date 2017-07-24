@@ -60,3 +60,4 @@ typings/
 # Distributive
 dist
 compiled
+.DS_Store
