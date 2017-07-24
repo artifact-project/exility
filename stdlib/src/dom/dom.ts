@@ -21,13 +21,49 @@ const BOOL_ATTRS = {
 	'autofocus': true,
 };
 
-function GET_PARENT_NODE(frag) {
-	// todo: Не использовать nodeType-геттер
-	if (frag.click) {
-		return frag;
-	} else {
-		return GET_PARENT_NODE(frag.parentNode);
+
+let ISOMORPHIC_FRAG: any = null;
+
+function ISOMORPHIC(frag) {
+	frag && (frag.__iso = 0);
+	ISOMORPHIC_FRAG = frag;
+}
+
+function ISOMORPHIC_CUT(parentNode, anchor, label) {
+	let el;
+
+	while ((el = anchor.nextSibling).data !== label) {
+		parentNode.removeChild(el);
 	}
+
+	return el;
+
+}
+
+function ISOMORPHIC_APPEND(parent, node) {
+	if (!parent.click) {
+		if (node.frag) {
+			node = node.frag;
+
+			if (node.length === 1) {
+				ISOMORPHIC_APPEND(parent, node);
+			} else {
+				for (let i = 0; i < node.length; i++) {
+					ISOMORPHIC_APPEND(parent, node[i]);
+				}
+			}
+		} else {
+			parent[parent.length++] = node;
+		}
+	}
+}
+
+function GET_ISOMORPHIC_NEXT(parentNode) {
+	return parentNode.childNodes[parentNode.__iso++];
+}
+
+function GET_PARENT_NODE(frag) {
+	return frag == null ? ISOMORPHIC_FRAG : (frag.click ? frag : GET_PARENT_NODE(frag.parentNode));
 }
 
 function HANDLE_EVENT(evt) {
@@ -66,8 +102,10 @@ function HANDLE_EVENT(evt) {
 function MOUNT_TO(container) {
 	this.parentNode = container;
 
-	for (let i = 0; i < this.length; i++) {
-		container.appendChild(this[i]);
+	if (ISOMORPHIC_FRAG === null) {
+		for (let i = 0; i < this.length; i++) {
+			APPEND(container, this[i]);
+		}
 	}
 }
 
@@ -136,11 +174,45 @@ function APPEND_CHILD(child) {
 }
 
 function TEXT(parent, value) {
-	return APPEND(parent, document.createTextNode(value == null ? '' : value));
+	let el;
+
+	if (ISOMORPHIC_FRAG) {
+		const parentNode = GET_PARENT_NODE(parent);
+
+		el = GET_ISOMORPHIC_NEXT(parentNode);
+		ISOMORPHIC_APPEND(parent, el);
+	} else {
+		el = APPEND(parent, document.createTextNode(value == null ? '' : value));
+	}
+
+	return el;
 }
 
 function VALUE(parent, ctx, id, value) {
-	const el = TEXT(parent, value);
+	let el;
+
+	if (ISOMORPHIC_FRAG) {
+		const parentNode = GET_PARENT_NODE(parent);
+		const anchor = GET_ISOMORPHIC_NEXT(parentNode);
+
+		el = anchor.nextSibling;
+		value = value == null ? '' : value;
+
+		if (el.nodeType === anchor.TEXT_NODE) {
+			(el.nodeValue !== value) && (el.nodeValue = value);
+		} else {
+			const txt = document.createTextNode(value);
+
+			parentNode.insertBefore(txt, el);
+			el = txt;
+		}
+
+		parentNode.__iso += 2;
+		(parent !== parentNode) && APPEND(parent, el);
+	} else {
+		el = TEXT(parent, value);
+	}
+
 	ctx[id] = {el, value};
 	return el;
 }
@@ -260,12 +332,22 @@ function REMOVE_CONTEXT(ctx) {
 	(next !== null) && (next.prev = prev);
 }
 
-function NODE(parent, name:string) {
-	return APPEND(parent, document.createElement(name));
+function NODE(parent, name: string) {
+	if (ISOMORPHIC_FRAG) {
+		const parentNode = GET_PARENT_NODE(parent);
+		const el = GET_ISOMORPHIC_NEXT(parentNode);
+
+		el.__iso = 0;
+		ISOMORPHIC_APPEND(parent, el);
+
+		return el;
+	} else {
+		return APPEND(parent, document.createElement(name));
+	}
 }
 
 function LIVE_NODE(parent, ctx, id, name) {
-	const el = APPEND(parent, document.createElement(name));
+	const el = NODE(parent, name);
 
 	ctx[id] = {
 		el,
@@ -320,7 +402,26 @@ function UPD_LIVE_NODE(node, name) {
 function IF(parent, ctx, id, items) {
 	const length = items.length;
 	const nodes = {};
+	let ISO_FRAG = ISOMORPHIC_FRAG;
+	let ISO_PARENT;
 	let node;
+	let anchor;
+	let isIsoEmpty;
+	let tmpEl;
+
+	if (ISOMORPHIC_FRAG) {
+		ISO_PARENT = GET_PARENT_NODE(parent);
+		anchor = GET_ISOMORPHIC_NEXT(ISO_PARENT);
+		tmpEl = anchor.nextSibling;
+
+		if (tmpEl.data === `/${anchor.data}`) {
+			anchor = tmpEl;
+			isIsoEmpty = true;
+			ISOMORPHIC_FRAG = null;
+		} else {
+			ISOMORPHIC_FRAG = ISO_PARENT;
+		}
+	}
 
 	for (let i = 0; i < length; i++) {
 		node = nodes[i] = items[i]();
@@ -330,27 +431,49 @@ function IF(parent, ctx, id, items) {
 		}
 	}
 
+	if (ISO_FRAG) {
+		ISOMORPHIC_FRAG = ISO_FRAG;
+
+		if (node !== null) {
+			ADD_CHILD_CONTEXT(ctx, node.ctx);
+
+			if (isIsoEmpty) {
+				node.frag.appendToBefore(ISO_PARENT, anchor);
+				ISO_PARENT.__iso += node.frag.length;
+			}
+
+			node.frag.parentNode = parent;
+			ISOMORPHIC_APPEND(parent, node);
+		} else if (!isIsoEmpty) {
+			anchor = ISOMORPHIC_CUT(ISO_PARENT, anchor, `/${anchor.data}`);
+		}
+
+		ISO_PARENT.__iso++;
+	} else {
+		if (node !== null) {
+			ADD_CHILD_CONTEXT(ctx, node.ctx);
+			node.frag.appendTo(parent);
+		}
+
+		anchor = TEXT(parent, '');
+	}
+
 	ctx[id] = {
 		node,
-		anchor: TEXT(parent, ''),
+		anchor,
 		parent,
 		items,
 		length,
 		nodes,
-		animator: null,//GlobalAnimator ? new GlobalAnimator() : null,
+		fx: null,
 	};
-
-	if (node !== null) {
-		ADD_CHILD_CONTEXT(ctx, node.ctx);
-		node.frag.appendTo(parent);
-	}
 }
 
 function UPD_IF(ctx, id) {
 	const condition = ctx[id];
 	const length = condition.length;
 	const items = condition.items;
-	const animator = condition.animator;
+	const fx = condition.fx;
 	let nodes = condition.nodes;
 	let node = condition.node;
 	let newNode;
@@ -367,15 +490,15 @@ function UPD_IF(ctx, id) {
 	}
 
 	if (node !== newNode) {
-		if (animator !== null) {
+		if (fx !== null) {
 			if (node && newNode) {
-				animator.replace(condition, node, newNode);
+				fx.replace(condition, node, newNode);
 			} else {
-				node && animator.remove([node]);
+				node && fx.remove([node]);
 
 				if (newNode) {
 					newNode.frag.appendToBefore(condition.parent, condition.anchor);
-					animator.append([newNode]);
+					fx.append([newNode]);
 				}
 			}
 		} else {
@@ -401,9 +524,20 @@ function UPD_IF(ctx, id) {
 
 function FOR(parent, ctx, id, data, idProp, iterator) {
 	const index = idProp ? {} : null;
+	let ISO_FRAG = ISOMORPHIC_FRAG;
+	let isoParentNode;
+	let anchor;
 	let nodes;
 	let node;
 	let item;
+	let isoEnd;
+
+	if (ISO_FRAG) {
+		isoParentNode = GET_PARENT_NODE(parent);
+		ISOMORPHIC_FRAG = isoParentNode;
+		anchor = GET_ISOMORPHIC_NEXT(isoParentNode);
+		isoEnd = `/${anchor.data}`;
+	}
 
 	if (data != null) {
 		if (data instanceof Array) {
@@ -412,11 +546,28 @@ function FOR(parent, ctx, id, data, idProp, iterator) {
 
 			for (let i = 0; i < length; i++) {
 				item = data[i];
-				node = iterator(ctx, item, i);
-				nodes[i] = node;
 
-				node.frag.appendTo(parent);
+				if (ISO_FRAG) {
+					if (ISOMORPHIC_FRAG && isoParentNode.childNodes[isoParentNode.__iso].data === isoEnd) {
+						anchor = isoParentNode.childNodes[isoParentNode.__iso];
+						ISOMORPHIC_FRAG = null;
+					}
+
+					node = iterator(ctx, item, i);
+
+					if (ISOMORPHIC_FRAG === null) {
+						isoParentNode.__iso += node.frag.length;
+						node.frag.appendToBefore(isoParentNode, anchor);
+					} else {
+						node.frag.parentNode = parent;
+					}
+				} else {
+					node = iterator(ctx, item, i);
+					node.frag.appendTo(parent);
+				}
+
 				ADD_CHILD_CONTEXT(ctx, node.ctx);
+				nodes[i] = node;
 
 				if (index !== null) {
 					index[item[idProp]] = node;
@@ -429,14 +580,22 @@ function FOR(parent, ctx, id, data, idProp, iterator) {
 		nodes = [];
 	}
 
+	if (ISO_FRAG) {
+		ISOMORPHIC_FRAG = ISO_FRAG;
+		anchor = ISOMORPHIC_CUT(isoParentNode, isoParentNode.childNodes[isoParentNode.__iso - 1], isoEnd);
+		isoParentNode.__iso++;
+	} else {
+		anchor = TEXT(parent, '');
+	}
+
 	ctx[id] = {
-		anchor: TEXT(parent, ''),
+		anchor,
 		parent,
 		nodes,
 		index,
 		length: nodes.length,
 		pool: [],
-		animator: null, //GlobalAnimator ? new GlobalAnimator() : null,
+		fx: null,
 	};
 }
 
@@ -447,7 +606,7 @@ function UPD_FOR(ctx, id, data, idProp, iterator) {
 	const anchor = foreach.anchor;
 	const oldNodes = foreach.nodes;
 	const oldLength = foreach.length;
-	const animator = foreach.animator;
+	const fx = foreach.fx;
 	const oldIndex = foreach.index;
 	const newIndex = idProp ? {} : null;
 	let pivotIdx = 0;
@@ -489,7 +648,7 @@ function UPD_FOR(ctx, id, data, idProp, iterator) {
 						LIFECYCLE(node.ctx, 'connectedCallback');
 
 						node.frag.appendToBefore(parent, oldNodes[pivotIdx + 1] || anchor);
-						animator && animator.append && animator.append([node]);
+						fx && fx.append && fx.append([node]);
 					}
 
 					newIndex[idValue] = node;
@@ -522,7 +681,7 @@ function UPD_FOR(ctx, id, data, idProp, iterator) {
 	}
 
 	let idx = oldLength;
-	let useAnim = animator && animator.remove;
+	let useAnim = fx && fx.remove;
 
 	while (idx--) {
 		node = oldNodes[idx];
@@ -531,7 +690,7 @@ function UPD_FOR(ctx, id, data, idProp, iterator) {
 			node.update(node.data, idx);
 
 			if (useAnim) {
-				animator.remove([node], pool);
+				fx.remove([node], pool);
 			} else {
 				node.frag.remove();
 				pool.push(node);
@@ -548,7 +707,6 @@ function UPD_FOR(ctx, id, data, idProp, iterator) {
 	foreach.nodes = newNodes;
 	foreach.length = newNodes.length;
 }
-
 
 
 function CMP_INLINE(store, name, block) {
@@ -652,7 +810,7 @@ function CMP_CREATE(ctx, blocks, parentFrag, parentThis, name, attrs, events, sl
 	return node;
 }
 
-let CMP_COMPILER:{blockify: Function, configure: Function, deps: any} = null;
+let CMP_COMPILER: {blockify: Function, configure: Function, deps: any} = null;
 
 function CMP_SET_COMPILER(X) {
 	CMP_COMPILER = X;
@@ -713,6 +871,7 @@ function CMP_INIT(blocks, names) {
 	});
 }
 
+
 // All
 export default {
 	BOOL_ATTRS,
@@ -765,35 +924,7 @@ export default {
 	CMP_INLINE,
 	CMP_CREATE_INLINE,
 	CMP_CREATE,
-}
 
-// export function anim(animName, parent, callback) {
-// 	const _ga = GlobalAnimator;
-// 	const Anim = Animator.get(animName);
-// 	const children = parent.children || parent;
-// 	const startIndex = children.length;
-// 	const appended = [];
-//
-// 	GlobalAnimator = Anim;
-//
-// 	callback();
-//
-// 	GlobalAnimator = _ga;
-//
-//
-// 	for (let i = startIndex; i < children.length; i++) {
-// 		if (children[i].nodeType === 1) {
-// 			appended.push(children[i]);
-// 		}
-// 	}
-//
-// 	if (appended.length) {
-// 		const anim = new Anim();
-//
-// 		anim.events && anim.events(appended[0]);
-//
-// 		setTimeout(() => {
-// 			anim.appear && anim.appear(appended);
-// 		}, 0);
-// 	}
-// }
+	ISOMORPHIC,
+	ISOMORPHIC_FRAG,
+};
