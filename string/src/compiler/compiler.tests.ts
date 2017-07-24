@@ -58,6 +58,16 @@ describe('meta-comments for isomorphic', () => {
 		expect(template({x: true, y: 'ok'})).toBe('<!--if1--><!--(-->ok<!--)-->?<!--/if1-->');
 	});
 
+	it('if/else', () => {
+		const template = withMetaCommentsCompiler(`
+			if (x) > | \${y}?
+			else > b | \${y}
+		`)({stdlib});
+
+		expect(template({x: false, y: 'hmm'})).toBe('<!--if1--><b><!--(-->hmm<!--)--></b><!--/if1-->');
+		expect(template({x: true, y: 'ok'})).toBe('<!--if1--><!--(-->ok<!--)-->?<!--/if1-->');
+	});
+
 	it('for', () => {
 		const template = withMetaCommentsCompiler('for (i in x) > | ${i}')({stdlib});
 

@@ -160,8 +160,21 @@ const compiler = createCompiler<StringModeOptions>((options) => (node: XNode) =>
 				code = `${pair[0]}\n${content}\n${pair[1]}`;
 
 				if (metaComments) {
-					const cid = ++mcid;
-					code = `\n__ROOT += "<!--${name}${cid}-->";\n${code}\n__ROOT += "<!--/${name}${cid}-->";`;
+					if (name === 'if' || name === 'for') {
+						const cid = ++mcid;
+
+						raw.cid = cid;
+						code = `\n__ROOT += "<!--${name}${cid}-->";\n${code}`;
+						(name !== 'if')  && (code += `\n__ROOT += "<!--/${name}${cid}-->";`);
+					}
+
+					if (name === 'if' || name === 'else') {
+						if (!node.next || node.next.raw.name !== 'else') {
+							code += `\n__ROOT += "<!--/if${node.raw.cid}-->";`;
+						} else {
+							node.next.raw.cid = raw.cid;
+						}
+					}
 				}
 			} else if (CALL_TYPE === type) {
 				callList.push(name);
