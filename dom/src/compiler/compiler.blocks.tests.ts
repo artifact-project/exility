@@ -41,22 +41,6 @@ async function pause(ms: number = 16) {
 
 runBlockTest(fromString);
 
-it('XIf', () => {
-	const view = fromString(`
-		XIf = [expr] > if (expr) > b
-		
-		XIf[expr=\${val}]
-	`, {val: false});
-
-	expect(view.container.innerHTML).toBe('');
-
-	view.update({val: true});
-	expect(view.container.innerHTML).toBe('<b></b>');
-
-	view.update({val: false});
-	expect(view.container.innerHTML).toBe('');
-});
-
 it('Btn -> Sync', () => {
 	const view = fromString('Btn[value=${val}]', {val: 'Wow'}, null, {
 		'Btn': {

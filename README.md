@@ -33,6 +33,7 @@ The project is in active development and it can be collected only in one way:
 
  - Flexible and easy syntax
  - Several compilation modes: `string`, `dom`
+ - Isomorphic render
  - Compiling into a pure function without dependencies
  - Generating a minimum code with preliminary optimizations
  - [Storybook](./storybook) for development ui-blocks (Wrapper over the original [storybook](https://storybook.js.org/))

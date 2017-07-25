@@ -27,4 +27,20 @@ export default function runBlockTest(fromString) {
 		view.update({x: 'bar'});
 		expect(view.container.innerHTML).toBe('<i class="icon-bar"></i>');
 	});
+
+	it('XIf', () => {
+		const view = fromString(`
+			XIf = [expr] > if (expr) > b
+			
+			XIf[expr=\${val}]
+		`, {val: false});
+
+		expect(view.container.innerHTML).toBe('');
+
+		view.update({val: true});
+		expect(view.container.innerHTML).toBe('<b></b>');
+
+		view.update({val: false});
+		expect(view.container.innerHTML).toBe('');
+	});
 }
