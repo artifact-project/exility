@@ -1,5 +1,5 @@
 import parse, {IXNode} from '@exility/parser';
-import Block from '@exility/block';
+import Block, {requiredScopeKeys} from '@exility/block';
 
 import simpleJavaScriptBeautifier from '../simpleJavaScriptBeautifier/simpleJavaScriptBeautifier';
 
@@ -166,34 +166,49 @@ export default function createCompiler<O extends ICompilerOptions>(factory: ICom
 			code = simpleJavaScriptBeautifier(code);
 
 			try {
+				const deps = artifact.deps;
+				const configure = (extra) => compilerConfigurator({
+					...Object(options),
+					...Object(extra),
+				});
+
+				const compileBlock = (block) => {
+					const Class = block.prototype && block.prototype.isBlock ? block : Block.classify(block);
+
+					if (!Class.prototype.__template__) {
+						const {template} = Class;
+						const compile = configure({
+							scope: requiredScopeKeys,
+							blocks: Object.keys(Class.blocks || {}),
+							cssModule: !!Class.classNames,
+						});
+						const templateFactory = compile(template);
+
+						Class.prototype.__template__ = templateFactory(Object.keys(deps).reduce((obj, name) => {
+							obj[name] = deps[name][1];
+							return obj;
+						}, {}));
+					}
+
+					return Class;
+				};
+
 				return <any>Function('__COMPILER__', `return (${code})`)({
-					deps: artifact.deps,
+					deps,
 					options,
-					blockify: Block.classify,
-					configure: (extra) => compilerConfigurator({
-						...Object(options),
-						...Object(extra),
-					}),
+					configure,
+					compileBlock,
 				});
 			} catch (err) {
 				return <any>Function(`return (${simpleJavaScriptBeautifier(`
 					function templateCompileFailedFactory() {
-						return function templateCompileFailed() {
-							/***********************************
-								${code}
-							************************************/
-							return new Error(${JSON.stringify(err.stack || err.message)});
-						};
+						/***********************************
+						${code}
+						************************************/
+						return new Error(${JSON.stringify(err.stack || err.message)});
 					}
 				`)});`);
 			}
-
-			// .bind({
-			// 	fromString: (template, extraOptions) => this.fromString(template, {
-			// 		...options,
-			// 		...extraOptions
-			// 	}),
-			// });
 		};
 	};
 }

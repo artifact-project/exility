@@ -311,7 +311,7 @@ const compiler = createCompiler<IDOMCompilerOptions>((options: IDOMCompilerOptio
 		if (slots && slots.length) {
 			return `{
 				${slots.map(node => `
-					${node.compiledName}: function (${parentName}, __super__) {
+					${node.compiledName}: function (__super__, ${parentName}) {
 						${compileChildren(parentName, node.children, updaters, fragments)}
 					}
 				`).join(',\n')}
@@ -429,7 +429,7 @@ const compiler = createCompiler<IDOMCompilerOptions>((options: IDOMCompilerOptio
 						${compileChildren(parentName, node.children, slotUpdaters, fragments)}
 					}
 					${hasScopeSlots
-						? `__STDLIB_SLOT(${parentName}, __slots__, __super__, ${compiledName}, ${slotName});`
+						? `__STDLIB_SLOT(__slots__, __super__, ${compiledName}, ${slotName}, ${parentName});`
 						: `${slotName}();`
 					}
 				`;

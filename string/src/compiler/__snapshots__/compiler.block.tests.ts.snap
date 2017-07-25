@@ -1,0 +1,139 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Icon (short) 1`] = `
+function templateFactory(__DEPS__) {
+	"use strict";
+	var __STDLIB = __DEPS__.stdlib;
+	var __STDLIB_HTML_ENCODE = __STDLIB.HTML_ENCODE;
+	function Icon(attrs, __slots) {
+		var __super = {attrs: attrs},
+		name = attrs.name
+		return "<i class=\\"icon-" + __STDLIB_HTML_ENCODE(name) + "\\"></i>";
+	}
+
+	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var x = __SCOPE__.x;
+		var __blocks__ = __SCOPE__.__blocks__;
+
+		return Icon({name: (x)});
+	}
+}
+`;
+
+exports[`Icon 1`] = `
+function templateFactory(__DEPS__) {
+	"use strict";
+	var __STDLIB = __DEPS__.stdlib;
+	var __STDLIB_HTML_ENCODE = __STDLIB.HTML_ENCODE;
+	function Icon(attrs, __slots) {
+		var __super = {attrs: attrs},
+		name = attrs.name
+		return "<i class=\\"icon-" + __STDLIB_HTML_ENCODE(name) + "\\"></i>";
+	}
+
+	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var x = __SCOPE__.x;
+		var __blocks__ = __SCOPE__.__blocks__;
+
+		return Icon({name: (x)});
+	}
+}
+`;
+
+exports[`Pseudo Elements 1`] = `
+function templateFactory() {
+	"use strict";
+	function __BLOCK_INIT(blocks, name) {
+		var XBlock = blocks[name];
+		if (XBlock.length !== 0) blocks[name] = __COMPILER__.compileBlock(blocks[name]);
+		}
+
+		function __BLOCK_RENDER(blocks, name, attrs, slots) {
+			var XBlock = blocks[name];
+
+			if (XBlock.length) {
+				var block = new XBlock(attrs, {slots: slots});
+				return block.__view__;
+			} else {
+				return '<div data-block="' + name + '" class="block-dummy block-dummy-loading"></div>';
+			}
+		}
+
+		return function compiledTemplate(__SCOPE__, __OPTIONS__) {
+			__SCOPE__ = __SCOPE__ || {};
+			var text = __SCOPE__.text;
+			var __blocks__ = __SCOPE__.__blocks__;
+
+			__BLOCK_INIT(__blocks__, "Pseudo");
+			return __BLOCK_RENDER(__blocks__, "Pseudo", {value: (text)}, null);
+		}
+	}
+`;
+
+exports[`Pseudo Elements: override by name 1`] = `
+function templateFactory() {
+	"use strict";
+	function __BLOCK_INIT(blocks, name) {
+		var XBlock = blocks[name];
+		if (XBlock.length !== 0) blocks[name] = __COMPILER__.compileBlock(blocks[name]);
+		}
+
+		function __BLOCK_RENDER(blocks, name, attrs, slots) {
+			var XBlock = blocks[name];
+
+			if (XBlock.length) {
+				var block = new XBlock(attrs, {slots: slots});
+				return block.__view__;
+			} else {
+				return '<div data-block="' + name + '" class="block-dummy block-dummy-loading"></div>';
+			}
+		}
+
+		return function compiledTemplate(__SCOPE__, __OPTIONS__) {
+			__SCOPE__ = __SCOPE__ || {};
+			var __blocks__ = __SCOPE__.__blocks__;
+
+			__BLOCK_INIT(__blocks__, "Pseudo");
+			var __ROOT = __BLOCK_RENDER(__blocks__, "Pseudo", {}, {slotik: function __SLOT_slotik(__super__) {
+				return "OK";
+				}});
+
+				return __ROOT
+			}
+		}
+`;
+
+exports[`Pseudo Elements: override default 1`] = `
+function templateFactory() {
+	"use strict";
+	function __BLOCK_INIT(blocks, name) {
+		var XBlock = blocks[name];
+		if (XBlock.length !== 0) blocks[name] = __COMPILER__.compileBlock(blocks[name]);
+		}
+
+		function __BLOCK_RENDER(blocks, name, attrs, slots) {
+			var XBlock = blocks[name];
+
+			if (XBlock.length) {
+				var block = new XBlock(attrs, {slots: slots});
+				return block.__view__;
+			} else {
+				return '<div data-block="' + name + '" class="block-dummy block-dummy-loading"></div>';
+			}
+		}
+
+		return function compiledTemplate(__SCOPE__, __OPTIONS__) {
+			__SCOPE__ = __SCOPE__ || {};
+			var __blocks__ = __SCOPE__.__blocks__;
+
+			__BLOCK_INIT(__blocks__, "Pseudo");
+			var __ROOT = __BLOCK_RENDER(__blocks__, "Pseudo", {}, {children: function __SLOT_children(__super__) {
+				return "OK";
+				}});
+
+				return __ROOT
+			}
+		}
+`;

@@ -14,7 +14,7 @@ class ArrowFunction extends Block<null> {
 	var __STDDOM_TEXT = __STDDOM.TEXT;
 	var __STDDOM_LIFECYCLE = __STDDOM.LIFECYCLE;
 	var __STDDOM_UPD_VALUE = __STDDOM.UPD_VALUE;
-	return function compiledTemplate(__SCOPE__) {
+	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
 		__SCOPE__ = __SCOPE__ || {};
 		var attrs = __SCOPE__.attrs;
 		var __blocks__ = __SCOPE__.__blocks__;
@@ -68,7 +68,7 @@ class ArrowFor extends Block<null> {
 	var __STDDOM_UPD_VALUE = __STDDOM.UPD_VALUE;
 	var __STDDOM_LIFECYCLE = __STDDOM.LIFECYCLE;
 	var __STDDOM_UPD_FOR = __STDDOM.UPD_FOR;
-	return function compiledTemplate(__SCOPE__) {
+	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
 		__SCOPE__ = __SCOPE__ || {};
 		var attrs = __SCOPE__.attrs;
 		var __blocks__ = __SCOPE__.__blocks__;
@@ -137,7 +137,7 @@ class ArrowIf extends Block<null> {
 	var __STDDOM_NODE = __STDDOM.NODE;
 	var __STDDOM_LIFECYCLE = __STDDOM.LIFECYCLE;
 	var __STDDOM_UPD_IF = __STDDOM.UPD_IF;
-	return function compiledTemplate(__SCOPE__) {
+	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
 		__SCOPE__ = __SCOPE__ || {};
 		var attrs = __SCOPE__.attrs;
 		var __blocks__ = __SCOPE__.__blocks__;
@@ -208,7 +208,7 @@ class App extends Block<{
 	var __STDDOM_CMP_CREATE = __STDDOM.CMP_CREATE;
 	var __STDDOM_LIFECYCLE = __STDDOM.LIFECYCLE;
 	
-	return function compiledTemplate(__SCOPE__) {
+	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
 		__SCOPE__ = __SCOPE__ || {};
 		var attrs = __SCOPE__.attrs;
 		var __blocks__ = __SCOPE__.__blocks__;
@@ -276,7 +276,7 @@ class App extends Block<{
 	var __STDDOM_LIFECYCLE = __STDDOM.LIFECYCLE;
 	var __STDLIB = __DEPS__.stdlib;
 	var __STDLIB_CSS_MODULE = __STDLIB.CSS_MODULE;
-	return function compiledTemplate(__SCOPE__) {
+	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
 		__SCOPE__ = __SCOPE__ || {};
 		var attrs = __SCOPE__.attrs;
 		var __blocks__ = __SCOPE__.__blocks__;
@@ -334,7 +334,7 @@ class Str extends Block {
 	var __STDDOM_TEXT = __STDDOM.TEXT;
 	var __STDDOM_LIFECYCLE = __STDDOM.LIFECYCLE;
 	var __STDDOM_UPD_VALUE = __STDDOM.UPD_VALUE;
-	return function compiledTemplate(__SCOPE__) {
+	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
 		__SCOPE__ = __SCOPE__ || {};
 		var attrs = __SCOPE__.attrs;
 		var __blocks__ = __SCOPE__.__blocks__;

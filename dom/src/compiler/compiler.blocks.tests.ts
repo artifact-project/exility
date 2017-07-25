@@ -5,7 +5,6 @@ import {
 } from '@exility/stdlib';
 
 import compilter from './compiler';
-import runBlockTest from '../../../compile/src/COMMON_TEST/BLOCK_TEST';
 
 export function fromString(template, scope = {}, pure?: boolean, blocks?) {
 	if (blocks) {
@@ -39,7 +38,50 @@ async function pause(ms: number = 16) {
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-runBlockTest(fromString);
+it('Icon', () => {
+		const view = fromString(`
+		Icon = [name]
+			i.icon-\${name}
+
+		Icon[name=\${x}]
+	`, {x: 'foo'});
+
+	expect(view.templateFactory).toMatchSnapshot();
+	expect(view.container.innerHTML).toBe('<i class="icon-foo"></i>');
+
+	view.update({x: 'bar'});
+	expect(view.container.innerHTML).toBe('<i class="icon-bar"></i>');
+});
+
+it('Icon (short)', () => {
+	const view = fromString(`
+		Icon = [name] > i.icon-\${name}
+
+		Icon[name=\${x}]
+	`, {x: 'foo'});
+
+	expect(view.templateFactory).toMatchSnapshot();
+	expect(view.container.innerHTML).toBe('<i class="icon-foo"></i>');
+
+	view.update({x: 'bar'});
+	expect(view.container.innerHTML).toBe('<i class="icon-bar"></i>');
+});
+
+it('XIf', () => {
+	const view = fromString(`
+		XIf = [expr] > if (expr) > b
+		
+		XIf[expr=\${val}]
+	`, {val: false});
+
+	expect(view.container.innerHTML).toBe('');
+
+	view.update({val: true});
+	expect(view.container.innerHTML).toBe('<b></b>');
+
+	view.update({val: false});
+	expect(view.container.innerHTML).toBe('');
+});
 
 it('Btn -> Sync', () => {
 	const view = fromString('Btn[value=${val}]', {val: 'Wow'}, null, {
@@ -101,7 +143,7 @@ it('Btn -> Async', async () => {
 	expect(view.container.innerHTML).toBe('<button>Wow!1</button>');
 });
 
-it('Pseudo Elements', async () => {
+it('Pseudo Elements', () => {
 	const view = fromString(`Pseudo[value=\${text}]`, {text: 'Original'}, null, {
 		'Pseudo': {
 			template: 'div > ::children | ${attrs.value}',
@@ -114,7 +156,7 @@ it('Pseudo Elements', async () => {
 	expect(view.container.innerHTML).toBe('<div>Wow!</div>');
 });
 
-it('Pseudo Elements: override by default', async () => {
+it('Pseudo Elements: override by default', () => {
 	const view = fromString(`Pseudo | \${text}`, {text: 'Wow'}, null, {
 		'Pseudo': {
 			template: 'div > ::children | Fail'
@@ -127,7 +169,7 @@ it('Pseudo Elements: override by default', async () => {
 	expect(view.container.innerHTML).toBe('<div>WowWow!</div>');
 });
 
-it('Pseudo Elements: override by name', async () => {
+it('Pseudo Elements: override by name', () => {
 	const view = fromString(
 		`Pseudo > ::children | \${text}`,
 		{text: 'Wow'}, null, {

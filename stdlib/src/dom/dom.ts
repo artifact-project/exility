@@ -810,42 +810,15 @@ function CMP_CREATE(ctx, blocks, parentFrag, parentThis, name, attrs, events, sl
 	return node;
 }
 
-let CMP_COMPILER: {blockify: Function, configure: Function, deps: any} = null;
+let CMP_COMPILER: {compileBlock: Function;} = null;
 
 function CMP_SET_COMPILER(X) {
 	CMP_COMPILER = X;
 }
 
-function CMP_TO_CLASS(block) {
-	const Class = block.prototype && block.prototype.isBlock ? block : CMP_COMPILER.blockify(block);
-
-	if (!Class.prototype.__template__) {
-		const {configure, deps} = CMP_COMPILER;
-		const {template} = Class;
-		const compile = configure({
-			scope: [
-				'__this__',
-				'__slots__',
-				'__blocks__',
-				'attrs',
-			].concat(
-				Class.classNames ? '__classNames__' : [],
-			),
-			blocks: Object.keys(Class.blocks || {}),
-			cssModule: !!Class.classNames,
-		});
-		const templateFactory = compile(template);
-
-		Class.prototype.__template__ = templateFactory(Object.keys(deps).reduce((obj, name) => {
-			obj[name] = deps[name][1];
-			return obj;
-		}, {}));
-	}
-
-	return Class;
-}
-
 function CMP_INIT(blocks, names) {
+	const {compileBlock} = CMP_COMPILER;
+
 	names.forEach(name => {
 		const block = blocks[name];
 
@@ -856,7 +829,7 @@ function CMP_INIT(blocks, names) {
 				promise = block();
 
 				if (promise.then) {
-					promise = promise.then(asyncBlock => (blocks[name] = CMP_TO_CLASS(asyncBlock)));
+					promise = promise.then(asyncBlock => (blocks[name] = compileBlock(asyncBlock)));
 				} else {
 					promise = Promise.reject(new Error(`«${name}» — если это блок, то должен быть хотя бы один аргумент`));
 				}
@@ -866,7 +839,7 @@ function CMP_INIT(blocks, names) {
 
 			blocks[name] = promise;
 		} else {
-			blocks[name] = CMP_TO_CLASS(block);
+			blocks[name] = compileBlock(block);
 		}
 	});
 }
@@ -916,8 +889,6 @@ export default {
 	UPD_FOR,
 
 	CMP_INIT,
-	CMP_TO_CLASS,
-
 	CMP_COMPILER,
 	CMP_SET_COMPILER,
 

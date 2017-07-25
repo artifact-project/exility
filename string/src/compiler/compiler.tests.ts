@@ -1,16 +1,21 @@
-import {COMMON_TEST} from '@exility/compile';
+import COMMON_TEST from '@exility/compile/src/COMMON_TEST/COMMON_TEST';
 import {core as stdlib} from '@exility/stdlib';
 import compilerFactory from './compiler';
 
-const fromString = function (input: string, scope?: string[], pure?: boolean) {
+function fromString(input: string, scope?: string[], pure?: boolean, blocks?) {
+	if (blocks) {
+		scope['__blocks__'] = blocks;
+	}
+
 	const compiler = compilerFactory({
 		debug: true,
 		pure,
 		scope,
+		blocks: Object.keys(blocks || {}),
 	});
 
 	return compiler(input);
-};
+}
 
 it('doctype', () => {
 	const factory = fromString(`!html`);
@@ -36,6 +41,11 @@ it('interpolate', () => {
 
 	expect(factory).toMatchSnapshot();
 	expect(factory({stdlib})({user: '%name%', size: 'xxl'})).toMatchSnapshot();
+});
+
+it('ignore @events attributes', () => {
+	const factory = fromString('form[@submit]');
+	expect(factory({stdlib})()).toBe('<form></form>');
 });
 
 describe('meta-comments for isomorphic', () => {
@@ -109,7 +119,7 @@ it('panel = [title] + default slot', () => {
 	const factory = fromString([
 		'panel = [title]',
 		'  h1 | ${title}',
-		'  p > __default()',
+		'  p > children()',
 		'panel[title="?!"]',
 		'panel[title="Wow!"]',
 		'  | Done',

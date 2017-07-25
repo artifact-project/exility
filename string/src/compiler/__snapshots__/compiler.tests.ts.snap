@@ -213,17 +213,17 @@ function templateFactory(__DEPS__) {
 	function panel(attrs, __slots) {
 		var __super = {attrs: attrs},
 		title = attrs.title,
-		__default = __slots && __slots.__default || __super.__default
+		children = __slots && __slots.children || __super.children
 		var __ROOT = "<h1>" + __STDLIB_HTML_ENCODE(title) + "</h1><p>";
-		if (__default) {
-			__ROOT += __default.call(__super);
+		if (children) {
+			__ROOT += children.call(__super);
 		}
 		__ROOT += "</p>";
 		return __ROOT
 	}
 
 	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
-		var __ROOT = panel({title: "?!"}) + panel({title: "Wow!"}, {__default: function __default() {
+		var __ROOT = panel({title: "?!"}) + panel({title: "Wow!"}, {children: function children() {
 			return "Done";
 			}});
 

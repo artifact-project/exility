@@ -9,8 +9,9 @@ import {
 	stringifyAttributeValue,
 } from '@exility/compile';
 import {core as stdlib} from '@exility/stdlib';
-
 import {XNode, IXNode, XNodeConstructor, utils} from '@exility/parser';
+
+const R_IS_EVENT = /^(on-|@)/;
 
 const {
 	ROOT_TYPE,
@@ -20,6 +21,7 @@ const {
 	KEYWORD_TYPE,
 	HIDDEN_CLASS_TYPE,
 	DEFINE_TYPE,
+	PSEUDO_ELEMENT_TYPE,
 	CALL_TYPE,
 	QUOTE_CODE,
 } = utils;
@@ -44,6 +46,7 @@ export interface StringModeOptions extends ICompilerOptions {
 	prettify?: boolean;
 	comment?: boolean;
 	metaComments?: boolean;
+	blocks?: string[];
 }
 
 function clean(content): string {
@@ -60,28 +63,39 @@ function clean(content): string {
 
 	content = content
 		.replace(/ \+ ""/g, '')
-		.replace(/(__ROOT )\+=/, '$1=')
+		.replace(/(var __ROOT )\+=/g, '$1=')
 		.replace(/ = "\\n/, ' = "')
 		.replace(/\\n";\n$/, '";')
 		.replace(/__ROOT \+= "";/g, '')
 		.trim()
-		.replace(/(var __ROOT = )"";[\n ]*__ROOT \+?= /g, '$1')
+		.replace(/(var __ROOT = )"";[\n\s]*__ROOT \+?= /g, '$1')
 		.replace(/";\n__ROOT \+= ([_a-zA-Z])/g, '" + $1')
 	;
 
-	return content.replace(/var __ROOT = ([^\n]+)\n+return __ROOT/g, 'return $1');
+	return content.replace(/var __ROOT = ([^\n]+)[\n\t]+return __ROOT;?/g, 'return $1');
 }
 
 const compiler = createCompiler<StringModeOptions>((options) => (node: XNode) => {
-	const {prettify, metaComments} = options;
+	const {prettify, metaComments, blocks} = options;
+	const hasBlocks = !!(blocks && blocks.length);
 	const NL = prettify ? '\n' : '';
 	const CUSTOM_ELEMENTS = {};
-	const customElemets = [];
+	const globalFragments = [];
 	const NodeClass = <XNodeConstructor>node.constructor;
 	const HTML_ENCODE = '__STDLIB_HTML_ENCODE';
 	const HTML_TEXT_ENCODE = metaComments ? `${HTML_ENCODE}_MC` : HTML_ENCODE;
+	const slotsCode = [];
 
 	mcid = 0;
+
+	if (hasBlocks) {
+		blocks.forEach(name => {
+			CUSTOM_ELEMENTS[name] = {
+				name: name,
+				external: true,
+			};
+		});
+	}
 
 	function push(value: string, raw?: boolean): string {
 		return `__ROOT += ${raw ? value : stringifyParsedValue(value, HTML_ENCODE).value};\n`;
@@ -100,16 +114,16 @@ const compiler = createCompiler<StringModeOptions>((options) => (node: XNode) =>
 		return push(value, true);
 	}
 
-	function compileSlots(nodes: IXNode[]): string {
+	function getSlots(nodes: IXNode[], type: string) {
 		const defines = [];
-		const defaultSlot = new NodeClass(DEFINE_TYPE, {
-			name: '__default',
+		const defaultSlot = new NodeClass(type, {
+			name: 'children',
 			type: 'parenthesis',
 			attrs: [],
 		});
 
 		nodes.forEach(node => {
-			if (node.type === DEFINE_TYPE) {
+			if (node.type === type) {
 				defines.push(node);
 			} else {
 				defaultSlot.nodes.push(node);
@@ -117,11 +131,22 @@ const compiler = createCompiler<StringModeOptions>((options) => (node: XNode) =>
 		});
 
 		if (defines.length && defaultSlot.nodes.length) {
-			throw Error('Mixed content');
-		} else if (defines.length) {
+			throw new Error('Mixed content');
+		}
+
+		return {
+			defines,
+			defaultSlot,
+		};
+	}
+
+	function compileSlots(nodes: IXNode[], type: string = DEFINE_TYPE): string {
+		const {defaultSlot, defines} = getSlots(nodes, type);
+
+		if (defines.length) {
 			return `{${defines.map(define => `${define.raw.name}: ${clean(compile(define, ''))}`).join(', ')}}`;
 		} else {
-			return `{__default: ${clean(compile(defaultSlot, ''))}}`;
+			return `{children: ${clean(compile(defaultSlot, ''))}}`;
 		}
 	}
 
@@ -137,11 +162,16 @@ const compiler = createCompiler<StringModeOptions>((options) => (node: XNode) =>
 			pad = '';
 		}
 
+		if (CUSTOM_ELEMENTS[name] && CUSTOM_ELEMENTS[name].external) {
+			CUSTOM_ELEMENTS[name].slots = node.nodes.length ? compileSlots(node.nodes, PSEUDO_ELEMENT_TYPE) : 'null';
+			node.nodes = [];
+		}
+
 		if (DTD_TYPE === type) {
 			code = push(`<!DOCTYPE ${raw.value == 5 ? 'html' : raw.value}>${NL}`);
 		} else {
 			let hasText = false;
-			let content = node.nodes.map(function (child) {
+			let content = node.nodes.map((child) => {
 				hasText = child.type === 'text' || hasText;
 				return compile(child, type == '#root' ? '' : pad + '  ', innerCallList, innerDefaultSlotsList);
 			}).join('');
@@ -189,7 +219,7 @@ const compiler = createCompiler<StringModeOptions>((options) => (node: XNode) =>
 					: `(${raw.args.join(',')});\n}\n`;
 			} else if (DEFINE_TYPE === type) {
 				if (raw.type === 'parenthesis') {
-					code = `function ${name}(${raw.attrs.join(', ')}) {\n`
+					code = `function ${name}(${raw.attrs.join ? raw.attrs.join(', ') : ''}) {\n`
 						+ `var __ROOT = "";\n`
 						+ `${content}\n`
 						+ `return __ROOT\n}\n`
@@ -206,14 +236,20 @@ const compiler = createCompiler<StringModeOptions>((options) => (node: XNode) =>
 						innerCallList.map(name => `${name} = __slots && __slots.${name} || __super.${name}`)
 					);
 
-					vars.unshift('__super = {attrs: attrs' +
+					vars.unshift(
+						'__super = {attrs: attrs' +
 						Object.keys(innerDefaultSlotsList).map((name) => {
 							return `,\n  ${name}: ${innerDefaultSlotsList[name]}`;
 						}).join('') +
-						'}');
+						'}'
+					);
 
-					CUSTOM_ELEMENTS[name] = 1;
-					customElemets.push(
+					CUSTOM_ELEMENTS[name] = {
+						name,
+						external: false,
+					};
+
+					globalFragments.push(
 						`function ${name}(attrs, __slots) {\n`,
 						(vars.length ? `var ${vars.join(',\n      ')}\n` : ''),
 						`var __ROOT = "";\n${content}return __ROOT\n}\n`
@@ -226,16 +262,42 @@ const compiler = createCompiler<StringModeOptions>((options) => (node: XNode) =>
 			} else if (HIDDEN_CLASS_TYPE === type) {
 				code = content + NL;
 			} else if (CUSTOM_ELEMENTS[name]) {
-				const attrsStr = Object
+				const elem = CUSTOM_ELEMENTS[name];
+				const attrsStr = `{${Object
 					.keys(raw.attrs || {})
 					.map(name => `${stringifyObjectKey(name)}: ${stringifyParsedValue(raw.attrs[name]).value}`)
-					.join(', ');
+					.join(', ')}}`;
 
-				code = `${pad}__ROOT += ${name}({${attrsStr}}`;
-				code += node.nodes.length ? `, ${compileSlots(node.nodes)});\n` : `);\n`;
+				if (elem.external) {
+					code = `${pad}__ROOT += __BLOCK_RENDER(__blocks__, "${name}", ${attrsStr}, ${elem.slots});\n`;
+				} else {
+					code = `${pad}__ROOT += ${name}(${attrsStr}`;
+					code += node.nodes.length ? `, ${compileSlots(node.nodes)});\n` : `);\n`;
+				}
+			} else if (PSEUDO_ELEMENT_TYPE === type) {
+				const slotName = `__SLOT_${name.replace(/[^0-9a-z]/ig, '_')}`;
+				const slotCode = `function ${slotName}(__super__) {
+					var __ROOT = "";
+					${content}
+					return __ROOT;
+				}`;
+
+				if (!node.parent || CUSTOM_ELEMENTS[node.parent.raw.name]) {
+					code = slotCode;
+				} else {
+					slotsCode.push(`
+						${slotCode}
+						__super__["${raw.name}"] = ${slotName};
+					`);
+
+					code = `__ROOT += __STDLIB_SLOT(__slots__, __super__, "${raw.name}", ${slotName});`;
+				}
 			} else {
 				const attrsStr = Object.keys(raw.attrs || {})
-					.map(name => push(` ${name}=`) + pushAttr(name, raw.attrs[name], node))
+					.map(name => R_IS_EVENT.test(name)
+						? ''
+						: push(` ${name}=`) + pushAttr(name, raw.attrs[name], node)
+					)
 					.join('');
 
 				code = push(`${pad}<`) + push(name) + attrsStr;
@@ -251,14 +313,41 @@ const compiler = createCompiler<StringModeOptions>((options) => (node: XNode) =>
 		return code;
 	}
 
-	const code = `var ${compile(node, '')}\nreturn __ROOT`;
+	let code = `var ${compile(node, '')}\nreturn __ROOT`;
+
+	if (hasBlocks) {
+		globalFragments.unshift(`
+			function __BLOCK_INIT(blocks, name) {
+				var XBlock = blocks[name];
+				if (XBlock.length !== 0) blocks[name] = __COMPILER__.compileBlock(blocks[name]);
+			}
+		
+			function __BLOCK_RENDER(blocks, name, attrs, slots) {
+				var XBlock = blocks[name];
+
+				if (XBlock.length) {
+					var block = new XBlock(attrs, {slots: slots});
+					return block.__view__;
+				} else {
+					return '<div data-block="' + name + '" class="block-dummy block-dummy-loading"></div>';
+				}
+			}
+		`);
+
+		code = `${blocks.map(name => `__BLOCK_INIT(__blocks__, "${name}");`).join('\n')}\n${code}`;
+	}
+
+	if (slotsCode.length) {
+		code = `var __super__ = {};\n${slotsCode.join('')}\n${code}`;
+	}
 
 	return {
-		deps: {'stdlib': ['__STDLIB', stdlib]},
-		before: clean(customElemets.join('')),
+		deps: {
+			'stdlib': ['__STDLIB', stdlib],
+		},
+		before: clean(globalFragments.join('')),
 		code: clean(code),
 	};
 });
-
 
 export default compiler;

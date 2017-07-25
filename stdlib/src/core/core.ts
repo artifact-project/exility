@@ -77,11 +77,11 @@ export default {
 		}
 	},
 
-	SLOT(parent: object, slots: object, __super__: object, name: string, fn: Function) {
+	SLOT(slots: object, __super__: object, name: string, fn: Function, parent: object) {
 		if (slots && slots.hasOwnProperty(name)) {
-			slots[name](parent, __super__);
+			return slots[name](__super__, parent);
 		} else {
-			fn();
+			return fn();
 		}
 	},
 

@@ -123,10 +123,10 @@ function templateFactory(__DEPS__) {
 exports[`CSS Module 1`] = `
 function compiledTemplate(__SCOPE__, __OPTIONS__) {
 		__SCOPE__ = __SCOPE__ || {};
-		var __this__ = __SCOPE__.__this__;
-		var __slots__ = __SCOPE__.__slots__;
-		var __blocks__ = __SCOPE__.__blocks__;
 		var attrs = __SCOPE__.attrs;
+		var __this__ = __SCOPE__.__this__;
+		var __blocks__ = __SCOPE__.__blocks__;
+		var __slots__ = __SCOPE__.__slots__;
 		var __classNames__ = __SCOPE__.__classNames__;
 
 		var __CLN = __STDLIB_CSS_MODULE(__classNames__);
@@ -143,7 +143,7 @@ function compiledTemplate(__SCOPE__, __OPTIONS__) {
 		function __SLOT_children() {
 			__SLOT_children_used = true;
 		}
-		__STDLIB_SLOT(__x1, __slots__, __super__, "children", __SLOT_children);
+		__STDLIB_SLOT(__slots__, __super__, "children", __SLOT_children, __x1);
 
 		return {
 			ctx: __ctx,
@@ -157,10 +157,10 @@ function compiledTemplate(__SCOPE__, __OPTIONS__) {
 			},
 			update: function (__NEWSCOPE__) {
 				__SCOPE__ = __NEWSCOPE__;
-				__this__ = __NEWSCOPE__.__this__;
-				__slots__ = __NEWSCOPE__.__slots__;
-				__blocks__ = __NEWSCOPE__.__blocks__;
 				attrs = __NEWSCOPE__.attrs;
+				__this__ = __NEWSCOPE__.__this__;
+				__blocks__ = __NEWSCOPE__.__blocks__;
+				__slots__ = __NEWSCOPE__.__slots__;
 				__classNames__ = __NEWSCOPE__.__classNames__;
 				__CLN.upd(__classNames__);
 				__STDDOM_D_PROP(__ctx[1], "className", __CLN("alert " + (attrs.x) + " is-" + (attrs.y)))
@@ -320,10 +320,11 @@ function templateFactory(__DEPS__) {
 exports[`Pseudo Elements: super 1`] = `
 function compiledTemplate(__SCOPE__, __OPTIONS__) {
 		__SCOPE__ = __SCOPE__ || {};
-		var __this__ = __SCOPE__.__this__;
-		var __slots__ = __SCOPE__.__slots__;
-		var __blocks__ = __SCOPE__.__blocks__;
 		var attrs = __SCOPE__.attrs;
+		var __this__ = __SCOPE__.__this__;
+		var __blocks__ = __SCOPE__.__blocks__;
+		var __slots__ = __SCOPE__.__slots__;
+		var __classNames__ = __SCOPE__.__classNames__;
 
 		var __ctx = __STDDOM_CONTEXT();
 		var __super__ = {
@@ -338,7 +339,7 @@ function compiledTemplate(__SCOPE__, __OPTIONS__) {
 			__STDDOM_TEXT(__x1, "Original:");
 			__STDDOM_VALUE(__x1, __ctx, 2, attrs.value);
 		}
-		__STDLIB_SLOT(__x1, __slots__, __super__, "children", __SLOT_children);
+		__STDLIB_SLOT(__slots__, __super__, "children", __SLOT_children, __x1);
 
 		return {
 			ctx: __ctx,
@@ -352,10 +353,11 @@ function compiledTemplate(__SCOPE__, __OPTIONS__) {
 			},
 			update: function (__NEWSCOPE__) {
 				__SCOPE__ = __NEWSCOPE__;
-				__this__ = __NEWSCOPE__.__this__;
-				__slots__ = __NEWSCOPE__.__slots__;
-				__blocks__ = __NEWSCOPE__.__blocks__;
 				attrs = __NEWSCOPE__.attrs;
+				__this__ = __NEWSCOPE__.__this__;
+				__blocks__ = __NEWSCOPE__.__blocks__;
+				__slots__ = __NEWSCOPE__.__slots__;
+				__classNames__ = __NEWSCOPE__.__classNames__;
 
 				if (__SLOT_children_used) {
 					__STDDOM_UPD_VALUE(__ctx[2], attrs.value);
