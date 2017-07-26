@@ -25,7 +25,8 @@
     "typescript": "^2.4.0",
     "@exility/parser": "*",
     "@exility/compile": "*",
-    "@exility/stdlib": "*"
+    "@exility/stdlib": "*",
+    "@exility/block": "*"
   },
   "jest": {
     "transform": {

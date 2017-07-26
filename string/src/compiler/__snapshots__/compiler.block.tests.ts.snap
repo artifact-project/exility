@@ -47,29 +47,31 @@ function templateFactory() {
 	"use strict";
 	function __BLOCK_INIT(blocks, name) {
 		var XBlock = blocks[name];
-		if (XBlock.length !== 0) blocks[name] = __COMPILER__.compileBlock(blocks[name]);
-		}
-
-		function __BLOCK_RENDER(blocks, name, attrs, slots) {
-			var XBlock = blocks[name];
-
-			if (XBlock.length) {
-				var block = new XBlock(attrs, {slots: slots});
-				return block.__view__;
-			} else {
-				return '<div data-block="' + name + '" class="block-dummy block-dummy-loading"></div>';
-			}
-		}
-
-		return function compiledTemplate(__SCOPE__, __OPTIONS__) {
-			__SCOPE__ = __SCOPE__ || {};
-			var text = __SCOPE__.text;
-			var __blocks__ = __SCOPE__.__blocks__;
-
-			__BLOCK_INIT(__blocks__, "Pseudo");
-			return __BLOCK_RENDER(__blocks__, "Pseudo", {value: (text)}, null);
+		if (XBlock.length !== 0) {
+			blocks[name] = __COMPILER__.compileBlock(blocks[name]);
 		}
 	}
+
+	function __BLOCK_RENDER(blocks, name, attrs, slots) {
+		var XBlock = blocks[name];
+
+		if (XBlock.length) {
+			var block = new XBlock(attrs, {slots: slots});
+			return block.__view__;
+		} else {
+			return '<div data-block="' + name + '" class="block-dummy block-dummy-loading"></div>';
+		}
+	}
+
+	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var text = __SCOPE__.text;
+		var __blocks__ = __SCOPE__.__blocks__;
+
+		__BLOCK_INIT(__blocks__, "Pseudo");
+		return __BLOCK_RENDER(__blocks__, "Pseudo", {value: (text)}, null);
+	}
+}
 `;
 
 exports[`Pseudo Elements: override by name 1`] = `
@@ -77,32 +79,34 @@ function templateFactory() {
 	"use strict";
 	function __BLOCK_INIT(blocks, name) {
 		var XBlock = blocks[name];
-		if (XBlock.length !== 0) blocks[name] = __COMPILER__.compileBlock(blocks[name]);
+		if (XBlock.length !== 0) {
+			blocks[name] = __COMPILER__.compileBlock(blocks[name]);
 		}
+	}
 
-		function __BLOCK_RENDER(blocks, name, attrs, slots) {
-			var XBlock = blocks[name];
+	function __BLOCK_RENDER(blocks, name, attrs, slots) {
+		var XBlock = blocks[name];
 
-			if (XBlock.length) {
-				var block = new XBlock(attrs, {slots: slots});
-				return block.__view__;
-			} else {
-				return '<div data-block="' + name + '" class="block-dummy block-dummy-loading"></div>';
-			}
+		if (XBlock.length) {
+			var block = new XBlock(attrs, {slots: slots});
+			return block.__view__;
+		} else {
+			return '<div data-block="' + name + '" class="block-dummy block-dummy-loading"></div>';
 		}
+	}
 
-		return function compiledTemplate(__SCOPE__, __OPTIONS__) {
-			__SCOPE__ = __SCOPE__ || {};
-			var __blocks__ = __SCOPE__.__blocks__;
+	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var __blocks__ = __SCOPE__.__blocks__;
 
-			__BLOCK_INIT(__blocks__, "Pseudo");
-			var __ROOT = __BLOCK_RENDER(__blocks__, "Pseudo", {}, {slotik: function __SLOT_slotik(__super__) {
-				return "OK";
-				}});
+		__BLOCK_INIT(__blocks__, "Pseudo");
+		var __ROOT = __BLOCK_RENDER(__blocks__, "Pseudo", {}, {slotik: function __SLOT_slotik(__super__) {
+			return "OK";
+			}});
 
-				return __ROOT
-			}
+			return __ROOT
 		}
+	}
 `;
 
 exports[`Pseudo Elements: override default 1`] = `
@@ -110,30 +114,73 @@ function templateFactory() {
 	"use strict";
 	function __BLOCK_INIT(blocks, name) {
 		var XBlock = blocks[name];
-		if (XBlock.length !== 0) blocks[name] = __COMPILER__.compileBlock(blocks[name]);
+		if (XBlock.length !== 0) {
+			blocks[name] = __COMPILER__.compileBlock(blocks[name]);
 		}
+	}
 
-		function __BLOCK_RENDER(blocks, name, attrs, slots) {
-			var XBlock = blocks[name];
+	function __BLOCK_RENDER(blocks, name, attrs, slots) {
+		var XBlock = blocks[name];
 
-			if (XBlock.length) {
-				var block = new XBlock(attrs, {slots: slots});
-				return block.__view__;
-			} else {
-				return '<div data-block="' + name + '" class="block-dummy block-dummy-loading"></div>';
-			}
+		if (XBlock.length) {
+			var block = new XBlock(attrs, {slots: slots});
+			return block.__view__;
+		} else {
+			return '<div data-block="' + name + '" class="block-dummy block-dummy-loading"></div>';
 		}
+	}
 
-		return function compiledTemplate(__SCOPE__, __OPTIONS__) {
-			__SCOPE__ = __SCOPE__ || {};
-			var __blocks__ = __SCOPE__.__blocks__;
+	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var __blocks__ = __SCOPE__.__blocks__;
 
-			__BLOCK_INIT(__blocks__, "Pseudo");
-			var __ROOT = __BLOCK_RENDER(__blocks__, "Pseudo", {}, {children: function __SLOT_children(__super__) {
-				return "OK";
-				}});
+		__BLOCK_INIT(__blocks__, "Pseudo");
+		var __ROOT = __BLOCK_RENDER(__blocks__, "Pseudo", {}, {children: function __SLOT_children(__super__) {
+			return "OK";
+			}});
 
-				return __ROOT
-			}
+			return __ROOT
 		}
+	}
 `;
+
+exports[`Pseudo Elements: super 1`] = `
+function templateFactory(__DEPS__) {
+	"use strict";
+	var __STDLIB = __DEPS__.stdlib;
+	var __STDLIB_HTML_ENCODE = __STDLIB.HTML_ENCODE;
+	function __BLOCK_INIT(blocks, name) {
+		var XBlock = blocks[name];
+		if (XBlock.length !== 0) {
+			blocks[name] = __COMPILER__.compileBlock(blocks[name]);
+		}
+	}
+
+	function __BLOCK_RENDER(blocks, name, attrs, slots) {
+		var XBlock = blocks[name];
+
+		if (XBlock.length) {
+			var block = new XBlock(attrs, {slots: slots});
+			return block.__view__;
+		} else {
+			return '<div data-block="' + name + '" class="block-dummy block-dummy-loading"></div>';
+		}
+	}
+
+	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var x = __SCOPE__.x;
+		var text = __SCOPE__.text;
+		var __blocks__ = __SCOPE__.__blocks__;
+
+		__BLOCK_INIT(__blocks__, "Pseudo");
+		var __ROOT = __BLOCK_RENDER(__blocks__, "Pseudo", {value: (x)}, {children: function __SLOT_children(__super__) {
+			return __STDLIB_HTML_ENCODE(text) + ":" + __super__["children"]();
+			}});
+
+			return __ROOT
+		}
+	}
+`;
+
+exports[`Pseudo Elements: super 2`] = `undefined`;

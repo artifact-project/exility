@@ -284,6 +284,8 @@ const compiler = createCompiler<StringModeOptions>((options) => (node: XNode) =>
 
 				if (!node.parent || CUSTOM_ELEMENTS[node.parent.raw.name]) {
 					code = slotCode;
+				} else if (/^super\./.test(name)) {
+					return `__ROOT += __super__["${name.replace(/^super\./, '')}"]();`;
 				} else {
 					slotsCode.push(`
 						${slotCode}
@@ -319,7 +321,9 @@ const compiler = createCompiler<StringModeOptions>((options) => (node: XNode) =>
 		globalFragments.unshift(`
 			function __BLOCK_INIT(blocks, name) {
 				var XBlock = blocks[name];
-				if (XBlock.length !== 0) blocks[name] = __COMPILER__.compileBlock(blocks[name]);
+				if (XBlock.length !== 0) {
+					blocks[name] = __COMPILER__.compileBlock(blocks[name]);
+				}
 			}
 		
 			function __BLOCK_RENDER(blocks, name, attrs, slots) {

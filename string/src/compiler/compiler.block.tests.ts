@@ -1,4 +1,5 @@
 import {core as stdlib} from '@exility/stdlib';
+import Block from '@exility/block';
 import compilerFactory from './compiler';
 
 function fromString(input: string, scope?: string[], blocks = {}) {
@@ -92,4 +93,18 @@ it('Pseudo Elements: override by name', () => {
 
 	expect(template({__blocks__})).toBe('<div>OK</div>');
 	expect(template.factory).toMatchSnapshot();
+});
+
+it('Pseudo Elements: super', () => {
+	const Pseudo = Block.classify({template: 'div > ::children | Original:${attrs.value}'});
+	const __blocks__ = {Pseudo};
+	const template = fromString(
+		'Pseudo[value=${x}] > ::children\n  | ${text}:\n  ::super.children',
+		['x', 'text'],
+		__blocks__,
+	);
+
+	expect(template.factory).toMatchSnapshot();
+	expect(Pseudo.prototype['__template__']).toMatchSnapshot();
+	expect(template({x: 1, text: 'OK', __blocks__})).toBe('<div>OK:Original:1</div>');
 });
