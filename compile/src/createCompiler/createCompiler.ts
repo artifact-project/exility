@@ -172,7 +172,7 @@ export default function createCompiler<O extends ICompilerOptions>(factory: ICom
 					...Object(extra),
 				});
 
-				const compileBlock = (block) => {
+				const compileBlock = (block, extra) => {
 					const Class = block.prototype && block.prototype.isBlock ? block : Block.classify(block);
 
 					if (!Class.prototype.__template__) {
@@ -181,6 +181,7 @@ export default function createCompiler<O extends ICompilerOptions>(factory: ICom
 							scope: requiredScopeKeys,
 							blocks: Object.keys(Class.blocks || {}),
 							cssModule: !!Class.classNames,
+							...Object(extra),
 						});
 						const templateFactory = compile(template);
 

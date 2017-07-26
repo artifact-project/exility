@@ -754,8 +754,15 @@ function CMP_CREATE_DUMMY(name, attrs) {
 }
 
 function CMP_CREATE(ctx, blocks, parentFrag, parentThis, name, attrs, events, slots) {
+	const ISO_FRAG = ISOMORPHIC_FRAG;
+	let isoParentNode;
 	let node;
 	let Block = blocks[name];
+
+	if (ISO_FRAG) {
+		isoParentNode = GET_PARENT_NODE(parentFrag);
+		ISOMORPHIC_FRAG = isoParentNode;
+	}
 
 	if (Block == null) {
 		node = CMP_CREATE_DUMMY(name, attrs);
@@ -802,10 +809,18 @@ function CMP_CREATE(ctx, blocks, parentFrag, parentThis, name, attrs, events, sl
 			update: (attrs) => cmpNode.update(attrs),
 		};
 
+		ctx.blocks.push(cmpNode);
+		ADD_CHILD_CONTEXT(ctx, cmpNode['__view__'].ctx);
+
 		ctx.connected && cmpNode['connectedCallback'] && cmpNode['connectedCallback']();
 	}
 
-	node.frag.appendTo(parentFrag);
+	if (ISO_FRAG) {
+		ISOMORPHIC_APPEND(parentFrag, node);
+		ISOMORPHIC_FRAG = ISO_FRAG;
+	} else {
+		node.frag.appendTo(parentFrag);
+	}
 
 	return node;
 }
@@ -829,7 +844,7 @@ function CMP_INIT(blocks, names) {
 				promise = block();
 
 				if (promise.then) {
-					promise = promise.then(asyncBlock => (blocks[name] = compileBlock(asyncBlock)));
+					promise = promise.then(asyncBlock => (blocks[name] = compileBlock(asyncBlock, {isomorphic: false})));
 				} else {
 					promise = Promise.reject(new Error(`«${name}» — если это блок, то должен быть хотя бы один аргумент`));
 				}
@@ -839,7 +854,7 @@ function CMP_INIT(blocks, names) {
 
 			blocks[name] = promise;
 		} else {
-			blocks[name] = compileBlock(block);
+			blocks[name] = compileBlock(block, {isomorphic: false});
 		}
 	});
 }

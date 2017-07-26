@@ -6,7 +6,7 @@ import {
 import {createCompiler as createStringCompiler} from '@exility/string';
 import createDOMCompiler from '../compiler/compiler';
 
-const withMetaCommentsCompiler = createStringCompiler({
+const stringCompiler = createStringCompiler({
 	scope: ['x', 'y', 'z'],
 	metaComments: true,
 });
@@ -16,19 +16,50 @@ const domCompiler = createDOMCompiler({
 	isomorphic: true,
 });
 
+const stringCompilerWithBlocks = createStringCompiler({
+	blocks: ['XFoo'],
+	scope: ['x', 'y', 'z', '__blocks__'],
+	metaComments: true,
+});
+
+const domCompilerWithBlocks = createDOMCompiler({
+	blocks: ['XFoo'],
+	scope: ['x', 'y', 'z', '__blocks__'],
+	isomorphic: true,
+});
+
 function fromString(tpl, initialData, actualData, debug?) {
-	const stringTemplate = withMetaCommentsCompiler(tpl)({stdlib});
-	const domTemplate = domCompiler(tpl)({
-		stdlib,
-		stddom,
-	});
-
+	const stringTemplate = stringCompiler(tpl)({stdlib});
+	const domTemplate = domCompiler(tpl)({stdlib, stddom});
 	const container = document.createElement('div');
-	container.innerHTML = stringTemplate(initialData);
 
+	container.innerHTML = stringTemplate(initialData);
 	debug && console.log(domTemplate.toString());
 
 	const view = domTemplate(actualData, {isomorphic: container});
+
+	view.mountTo(container);
+
+	return {view, container};
+}
+
+function fromStringWithBlocks(tpl, initialData, actualData, debug?) {
+	const stringTemplate = stringCompilerWithBlocks(tpl)({stdlib});
+	const domTemplate = domCompilerWithBlocks(tpl)({stdlib, stddom});
+	const container = document.createElement('div');
+
+	actualData.__blocks__ = actualData.__blocks__ || initialData.__blocks__;
+	initialData.__blocks__ = {...initialData.__blocks__};
+
+	Object.keys(initialData.__blocks__).forEach(name => {
+		initialData.__blocks__[name] = {...initialData.__blocks__[name]};
+	});
+
+	container.innerHTML = stringTemplate(initialData);
+	debug && console.log(domTemplate.toString());
+
+	const view = domTemplate(actualData, {isomorphic: container});
+
 	view.mountTo(container);
 
 	return {view, container};
@@ -240,4 +271,27 @@ it('iso / if + for', () => {
 		'<!--/for2--></fieldset><!--if3--><!--/if3--></form>' +
 		'<b><!--(--><!--)--></b>'
 	);
+});
+
+it('iso / XFooSync', () => {
+	const log = [];
+	const __blocks__ = {
+		XFoo: {
+			template: 'h1 | ${attrs.name}',
+			connectedCallback() {
+				log.push('connected');
+			},
+		},
+	};
+	const {view, container} = fromStringWithBlocks(
+		'XFoo[name=${x}]',
+		{__blocks__, x: 'fail'},
+		{__blocks__, x: 'Exility'},
+	);
+
+	expect(log).toEqual(['connected']);
+	expect(container.innerHTML).toBe('<h1><!--(-->Exility<!--)--></h1>');
+
+	view.update({__blocks__, x: 'OK'});
+	expect(container.innerHTML).toBe('<h1><!--(-->OK<!--)--></h1>');
 });
