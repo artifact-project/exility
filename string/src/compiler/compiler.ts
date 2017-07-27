@@ -76,7 +76,7 @@ function clean(content): string {
 }
 
 const compiler = createCompiler<StringModeOptions>((options) => (node: XNode) => {
-	const {prettify, metaComments, blocks} = options;
+	const {prettify, metaComments, blocks, cssModule, scope:scopeVars} = options;
 	const hasBlocks = !!(blocks && blocks.length);
 	const NL = prettify ? '\n' : '';
 	const CUSTOM_ELEMENTS = {};
@@ -85,6 +85,7 @@ const compiler = createCompiler<StringModeOptions>((options) => (node: XNode) =>
 	const HTML_ENCODE = '__STDLIB_HTML_ENCODE';
 	const HTML_TEXT_ENCODE = metaComments ? `${HTML_ENCODE}_MC` : HTML_ENCODE;
 	const slotsCode = [];
+	const useCSSModule = cssModule && scopeVars.includes('__classNames__');
 
 	mcid = 0;
 
@@ -106,7 +107,12 @@ const compiler = createCompiler<StringModeOptions>((options) => (node: XNode) =>
 	}
 
 	function pushAttr(name, values, bone): string {
+		const useCLN = name === 'class' && useCSSModule;
 		let {value} = stringifyAttributeValue(name, values, HTML_ENCODE, bone);
+
+		if (useCLN) {
+			value = `__CLN(${value})`;
+		}
 
 		value = (value.charCodeAt(0) === QUOTE_CODE) ? `"\\${value}` : `"\\"" + ${value}`;
 		value = (value.charCodeAt(value.length - 1) === QUOTE_CODE) ? `${value.slice(0, -1)}\\""` : `${value} + "\\""`;
@@ -325,7 +331,7 @@ const compiler = createCompiler<StringModeOptions>((options) => (node: XNode) =>
 			function __BLOCK_INIT(blocks, name) {
 				var XBlock = blocks[name];
 				
-				if (XBlock.length !== 0) {
+				if (XBlock.template) {
 					blocks[name] = __COMPILER__.compileBlock(blocks[name]);
 				}
 			}
@@ -333,7 +339,7 @@ const compiler = createCompiler<StringModeOptions>((options) => (node: XNode) =>
 			function __BLOCK_RENDER(blocks, name, attrs, slots) {
 				var XBlock = blocks[name];
 				
-				if (XBlock.length) {
+				if (XBlock.template) {
 					var block = new XBlock(attrs, {slots: slots});
 					return block.__view__;
 				} else {
@@ -347,6 +353,13 @@ const compiler = createCompiler<StringModeOptions>((options) => (node: XNode) =>
 
 	if (slotsCode.length) {
 		code = `var __super__ = {};\n${slotsCode.join('')}\n${code}`;
+	}
+
+	if (useCSSModule) {
+		code = `
+			var __CLN = __STDLIB_CSS_MODULE(__classNames__);
+			${code}
+		`;
 	}
 
 	return {

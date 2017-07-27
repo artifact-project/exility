@@ -1,5 +1,26 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`CSS Module 1`] = `
+function compiledTemplate(__SCOPE__, __OPTIONS__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var attrs = __SCOPE__.attrs;
+		var __this__ = __SCOPE__.__this__;
+		var __blocks__ = __SCOPE__.__blocks__;
+		var __slots__ = __SCOPE__.__slots__;
+		var __classNames__ = __SCOPE__.__classNames__;
+
+		var __CLN = __STDLIB_CSS_MODULE(__classNames__);
+		var __super__ = {};
+
+		function __SLOT_children(__super__) {
+			return "";
+		}
+		__super__["children"] = __SLOT_children;
+
+		return "<div class=\\"" + __CLN("alert " + __STDLIB_HTML_ENCODE(attrs.x) + " is-" + __STDLIB_HTML_ENCODE(attrs.y)) + "\\">" + __STDLIB_SLOT(__slots__, __super__, "children", __SLOT_children) + "</div>";
+	}
+`;
+
 exports[`Icon (short) 1`] = `
 function templateFactory(__DEPS__) {
 	"use strict";
@@ -48,7 +69,7 @@ function templateFactory() {
 	function __BLOCK_INIT(blocks, name) {
 		var XBlock = blocks[name];
 
-		if (XBlock.length !== 0) {
+		if (XBlock.template) {
 			blocks[name] = __COMPILER__.compileBlock(blocks[name]);
 		}
 	}
@@ -56,7 +77,7 @@ function templateFactory() {
 	function __BLOCK_RENDER(blocks, name, attrs, slots) {
 		var XBlock = blocks[name];
 
-		if (XBlock.length) {
+		if (XBlock.template) {
 			var block = new XBlock(attrs, {slots: slots});
 			return block.__view__;
 		} else {
@@ -81,7 +102,7 @@ function templateFactory() {
 	function __BLOCK_INIT(blocks, name) {
 		var XBlock = blocks[name];
 
-		if (XBlock.length !== 0) {
+		if (XBlock.template) {
 			blocks[name] = __COMPILER__.compileBlock(blocks[name]);
 		}
 	}
@@ -89,7 +110,7 @@ function templateFactory() {
 	function __BLOCK_RENDER(blocks, name, attrs, slots) {
 		var XBlock = blocks[name];
 
-		if (XBlock.length) {
+		if (XBlock.template) {
 			var block = new XBlock(attrs, {slots: slots});
 			return block.__view__;
 		} else {
@@ -117,7 +138,7 @@ function templateFactory() {
 	function __BLOCK_INIT(blocks, name) {
 		var XBlock = blocks[name];
 
-		if (XBlock.length !== 0) {
+		if (XBlock.template) {
 			blocks[name] = __COMPILER__.compileBlock(blocks[name]);
 		}
 	}
@@ -125,7 +146,7 @@ function templateFactory() {
 	function __BLOCK_RENDER(blocks, name, attrs, slots) {
 		var XBlock = blocks[name];
 
-		if (XBlock.length) {
+		if (XBlock.template) {
 			var block = new XBlock(attrs, {slots: slots});
 			return block.__view__;
 		} else {
@@ -155,7 +176,7 @@ function templateFactory(__DEPS__) {
 	function __BLOCK_INIT(blocks, name) {
 		var XBlock = blocks[name];
 
-		if (XBlock.length !== 0) {
+		if (XBlock.template) {
 			blocks[name] = __COMPILER__.compileBlock(blocks[name]);
 		}
 	}
@@ -163,7 +184,7 @@ function templateFactory(__DEPS__) {
 	function __BLOCK_RENDER(blocks, name, attrs, slots) {
 		var XBlock = blocks[name];
 
-		if (XBlock.length) {
+		if (XBlock.template) {
 			var block = new XBlock(attrs, {slots: slots});
 			return block.__view__;
 		} else {

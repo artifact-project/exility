@@ -108,3 +108,34 @@ it('Pseudo Elements: super', () => {
 	expect(Pseudo.prototype['__template__']).toMatchSnapshot();
 	expect(template({x: 1, text: 'OK', __blocks__})).toBe('<div>OK:Original:1</div>');
 });
+
+it('CSS Module', () => {
+	const Foo = class extends Block<{}> {
+		static template = '.alert.${attrs.x}.is-${attrs.y} > ::children';
+		static classNames: object = {
+			'alert': '_$a',
+			'warn': '_$w',
+			'info': '_$i',
+			'is-active': '_$ia',
+			'is-disabled': '_$id',
+			'and': '_$1',
+			'detailed': '_$2',
+		};
+	};
+	const __blocks__ = {Foo};
+	const template = fromString(
+		'Foo[x=${x} y=${y}] > i.icon',
+		['x', 'y'],
+		__blocks__,
+	);
+
+
+	expect(template({__blocks__, x: 'warn', y: 'active'})).toBe('<div class=\"_$a _$w _$ia\"><i class=\"icon\"></i></div>');
+	expect(template({__blocks__, x: 'info', y: 'disabled'})).toBe('<div class=\"_$a _$i _$id\"><i class=\"icon\"></i></div>');
+	expect(template({__blocks__, x: 'info and detailed', y: 'disabled'})).toBe('<div class=\"_$a _$i _$1 _$2 _$id\"><i class=\"icon\"></i></div>');
+
+	Foo.classNames = {'alert': '__$alert$__'};
+	expect(template({__blocks__})).toBe('<div class=\"__$alert$__ [warn: is-]\"><i class=\"icon\"></i></div>');
+
+	expect(Foo.prototype['__template__']).toMatchSnapshot();
+});

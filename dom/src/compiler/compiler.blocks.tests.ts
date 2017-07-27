@@ -256,7 +256,7 @@ it('Inner blocks', () => {
 });
 
 it('CSS Module', () => {
-	const Foo = class extends Block<{}> {
+	class Foo extends Block<{}> {
 		static template = '.alert.${attrs.x}.is-${attrs.y} > ::children';
 		static classNames: object = {
 			'alert': '_$a',
@@ -267,7 +267,7 @@ it('CSS Module', () => {
 			'and': '_$1',
 			'detailed': '_$2',
 		};
-	};
+	}
 
 	const view = fromString(
 		'Foo[x=${x} y=${y}]',
