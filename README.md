@@ -31,17 +31,18 @@ The project is in active development and it can be collected only in one way:
 
 ### Features
 
- - Flexible and easy syntax
- - Several compilation modes: `string`, `dom`
- - Isomorphic render
- - Compiling into a pure function without dependencies
- - Generating a minimum code with preliminary optimizations
+ - Ultimate isomorphic render
+ - CSS Modules out of the box
  - [Storybook](./storybook) for development ui-blocks (Wrapper over the original [storybook](https://storybook.js.org/))
  - Testing out of the box, see [jacket](./jacket)
- - Ready UI libraries:
+ - Ready to use UI libraries:
    - [ui-bootstrap](./ui-bootstrap)
- - Single ecosystem on TypeScript
- - Without slowly VirtualDOM
+ - Flexible and easy syntax :]
+ - Several compilation modes: `string`, `dom`
+ - Compiling into a pure function without dependencies
+ - Generating a minimum code with preliminary optimizations
+ - NativeDOM (there is no slowly VirtualDOM)
+ - The single ecosystem on TypeScript.
  - etc.
 
 

@@ -1,4 +1,4 @@
-Exility: String
+Exility String
 ---------------
 Рендерер в строку.
 
