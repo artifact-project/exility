@@ -22,10 +22,8 @@ The project is in active development and it can be collected only in one way:
 
 ### Quick start (todo)
 
- - `git clone git@github.com:artifact-project/exility/scaffold.git my-project-name`
- - `cd my-project-name`
- - `npm i`
- - `npm run init`
+ 0. `npm i -g exility-create-app`
+ 1. `exility-create-app my-app-name`
 
 
 
