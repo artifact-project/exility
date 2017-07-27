@@ -2,9 +2,10 @@ import {
 	core as stdlib,
 	dom as stddom,
 } from '@exility/stdlib';
-
 import {createCompiler as createStringCompiler} from '@exility/string';
+
 import createDOMCompiler from '../compiler/compiler';
+import {pause} from '../compiler/compiler.blocks.tests';
 
 const stringCompiler = createStringCompiler({
 	scope: ['x', 'y', 'z'],
@@ -48,13 +49,7 @@ function fromStringWithBlocks(tpl, initialData, actualData, debug?) {
 	const domTemplate = domCompilerWithBlocks(tpl)({stdlib, stddom});
 	const container = document.createElement('div');
 
-	actualData.__blocks__ = actualData.__blocks__ || initialData.__blocks__;
 	initialData.__blocks__ = {...initialData.__blocks__};
-
-	Object.keys(initialData.__blocks__).forEach(name => {
-		initialData.__blocks__[name] = {...initialData.__blocks__[name]};
-	});
-
 	container.innerHTML = stringTemplate(initialData);
 	debug && console.log(domTemplate.toString());
 
@@ -278,9 +273,7 @@ it('iso / XFooSync', () => {
 	const __blocks__ = {
 		XFoo: {
 			template: 'h1 | ${attrs.name}',
-			connectedCallback() {
-				log.push('connected');
-			},
+			connectedCallback() { log.push('connected'); },
 		},
 	};
 	const {view, container} = fromStringWithBlocks(
@@ -294,4 +287,46 @@ it('iso / XFooSync', () => {
 
 	view.update({__blocks__, x: 'OK'});
 	expect(container.innerHTML).toBe('<h1><!--(-->OK<!--)--></h1>');
+});
+
+it('iso / XFooAsync', async () => {
+	const log = [];
+	const __blocks__ = {
+		XFoo: () => Promise.resolve({
+			template: 'h1 | ${attrs.name}',
+			connectedCallback() { log.push('connected'); },
+		}),
+	};
+	const {view, container} = fromStringWithBlocks(
+		'XFoo[name=${x}]',
+		{__blocks__, x: 'fail'},
+		{__blocks__, x: 'Exility'},
+	);
+
+	expect(log).toEqual([]);
+	expect(container.innerHTML).toBe('<div data-block="XFoo" class="block-dummy block-dummy-loading"></div>');
+
+	await pause();
+	expect(log).toEqual(['connected']);
+
+	expect(container.innerHTML).toBe('<h1>Exility</h1>');
+
+	view.update({__blocks__, x: 'OK'});
+	expect(container.innerHTML).toBe('<h1>OK</h1>');
+});
+
+it('iso / XFooSuper', () => {
+	const XFoo = {template: 'div > ::children | Original:${attrs.value}'};
+	const __blocks__ = {XFoo};
+	const {view, container} = fromStringWithBlocks(
+		'XFoo[value=${x}] > ::children\n  | ${y}:\n  ::super.children',
+		{__blocks__, x: 1, y: 'fail'},
+		{__blocks__, x: 2, y: 'OK'},
+	);
+
+	expect(container.innerHTML).toBe('<div><!--(-->OK<!--)-->:Original:<!--(-->2<!--)--></div>');
+
+	view.update({__blocks__, x: 3, y: 'Yes'});
+
+	expect(container.innerHTML).toBe('<div><!--(-->Yes<!--)-->:Original:<!--(-->3<!--)--></div>');
 });

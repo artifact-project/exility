@@ -1,9 +1,9 @@
 Exility DOM
 ------------
-Рендерер в DOM.
+DOM Renderer.
 
 
-### Пример
+### Example
 
 ```ts
 import Block from '@exility/block';
@@ -12,12 +12,15 @@ import {mountTo} from '@exility/dom';
 class Timer extends Block<{initial: number, duration?: number}> {
 	static template = (attrs) => `
 		.time | ${new Date(attrs.initial + attrs.duration)}
-	`
+	`;
+
 	protected connectedCallback(): void {
 		this._start = Date.now();
 
 		this.pid = this.setTimeout(() => {
-			this.update({duration: Date.now() - this._start})
+			this.update({
+				duration: Date.now() - this._start,
+			});
 		}, 1000);
 	}
 

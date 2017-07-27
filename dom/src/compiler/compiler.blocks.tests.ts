@@ -34,7 +34,7 @@ export function fromString(template, scope = {}, pure?: boolean, blocks?) {
 	return view;
 }
 
-async function pause(ms: number = 16) {
+export async function pause(ms: number = 16) {
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
 
@@ -102,44 +102,50 @@ it('Btn / Events', () => {
 	const view = fromString('Btn[value=\${val}]', {val: 'Wow'}, null, {
 		'Btn': {
 			template: 'button[@click @mousedown="down" @mouseup="up ${attrs}"]',
-			'@click'(evt) {
-				events.push(evt);
-			},
-			'@down'(evt) {
-				events.push(evt);
-			},
-			'@up'(evt) {
-				events.push(evt);
-			}
+			connectedCallback() { events.push('connected'); },
+			'@click'(evt) { events.push(evt); },
+			'@down'(evt) { events.push(evt); },
+			'@up'(evt) { events.push(evt); },
 		}
 	});
 
-	view.container.firstChild.dispatchEvent(new Event('click'));
-	expect(events[0].type).toBe('click');
-	expect(events[0].detail).toBe(null);
+	expect(events[0]).toBe('connected');
 
-	view.container.firstChild.dispatchEvent(new Event('mousedown'));
-	expect(events[1].type).toBe('down');
+	view.container.firstChild.dispatchEvent(new Event('click'));
+	expect(events[1].type).toBe('click');
 	expect(events[1].detail).toBe(null);
 
+	view.container.firstChild.dispatchEvent(new Event('mousedown'));
+	expect(events[2].type).toBe('down');
+	expect(events[2].detail).toBe(null);
+
 	view.container.firstChild.dispatchEvent(new Event('mouseup'));
-	expect(events[2].type).toBe('up');
-	expect(events[2].detail).toEqual({attrs: {value: 'Wow'}});
+	expect(events[3].type).toBe('up');
+	expect(events[3].detail).toEqual({attrs: {value: 'Wow'}});
+
+	expect(events.length).toBe(4);
 });
 
 it('Btn -> Async', async () => {
+	const log = [];
 	const view = fromString('Btn[value=${val}]', {val: 'Wow'}, null, {
 		'Btn': () => Promise.resolve({
 			template: 'button | ${attrs.value}',
-		})
+			connectedCallback() { log.push('connected'); }
+		}),
 	});
 
+	expect(log).toEqual([]);
 	expect(view.container.innerHTML).toBe('<div data-block=\"Btn\" class=\"block-dummy block-dummy-loading\"></div>');
 
 	await pause();
+
+	expect(log[0]).toBe('connected');
 	expect(view.container.innerHTML).toBe('<button>Wow</button>');
 
 	view.update({val: 'Wow!1'});
+
+	expect(log.length).toBe(1);
 	expect(view.container.innerHTML).toBe('<button>Wow!1</button>');
 });
 
@@ -220,24 +226,33 @@ it('__attrs__', () => {
 });
 
 it('Inner blocks', () => {
+	const log = [];
 	const Link = class extends Block<{}> {
-		static template = 'a[href=${attrs.href}] > ::children'
+		static template = 'a[href=${attrs.href}] > ::children';
+		connectedCallback() { log.push('Link:connected'); }
+		disconnectedCallback() { log.push('Link:disconnected'); }
 	};
 
 	const Alert = class extends Block<{}> {
 		static blocks = {Link};
 		static template = '.alert > ::children';
+		connectedCallback() { log.push('Alert:connected'); }
+		disconnectedCallback() { log.push('Alert:disconnected'); }
 	};
 
 	const view = fromString(
-		'Alert > #|Wow, <Link href="#">click me!</Link>|#',
-		{},
+		'if (x) > Alert > #|Wow, <Link href="#">click me!</Link>|#',
+		{x: true},
 		null,
-		{Alert, Link}
+		{Alert, Link},
 	);
 
-	// console.log(view.templateFactory.toString());
 	expect(view.container.innerHTML).toBe('<div class=\"alert\">Wow, <a href=\"#\">click me!</a></div>');
+
+	view.update({});
+
+	expect(view.container.innerHTML).toBe('');
+	expect(log).toEqual(['Alert:connected', 'Link:connected', 'Alert:disconnected', 'Link:disconnected']);
 });
 
 it('CSS Module', () => {

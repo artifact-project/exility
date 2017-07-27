@@ -47,6 +47,7 @@ function templateFactory() {
 	"use strict";
 	function __BLOCK_INIT(blocks, name) {
 		var XBlock = blocks[name];
+
 		if (XBlock.length !== 0) {
 			blocks[name] = __COMPILER__.compileBlock(blocks[name]);
 		}
@@ -79,6 +80,7 @@ function templateFactory() {
 	"use strict";
 	function __BLOCK_INIT(blocks, name) {
 		var XBlock = blocks[name];
+
 		if (XBlock.length !== 0) {
 			blocks[name] = __COMPILER__.compileBlock(blocks[name]);
 		}
@@ -114,6 +116,7 @@ function templateFactory() {
 	"use strict";
 	function __BLOCK_INIT(blocks, name) {
 		var XBlock = blocks[name];
+
 		if (XBlock.length !== 0) {
 			blocks[name] = __COMPILER__.compileBlock(blocks[name]);
 		}
@@ -151,6 +154,7 @@ function templateFactory(__DEPS__) {
 	var __STDLIB_HTML_ENCODE = __STDLIB.HTML_ENCODE;
 	function __BLOCK_INIT(blocks, name) {
 		var XBlock = blocks[name];
+
 		if (XBlock.length !== 0) {
 			blocks[name] = __COMPILER__.compileBlock(blocks[name]);
 		}

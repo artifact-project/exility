@@ -181,6 +181,17 @@ function TEXT(parent, value) {
 
 		el = GET_ISOMORPHIC_NEXT(parentNode);
 		ISOMORPHIC_APPEND(parent, el);
+
+		const nodeValue = el.nodeValue;
+
+		if (nodeValue !== value) {
+			const length = (el.__len || 0) + value.length;
+
+			if (nodeValue.length !== length) {
+				el.__len = length;
+				parentNode.__iso--;
+			}
+		}
 	} else {
 		el = APPEND(parent, document.createTextNode(value == null ? '' : value));
 	}
@@ -731,7 +742,7 @@ function CMP_DUMMY_STATE(el, state, stateText?) {
 }
 
 function CMP_CREATE_DUMMY(name, attrs) {
-	const dummy = document.createElement('div');
+	const dummy = ISOMORPHIC_FRAG ? GET_ISOMORPHIC_NEXT(ISOMORPHIC_FRAG) : document.createElement('div');
 
 	ATTR(dummy, 'data-block', name);
 	CMP_DUMMY_STATE(dummy, 'loading');

@@ -422,7 +422,7 @@ const compiler = createCompiler<IDOMCompilerOptions>((options: IDOMCompilerOptio
 
 				superSlots.push([compiledName, slotName]);
 
-				const slotCode = `
+				let slotCode = `
 					var ${slotNameUsed} = false;
 					function ${slotName}() {
 						${slotNameUsed} = true;

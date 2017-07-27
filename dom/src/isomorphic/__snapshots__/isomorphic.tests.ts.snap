@@ -1,0 +1,368 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`__attrs__ 1`] = `
+function templateFactory(__DEPS__) {
+	"use strict";
+	var __STDDOM = __DEPS__.stddom;
+	var __STDDOM_CMP_SET_COMPILER = __STDDOM.CMP_SET_COMPILER;
+	var __STDDOM_CMP_INIT = __STDDOM.CMP_INIT;
+	var __STDDOM_CONTEXT = __STDDOM.CONTEXT;
+	var __STDDOM_FRAGMENT = __STDDOM.FRAGMENT;
+	var __STDDOM_CMP_CREATE = __STDDOM.CMP_CREATE;
+	var __STDDOM_LIFECYCLE = __STDDOM.LIFECYCLE;
+	var __STDLIB = __DEPS__.stdlib;
+	var __STDLIB_CLONE_OBJECT = __STDLIB.CLONE_OBJECT;
+	__STDDOM_CMP_SET_COMPILER(__COMPILER__);
+
+	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var attrs = __SCOPE__.attrs;
+		var val = __SCOPE__.val;
+		var __blocks__ = __SCOPE__.__blocks__;
+		var __this__ = __SCOPE__;
+
+		__STDDOM_CMP_INIT(__blocks__, ["Nested"]);
+
+		var __ctx = __STDDOM_CONTEXT();
+
+		var __frag = __STDDOM_FRAGMENT();
+		var __CMP_ATTRS = __STDLIB_CLONE_OBJECT((attrs));
+		__CMP_ATTRS["baz"] = (val);
+		var __x1 = __STDDOM_CMP_CREATE(__ctx, __blocks__,
+
+			__frag,
+			__this__,
+			"Nested",
+			__CMP_ATTRS,
+			null,
+			null
+		);
+
+		return {
+			ctx: __ctx,
+			frag: __frag,
+			container: null,
+			mountTo: function (container) {
+				this.container = container;
+				__frag.mountTo(container);
+				__STDDOM_LIFECYCLE(__ctx, 'connectedCallback');
+				return this;
+			},
+			update: function (__NEWSCOPE__) {
+				__SCOPE__ = __NEWSCOPE__;
+				attrs = __NEWSCOPE__.attrs;
+				val = __NEWSCOPE__.val;
+				__blocks__ = __NEWSCOPE__.__blocks__;
+				var __CMP_ATTRS = __STDLIB_CLONE_OBJECT((attrs));
+				__CMP_ATTRS["baz"] = (val);
+				__x1.update(__CMP_ATTRS);
+			}
+		}
+	}
+}
+`;
+
+exports[`Btn -> Sync 1`] = `
+function templateFactory(__DEPS__) {
+	"use strict";
+	var __STDDOM = __DEPS__.stddom;
+	var __STDDOM_CMP_SET_COMPILER = __STDDOM.CMP_SET_COMPILER;
+	var __STDDOM_CMP_INIT = __STDDOM.CMP_INIT;
+	var __STDDOM_CONTEXT = __STDDOM.CONTEXT;
+	var __STDDOM_FRAGMENT = __STDDOM.FRAGMENT;
+	var __STDDOM_CMP_CREATE = __STDDOM.CMP_CREATE;
+	var __STDDOM_LIFECYCLE = __STDDOM.LIFECYCLE;
+	__STDDOM_CMP_SET_COMPILER(__COMPILER__);
+
+	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var val = __SCOPE__.val;
+		var __blocks__ = __SCOPE__.__blocks__;
+		var __this__ = __SCOPE__;
+
+		__STDDOM_CMP_INIT(__blocks__, ["Btn"]);
+
+		var __ctx = __STDDOM_CONTEXT();
+
+		var __frag = __STDDOM_FRAGMENT();
+		var __CMP_ATTRS = {};
+		__CMP_ATTRS["value"] = (val);
+		var __x1 = __STDDOM_CMP_CREATE(__ctx, __blocks__,
+
+			__frag,
+			__this__,
+			"Btn",
+			__CMP_ATTRS,
+			null,
+			null
+		);
+
+		return {
+			ctx: __ctx,
+			frag: __frag,
+			container: null,
+			mountTo: function (container) {
+				this.container = container;
+				__frag.mountTo(container);
+				__STDDOM_LIFECYCLE(__ctx, 'connectedCallback');
+				return this;
+			},
+			update: function (__NEWSCOPE__) {
+				__SCOPE__ = __NEWSCOPE__;
+				val = __NEWSCOPE__.val;
+				__blocks__ = __NEWSCOPE__.__blocks__;
+				var __CMP_ATTRS = {};
+				__CMP_ATTRS["value"] = (val);
+				__x1.update(__CMP_ATTRS);
+			}
+		}
+	}
+}
+`;
+
+exports[`CSS Module 1`] = `
+function compiledTemplate(__SCOPE__, __OPTIONS__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var attrs = __SCOPE__.attrs;
+		var __this__ = __SCOPE__.__this__;
+		var __blocks__ = __SCOPE__.__blocks__;
+		var __slots__ = __SCOPE__.__slots__;
+		var __classNames__ = __SCOPE__.__classNames__;
+
+		var __CLN = __STDLIB_CSS_MODULE(__classNames__);
+
+		var __ctx = __STDDOM_CONTEXT();
+		var __super__ = {
+			"children": __SLOT_children
+		};
+		var __frag = __STDDOM_FRAGMENT();
+		var __x1 = __STDDOM_LIVE_NODE(__frag, __ctx, 1, "div");
+		__STDDOM_D_PROP(__ctx[1], "className", __CLN("alert " + (attrs.x) + " is-" + (attrs.y)))
+
+		var __SLOT_children_used = false;
+		function __SLOT_children() {
+			__SLOT_children_used = true;
+		}
+		__STDLIB_SLOT(__slots__, __super__, "children", __SLOT_children, __x1);
+
+		return {
+			ctx: __ctx,
+			frag: __frag,
+			container: null,
+			mountTo: function (container) {
+				this.container = container;
+				__frag.mountTo(container);
+				__STDDOM_LIFECYCLE(__ctx, 'connectedCallback');
+				return this;
+			},
+			update: function (__NEWSCOPE__) {
+				__SCOPE__ = __NEWSCOPE__;
+				attrs = __NEWSCOPE__.attrs;
+				__this__ = __NEWSCOPE__.__this__;
+				__blocks__ = __NEWSCOPE__.__blocks__;
+				__slots__ = __NEWSCOPE__.__slots__;
+				__classNames__ = __NEWSCOPE__.__classNames__;
+				__CLN.upd(__classNames__);
+				__STDDOM_D_PROP(__ctx[1], "className", __CLN("alert " + (attrs.x) + " is-" + (attrs.y)))
+			}
+		}
+	}
+`;
+
+exports[`Icon (short) 1`] = `
+function templateFactory(__DEPS__) {
+	"use strict";
+	var __STDDOM = __DEPS__.stddom;
+	var __STDDOM_CMP_INLINE = __STDDOM.CMP_INLINE;
+	var __STDDOM_CONTEXT = __STDDOM.CONTEXT;
+	var __STDDOM_FRAGMENT = __STDDOM.FRAGMENT;
+	var __STDDOM_LIVE_NODE = __STDDOM.LIVE_NODE;
+	var __STDDOM_D_PROP = __STDDOM.D_PROP;
+	var __STDDOM_CMP_CREATE_INLINE = __STDDOM.CMP_CREATE_INLINE;
+	var __STDDOM_LIFECYCLE = __STDDOM.LIFECYCLE;
+	var __STDLIB = __DEPS__.stdlib;
+	var __STDLIB_TO_STRING = __STDLIB.TO_STRING;
+	var __CMP_INLINE_STORE = {};
+	__STDDOM_CMP_INLINE(__CMP_INLINE_STORE, "Icon", function (attrs) {
+		var name = attrs.name;
+		var __ctx = __STDDOM_CONTEXT();
+		var __frag = __STDDOM_FRAGMENT();
+		var __x2 = __STDDOM_LIVE_NODE(__frag, __ctx, 2, "i");
+		__STDDOM_D_PROP(__ctx[2], "className", "icon-" + __STDLIB_TO_STRING(name))
+
+		return {
+			ctx: __ctx,
+			frag: __frag,
+			update: function (__NATTRS__) {
+				attrs = __NATTRS__;
+				name = __NATTRS__.name;
+				__STDDOM_D_PROP(__ctx[2], "className", "icon-" + __STDLIB_TO_STRING(name))
+			}
+		};
+	});
+
+	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var x = __SCOPE__.x;
+		var __this__ = __SCOPE__;
+
+		var __ctx = __STDDOM_CONTEXT();
+
+		var __frag = __STDDOM_FRAGMENT();
+		var __CMP_ATTRS = {};
+		__CMP_ATTRS["name"] = (x);
+		var __x1 = __STDDOM_CMP_CREATE_INLINE(__CMP_INLINE_STORE,
+
+			__frag,
+			__this__,
+			"Icon",
+			__CMP_ATTRS,
+			null,
+			null
+		);
+
+		return {
+			ctx: __ctx,
+			frag: __frag,
+			container: null,
+			mountTo: function (container) {
+				this.container = container;
+				__frag.mountTo(container);
+				__STDDOM_LIFECYCLE(__ctx, 'connectedCallback');
+				return this;
+			},
+			update: function (__NEWSCOPE__) {
+				__SCOPE__ = __NEWSCOPE__;
+				x = __NEWSCOPE__.x;
+				var __CMP_ATTRS = {};
+				__CMP_ATTRS["name"] = (x);
+				__x1.update(__CMP_ATTRS);
+			}
+		}
+	}
+}
+`;
+
+exports[`Icon 1`] = `
+function templateFactory(__DEPS__) {
+	"use strict";
+	var __STDDOM = __DEPS__.stddom;
+	var __STDDOM_CMP_INLINE = __STDDOM.CMP_INLINE;
+	var __STDDOM_CONTEXT = __STDDOM.CONTEXT;
+	var __STDDOM_FRAGMENT = __STDDOM.FRAGMENT;
+	var __STDDOM_LIVE_NODE = __STDDOM.LIVE_NODE;
+	var __STDDOM_D_PROP = __STDDOM.D_PROP;
+	var __STDDOM_CMP_CREATE_INLINE = __STDDOM.CMP_CREATE_INLINE;
+	var __STDDOM_LIFECYCLE = __STDDOM.LIFECYCLE;
+	var __STDLIB = __DEPS__.stdlib;
+	var __STDLIB_TO_STRING = __STDLIB.TO_STRING;
+	var __CMP_INLINE_STORE = {};
+	__STDDOM_CMP_INLINE(__CMP_INLINE_STORE, "Icon", function (attrs) {
+		var name = attrs.name;
+		var __ctx = __STDDOM_CONTEXT();
+		var __frag = __STDDOM_FRAGMENT();
+		var __x2 = __STDDOM_LIVE_NODE(__frag, __ctx, 2, "i");
+		__STDDOM_D_PROP(__ctx[2], "className", "icon-" + __STDLIB_TO_STRING(name))
+
+		return {
+			ctx: __ctx,
+			frag: __frag,
+			update: function (__NATTRS__) {
+				attrs = __NATTRS__;
+				name = __NATTRS__.name;
+				__STDDOM_D_PROP(__ctx[2], "className", "icon-" + __STDLIB_TO_STRING(name))
+			}
+		};
+	});
+
+	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var x = __SCOPE__.x;
+		var __this__ = __SCOPE__;
+
+		var __ctx = __STDDOM_CONTEXT();
+
+		var __frag = __STDDOM_FRAGMENT();
+		var __CMP_ATTRS = {};
+		__CMP_ATTRS["name"] = (x);
+		var __x1 = __STDDOM_CMP_CREATE_INLINE(__CMP_INLINE_STORE,
+
+			__frag,
+			__this__,
+			"Icon",
+			__CMP_ATTRS,
+			null,
+			null
+		);
+
+		return {
+			ctx: __ctx,
+			frag: __frag,
+			container: null,
+			mountTo: function (container) {
+				this.container = container;
+				__frag.mountTo(container);
+				__STDDOM_LIFECYCLE(__ctx, 'connectedCallback');
+				return this;
+			},
+			update: function (__NEWSCOPE__) {
+				__SCOPE__ = __NEWSCOPE__;
+				x = __NEWSCOPE__.x;
+				var __CMP_ATTRS = {};
+				__CMP_ATTRS["name"] = (x);
+				__x1.update(__CMP_ATTRS);
+			}
+		}
+	}
+}
+`;
+
+exports[`Pseudo Elements: super 1`] = `
+function compiledTemplate(__SCOPE__, __OPTIONS__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var attrs = __SCOPE__.attrs;
+		var __this__ = __SCOPE__.__this__;
+		var __blocks__ = __SCOPE__.__blocks__;
+		var __slots__ = __SCOPE__.__slots__;
+		var __classNames__ = __SCOPE__.__classNames__;
+
+		var __ctx = __STDDOM_CONTEXT();
+		var __super__ = {
+			"children": __SLOT_children
+		};
+		var __frag = __STDDOM_FRAGMENT();
+		var __x1 = __STDDOM_NODE(__frag, "div");
+
+		var __SLOT_children_used = false;
+		function __SLOT_children() {
+			__SLOT_children_used = true;
+			__STDDOM_TEXT(__x1, "Original:");
+			__STDDOM_VALUE(__x1, __ctx, 2, attrs.value);
+		}
+		__STDLIB_SLOT(__slots__, __super__, "children", __SLOT_children, __x1);
+
+		return {
+			ctx: __ctx,
+			frag: __frag,
+			container: null,
+			mountTo: function (container) {
+				this.container = container;
+				__frag.mountTo(container);
+				__STDDOM_LIFECYCLE(__ctx, 'connectedCallback');
+				return this;
+			},
+			update: function (__NEWSCOPE__) {
+				__SCOPE__ = __NEWSCOPE__;
+				attrs = __NEWSCOPE__.attrs;
+				__this__ = __NEWSCOPE__.__this__;
+				__blocks__ = __NEWSCOPE__.__blocks__;
+				__slots__ = __NEWSCOPE__.__slots__;
+				__classNames__ = __NEWSCOPE__.__classNames__;
+
+				if (__SLOT_children_used) {
+					__STDDOM_UPD_VALUE(__ctx[2], attrs.value);
+				}
+			}
+		}
+	}
+`;
