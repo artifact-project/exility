@@ -330,3 +330,62 @@ it('iso / XFooSuper', () => {
 
 	expect(container.innerHTML).toBe('<div><!--(-->Yes<!--)-->:Original:<!--(-->3<!--)--></div>');
 });
+
+it('iso / page', async () => {
+	const sandboxFactory = document.createElement('iframe');
+
+	document.body.appendChild(sandboxFactory);
+	await pause();
+
+	const sandbox = sandboxFactory.contentDocument;
+
+	sandbox.open();
+	sandbox.write(createStringCompiler({
+		scope: ['title', 'content', 'state'],
+		metaComments: true,
+	})(`
+		!html
+		html
+			head > title | \${title}
+			body.is-\${state} | \${content}
+	`)({stdlib})({
+		state: 'backend',
+		title: 'Initial',
+		content: 'Ready',
+	}));
+	sandbox.close();
+
+	expect(sandbox.title).toBe('Initial');
+	expect(sandbox.body.className).toBe('is-backend');
+	expect(sandbox.body.innerHTML).toBe('<!--(-->Ready<!--)-->');
+
+	const view = createDOMCompiler({
+		scope: ['title', 'content', 'state'],
+		isomorphic: true,
+	})(`
+		!html
+		html
+			head > title | \${title}
+			body.is-\${state} | \${content}
+	`)({stdlib, stddom})({
+		state: 'client',
+		title: 'Wow!',
+		content: 'Norm',
+	}, {
+		isomorphic: sandbox
+	});
+
+	expect(sandbox.title).toBe('Wow!');
+	expect(sandbox.body.className).toBe('is-client');
+	expect(sandbox.body.innerHTML).toBe('<!--(-->Norm<!--)-->');
+
+	view.update({
+		state: 'interactive',
+		title: 'Exility',
+		content: 'Ultimate isomorphic page!',
+	});
+
+	expect(sandbox.title).toBe('Exility');
+	expect(sandbox.body.className).toBe('is-interactive');
+	expect(sandbox.body.innerHTML).toBe('<!--(-->Ultimate isomorphic page!<!--)-->');
+});

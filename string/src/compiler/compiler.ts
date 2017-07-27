@@ -256,7 +256,10 @@ const compiler = createCompiler<StringModeOptions>((options) => (node: XNode) =>
 					);
 				}
 			} else if (TEXT_TYPE === type) {
-				code = pushText(raw.value);
+				code = (metaComments && node.parent && node.parent.raw && node.parent.raw.name === 'title'
+						? push
+						: pushText
+				)(raw.value);
 			} else if (COMMENT_TYPE === type) {
 				code = options.comment ? push(`${pad}<!--${raw.value}-->${NL}`) : NL;
 			} else if (HIDDEN_CLASS_TYPE === type) {

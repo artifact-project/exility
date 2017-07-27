@@ -18,6 +18,7 @@ type COMPILED_ATTR = [string, string, boolean];
 const R_IS_EVENT_ATTR = /^(on-|@)/;
 const {ATTR_TO_PROPS, BOOL_ATTRS} = stddom;
 const {
+	DTD_TYPE,
 	ROOT_TYPE,
 	TEXT_TYPE,
 	KEYWORD_TYPE,
@@ -330,7 +331,9 @@ const compiler = createCompiler<IDOMCompilerOptions>((options: IDOMCompilerOptio
 		const slots = node.slots;
 		const children = node.children;
 
-		if (KEYWORD_TYPE === type) {
+		if (DTD_TYPE === type) {
+			return `__STDDOM_GET_ISOMORPHIC_NEXT(__STDDOM_GET_PARENT_NODE(${parentName}));`;
+		} else if (KEYWORD_TYPE === type) {
 			if ('fx' === name) {
 				// Эффекты
 				return `
