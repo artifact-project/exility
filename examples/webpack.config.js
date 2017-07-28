@@ -39,7 +39,7 @@ module.exports = {
 					{loader: 'css-loader'},
 				],
 			},
-		]
+		],
 	},
 	resolve: {
 		extensions: ['.tsx', '.ts', '.js'],

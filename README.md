@@ -39,7 +39,7 @@ The project is in active development and it can be collected only in one way:
  - Several compilation modes: `string`, `dom`
  - Compiling into a pure function without dependencies
  - Generating a minimum code with preliminary optimizations
- - NativeDOM (there is no slowly VirtualDOM)
+ - NativeDOM (no slow VirtualDOM)
  - The single ecosystem on TypeScript.
  - etc.
 

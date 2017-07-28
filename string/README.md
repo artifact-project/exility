@@ -3,7 +3,7 @@ Exility String
 Рендерер в строку.
 
 
-```js
+```ts
 import {renderToString} from '@exility/string';
 
 const results = renderToString('h1.title-${size} | Hi, ${name}!', {
