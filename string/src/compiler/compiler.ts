@@ -28,16 +28,19 @@ const {
 
 let mcid = 0;
 const KEYWORDS = {
-	'if': ({test}) => [`if (${test}) {`, '}'],
+	'if': ({test}) => [
+		`if (${test}) {`,
+		'}',
+	],
 
 	'else': ({test}) => [
 		(test ? `else if (${test}) {` : 'else {'),
-		'}'
+		'}',
 	],
 
 	'for': ({data, as, key}) => [
 		`__STDLIB_EACH(${data}, function EACH_ITERATOR(${as}, ${key || '$index'}) {`,
-		'});'
+		'});',
 	],
 };
 
@@ -82,6 +85,7 @@ const compiler = createCompiler<StringModeOptions>((options) => (node: XNode) =>
 	const CUSTOM_ELEMENTS = {};
 	const globalFragments = [];
 	const NodeClass = <XNodeConstructor>node.constructor;
+	const TO_STR = '__STDLIB_TO_STRING';
 	const HTML_ENCODE = '__STDLIB_HTML_ENCODE';
 	const HTML_TEXT_ENCODE = metaComments ? `${HTML_ENCODE}_MC` : HTML_ENCODE;
 	const slotsCode = [];
@@ -262,20 +266,19 @@ const compiler = createCompiler<StringModeOptions>((options) => (node: XNode) =>
 					);
 				}
 			} else if (TEXT_TYPE === type) {
-				code = (metaComments && node.parent && node.parent.raw && node.parent.raw.name === 'title'
-						? push
-						: pushText
-				)(raw.value);
+				code = (metaComments ? pushText : push)(raw.value);
 			} else if (COMMENT_TYPE === type) {
 				code = options.comment ? push(`${pad}<!--${raw.value}-->${NL}`) : NL;
 			} else if (HIDDEN_CLASS_TYPE === type) {
 				code = content + NL;
 			} else if (CUSTOM_ELEMENTS[name]) {
 				const elem = CUSTOM_ELEMENTS[name];
-				const attrsStr = `{${Object
-					.keys(raw.attrs || {})
-					.map(name => `${stringifyObjectKey(name)}: ${stringifyParsedValue(raw.attrs[name]).value}`)
-					.join(', ')}}`;
+				const attrsStr = raw.attrs.__attrs__
+					? stringifyParsedValue(raw.attrs.__attrs__).value
+					: `{${Object
+						.keys(raw.attrs || {})
+						.map(name => `${stringifyObjectKey(name)}: ${stringifyParsedValue(raw.attrs[name]).value}`)
+						.join(', ')}}`;
 
 				if (elem.external) {
 					code = `${pad}__ROOT += __BLOCK_RENDER(__blocks__, "${name}", ${attrsStr}, ${elem.slots});\n`;
@@ -304,14 +307,19 @@ const compiler = createCompiler<StringModeOptions>((options) => (node: XNode) =>
 					code = `__ROOT += __STDLIB_SLOT(__slots__, __super__, "${raw.name}", ${slotName});`;
 				}
 			} else {
-				const attrsStr = Object.keys(raw.attrs || {})
-					.map(name => R_IS_EVENT.test(name)
-						? ''
-						: push(` ${name}=`) + pushAttr(name, raw.attrs[name], node)
-					)
-					.join('');
+				const attrsList = [];
 
-				code = push(`${pad}<`) + push(name) + attrsStr;
+				Object.keys(raw.attrs || {}).forEach(name => {
+					const value = raw.attrs[name];
+
+					if (name === 'innerHTML') {
+						content = push(stringifyAttributeValue(name, value, TO_STR).value, true);
+					} else if (!R_IS_EVENT.test(name)) {
+						attrsList.push(push(` ${name}=`) + pushAttr(name, value, node));
+					}
+				});
+
+				code = push(`${pad}<`) + push(name) + attrsList.join('');
 
 				if (SELF_CLOSED_TAGS[name]) {
 					code += push(`/>${NL}`);

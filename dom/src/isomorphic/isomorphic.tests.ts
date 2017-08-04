@@ -346,7 +346,7 @@ it('iso / page', async () => {
 	})(`
 		!html
 		html
-			head > title | \${title}
+			head > title[innerHTML=\${title}]
 			body.is-\${state} | \${content}
 	`)({stdlib})({
 		state: 'backend',
@@ -365,7 +365,7 @@ it('iso / page', async () => {
 	})(`
 		!html
 		html
-			head > title | \${title}
+			head > title[innerHTML=\${title}]
 			body.is-\${state} | \${content}
 	`)({stdlib, stddom})({
 		state: 'client',

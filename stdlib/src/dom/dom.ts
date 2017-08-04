@@ -14,6 +14,7 @@ const ATTR_TO_PROPS = {
 	'tabIndex': 'tabIndex',
 	'autofocus': 'autoFocus',
 	'autoFocus': 'autoFocus',
+	'innerHTML': 'innerHTML',
 };
 
 const BOOL_ATTRS = {
@@ -205,9 +206,8 @@ function VALUE(parent, ctx, id, value) {
 	if (ISOMORPHIC_FRAG) {
 		const parentNode = GET_PARENT_NODE(parent);
 		const anchor = GET_ISOMORPHIC_NEXT(parentNode);
-		const isTitle = anchor.nodeType !== anchor.COMMENT_NODE && parentNode.nodeName === 'TITLE';
 
-		el = isTitle ? anchor : anchor.nextSibling;
+		el = anchor.nextSibling;
 		value = value == null ? '' : value;
 
 		if (el.nodeType === anchor.TEXT_NODE) {
@@ -219,7 +219,7 @@ function VALUE(parent, ctx, id, value) {
 			el = txt;
 		}
 
-		!isTitle && (parentNode.__iso += 2);
+		parentNode.__iso += 2;
 		(parent !== parentNode) && APPEND(parent, el);
 	} else {
 		el = TEXT(parent, value);

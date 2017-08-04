@@ -174,7 +174,21 @@ it('pure', () => {
 	const factory = fromString('i.foo | ${text}!', ['text'], true);
 
 	expect(factory).toMatchSnapshot();
-	expect(factory()({text: '&bar'})).toBe('<i class="foo">&amp;bar!</i>');
+	expect(factory({stdlib})({text: '&bar'})).toBe('<i class="foo">&amp;bar!</i>');
+});
+
+it('innerHTML / static', () => {
+	const factory = fromString('.foo[innerHTML="<i>OK</i>"] | FAIL', []);
+
+	expect(factory).toMatchSnapshot();
+	expect(factory({stdlib})({text: '&bar'})).toBe('<div class="foo"><i>OK</i></div>');
+});
+
+it('innerHTML / var', () => {
+	const factory = fromString('.foo[innerHTML=${text}] | FAIL', ['text']);
+
+	expect(factory).toMatchSnapshot();
+	expect(factory({stdlib})({text: '<i>raw</i>'})).toBe('<div class="foo"><i>raw</i></div>');
 });
 
 describe('COMMON_TEST', () => {

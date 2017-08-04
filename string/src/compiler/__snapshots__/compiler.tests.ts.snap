@@ -167,6 +167,29 @@ function templateFactory() {
 }
 `;
 
+exports[`innerHTML / static 1`] = `
+function templateFactory() {
+	"use strict";
+	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
+		return "<div class=\\"foo\\"><i>OK</i></div>";
+	}
+}
+`;
+
+exports[`innerHTML / var 1`] = `
+function templateFactory(__DEPS__) {
+	"use strict";
+	var __STDLIB = __DEPS__.stdlib;
+	var __STDLIB_TO_STRING = __STDLIB.TO_STRING;
+	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var text = __SCOPE__.text;
+
+		return "<div class=\\"foo\\">" + __STDLIB_TO_STRING(text) + "</div>";
+	}
+}
+`;
+
 exports[`interpolate 1`] = `
 function templateFactory(__DEPS__) {
 	"use strict";
