@@ -1,5 +1,5 @@
 import * as ts from 'typescript';
-import transformerFactory from './transformer';
+import transformer from './transformer';
 
 const compilerOptions = {
 	module: ts.ModuleKind.CommonJS,
@@ -13,7 +13,7 @@ const printer = ts.createPrinter({
 
 function transform(source: string): string {
 	const sourceFile = ts.createSourceFile('source.ts', source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
-	const transformationResult = ts.transform(sourceFile, [transformerFactory], compilerOptions);
+	const transformationResult = ts.transform(sourceFile, [transformer()], compilerOptions);
 
 	return printer.printFile(transformationResult.transformed[0]);
 }

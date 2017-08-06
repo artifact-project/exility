@@ -1,6 +1,10 @@
 import * as ts from 'typescript';
 import {createCompiler} from '@exility/dom';
 
+export interface TXOptions {
+	isomorphic?: boolean;
+}
+
 function createImport(name, path) {
 	return ts.createImportDeclaration(
 		undefined,
@@ -89,7 +93,7 @@ function glueTemplateExpression(node: ts.TemplateExpression): string {
 	return chunks.join('');
 }
 
-function visitNode(node, imports) {
+function visitNode(node, imports, options: TXOptions) {
 	if (!isTemplate(node)) {
 		return node;
 	}
@@ -115,6 +119,7 @@ function visitNode(node, imports) {
 	const compile = createCompiler({
 		...meta,
 		scope,
+		isomorphic: options.isomorphic,
 	});
 	const templateFactory = compile(templateString);
 	const code = templateFactory
@@ -130,15 +135,17 @@ function visitNode(node, imports) {
 		ts.createCall(
 			ts.createParen(ts.createIdentifier(code)),
 			undefined,
-			[generateDepsObject(imports, {
-				'stdlib': '@exility/stdlib/src/core/core',
-				'stddom': '@exility/stdlib/src/dom/dom',
-			})]
-		)
+			[
+				generateDepsObject(imports, {
+					'stdlib': '@exility/stdlib/src/core/core',
+					'stddom': '@exility/stdlib/src/dom/dom',
+				}),
+			],
+		),
 	);
 }
 
-function visitNodeAndChildren(node, context, imports) {
+function visitNodeAndChildren(node, context, imports, options: TXOptions) {
 	// Ходим только по классам, методам, функциям и свойствам
 	if (
 		node == null || !(
@@ -155,8 +162,8 @@ function visitNodeAndChildren(node, context, imports) {
 	}
 
 	return ts.visitEachChild(
-		visitNode(node, imports),
-		(childNode) => visitNodeAndChildren(childNode, context, imports),
+		visitNode(node, imports, options),
+		(childNode) => visitNodeAndChildren(childNode, context, imports, options),
 		context
 	);
 }
@@ -180,18 +187,20 @@ function getMeta(node) {
 	return meta;
 }
 
-function exilityTransformerFactory(context) {
-	return function (file) {
-		const imports = {};
-		const result = visitNodeAndChildren(file, context, imports);
+function exilityTransformerFactoryConfigurate(options: TXOptions = {}) {
+	return function exilityTransformerFactory(context) {
+		return function (file) {
+			const imports = {};
+			const result = visitNodeAndChildren(file, context, imports, options);
 
-		return ts.updateSourceFileNode(
-			result,
-			Object.keys(imports)
-				.map(name => imports[name])
-				.concat(result.statements)
-		);
-	};
+			return ts.updateSourceFileNode(
+				result,
+				Object.keys(imports)
+					.map(name => imports[name])
+					.concat(result.statements)
+			);
+		};
+	}
 }
 
-export default exilityTransformerFactory;
+export default exilityTransformerFactoryConfigurate;
