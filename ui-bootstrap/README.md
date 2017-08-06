@@ -30,7 +30,6 @@ class App extends Block<null> {
 ```js
 const path = require('path');
 const webpack = require('webpack');
-const {default:exilityTransformer} = require('@exility/ts-transformer');
 
 module.exports = {
 	entry: {
