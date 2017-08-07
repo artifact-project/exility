@@ -1,1 +1,3 @@
-export from './src/css/css';
+import css from './src/css/css';
+
+export default css;
