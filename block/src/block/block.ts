@@ -18,6 +18,7 @@ export interface IBlockOptions {
 	events?: object;
 	parent?: typeof Block;
 	slots?: object;
+	isomorphic?: Element | Document;
 }
 
 export interface IPlainBlock<A> {
@@ -109,7 +110,9 @@ export default class Block<A> implements IEmitter<IBlock> {
 		if (this.__template__ === void 0) {
 			console.warn(`[@exility/block] Not compiled`);
 		} else {
-			this.__view__ = this.__template__(this.__scope__);
+			this.__view__ = this.__template__(this.__scope__, {
+				isomorphic: options.isomorphic,
+			});
 		}
 	}
 

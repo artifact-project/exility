@@ -844,7 +844,9 @@ function CMP_SET_COMPILER(X) {
 }
 
 function CMP_INIT(blocks, names) {
-	const {compileBlock} = CMP_COMPILER;
+	const compileBlock = CMP_COMPILER
+		? CMP_COMPILER.compileBlock
+		: function (block) { return block; };
 
 	names.forEach(name => {
 		const block = blocks[name];

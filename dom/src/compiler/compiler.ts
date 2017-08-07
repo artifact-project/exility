@@ -587,10 +587,12 @@ const compiler = createCompiler<IDOMCompilerOptions>((options: IDOMCompilerOptio
 		if (ROOT_TYPE === node.type) {
 			if (isomorphic) {
 				res += `
-					if (!__OPTIONS__.isomorphic) {
-						throw new Error('Undefined "isomorphic" option');
+					var __IS_ISOMORPHIC = false;
+					
+					if (__OPTIONS__.isomorphic) {
+						__IS_ISOMORPHIC = true;
+						__STDDOM_ISOMORPHIC(__OPTIONS__.isomorphic);
 					}
-					__STDDOM_ISOMORPHIC(__OPTIONS__.isomorphic);
 				`;
 			}
 
@@ -648,7 +650,7 @@ const compiler = createCompiler<IDOMCompilerOptions>((options: IDOMCompilerOptio
 				container: null,
 				mountTo: function (container) {
 					this.container = container;
-					__frag.mountTo(container);${isomorphic ? '\n__STDDOM_ISOMORPHIC(null);' : ''}
+					__frag.mountTo(container);${isomorphic ? '\n__IS_ISOMORPHIC && __STDDOM_ISOMORPHIC(null);' : ''}
 					${computed ? `__STDDOM_LIFECYCLE(__ctx, 'connectedCallback');` : ''}
 					return this;
 				},

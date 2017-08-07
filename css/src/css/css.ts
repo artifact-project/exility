@@ -131,7 +131,7 @@ function updateRules() {
 	});
 }
 
-export function getUsedCSS() {
+export function getUsedCSS(): {names: string[], cssText: string} {
 	const results = {
 		names: [],
 		cssText: '',
