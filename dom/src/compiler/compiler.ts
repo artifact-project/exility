@@ -332,7 +332,7 @@ const compiler = createCompiler<IDOMCompilerOptions>((options: IDOMCompilerOptio
 		const children = node.children;
 
 		if (DTD_TYPE === type) {
-			return `__STDDOM_GET_ISOMORPHIC_NEXT(__STDDOM_GET_PARENT_NODE(${parentName}));`;
+			return `__IS_ISOMORPHIC && __STDDOM_GET_ISOMORPHIC_NEXT(__STDDOM_GET_PARENT_NODE(${parentName}));`;
 		} else if (KEYWORD_TYPE === type) {
 			if ('fx' === name) {
 				// Эффекты
