@@ -9,7 +9,7 @@ module.exports = {
 				compilerOptions: tsConfig.compilerOptions,
 				fileName: path,
 				transformers: {
-					before: [exilityTransformer],
+					before: [exilityTransformer()],
 					after: [],
 				},
 			}).outputText;

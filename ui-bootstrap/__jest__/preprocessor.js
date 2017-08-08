@@ -11,7 +11,7 @@ module.exports = {
 				fileName: path,
 				transformers: {
 					before: [
-						exilityTransformer,
+						exilityTransformer(),
 						txReflector,
 					],
 					after: [],
