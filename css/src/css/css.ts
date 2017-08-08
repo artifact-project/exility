@@ -131,6 +131,14 @@ function updateRules() {
 	});
 }
 
+export function revertCSSNode() {
+	const dummyCSS = document.getElementById('__css__');
+	const {parentNode} = dummyCSS;
+
+	parentNode.insertBefore(__cssNode__, dummyCSS);
+	parentNode.removeChild(dummyCSS);
+}
+
 export function getUsedCSS(): {names: string[], cssText: string} {
 	const results = {
 		names: [],
