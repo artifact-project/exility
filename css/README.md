@@ -73,13 +73,13 @@ console.log(link.root); // "_nssjx7 _nssjx7-_ac7b3" (2)
 
 // and CSS result, wow! (3)
 console.log(getUsedCSS());
-{
-	names: ['_nssjx7', '_ac7b3'],
-	cssText: `
-		._nssjx7 {color #333;font-size: 14px}
-		._ac7b3, ._nssjx7-_ac7b3:hover {color red;}
-	`,
-}
+// {
+// 	names: ['_nssjx7', '_ac7b3'],
+// 	cssText: `
+// 		._nssjx7 {color #333;font-size: 14px}
+// 		._ac7b3, ._1p346d8:hover {color red;}
+// 	`,
+// }
 ```
 
 

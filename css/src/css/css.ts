@@ -1,5 +1,9 @@
-export interface CSSRules {
-	[selector: string]: any;
+export interface IRules {
+	[selector: string]: IRule;
+}
+
+export interface IRule {
+	[selector: string]: string | number | IRule;
 }
 
 interface ComputedRule {
@@ -7,6 +11,7 @@ interface ComputedRule {
 	name: string;
 	cssText: string;
 	linked: string[];
+	pseudo: ComputedRule[];
 	dependsOn: ComputedRule[];
 }
 
@@ -14,10 +19,15 @@ interface ComputedRules {
 	[computedName: string]: ComputedRule;
 }
 
-const R_TAG = /^<(.+)\/>$/;
-const R_UPPER = /[A-Z]/;
+export interface CSSResult {
+	names: string[];
+	cssText: string;
+}
 
+const AMP_CODE = '&'.charCodeAt(0);
+const R_UPPER = /[A-Z]/;
 const SEED = +(process.env.SEED || 0);
+
 let registry: ComputedRules = {};
 
 const __cssNode__ = typeof document !== 'undefined' ? document.getElementById('__css__') : null;
@@ -34,7 +44,7 @@ if (__cssNode__) {
 	});
 }
 
-function simpleChecksum(value: string): string {
+function hash(value: string): string {
 	let idx = value.length;
 	let hash = SEED;
 
@@ -42,7 +52,7 @@ function simpleChecksum(value: string): string {
 		hash = (hash * 33) ^ value.charCodeAt(idx);
 	}
 
-	return (hash >>> 0).toString(36);
+	return `_${(hash >>> 0).toString(36)}`;
 }
 
 function computeCSSPropValue(name, value) {
@@ -53,19 +63,24 @@ function computeCSSPropValue(name, value) {
 	return value;
 }
 
-function toKebabCase(chr) {
+function kebabReplacer(chr) {
 	return `-${chr.toLowerCase()}`;
 }
 
-function computeCSSPropName(name) {
-	return name.replace(R_UPPER, toKebabCase);
+function toKebabCase(name) {
+	return name.replace(R_UPPER, kebabReplacer);
 }
 
 function computeCSS(rule) {
 	const props = [];
+	const nested = [];
 
 	Object.keys(rule).forEach(prop => {
-		props.push(`${computeCSSPropName(prop)}:${computeCSSPropValue(prop, rule[prop])}`);
+		if (prop.charCodeAt(0) === AMP_CODE) {
+			nested.push(computeRule(rule[prop]));
+		} else {
+			props.push(`${toKebabCase(prop)}:${computeCSSPropValue(prop, rule[prop])}`);
+		}
 	});
 
 	return props.join(';');
@@ -73,13 +88,14 @@ function computeCSS(rule) {
 
 function computeRule(rule: any): ComputedRule {
 	const cssText = computeCSS(rule);
-	const computedName = `_${simpleChecksum(cssText)}`;
+	const computedName = hash(cssText);
 
 	if (!registry.hasOwnProperty(computedName)) {
 		registry[computedName] = {
 			used: false,
 			name: computedName,
 			linked: [],
+			pseudo: [],
 			dependsOn: [],
 			cssText,
 		};
@@ -94,10 +110,6 @@ function useRule(rule: ComputedRule) {
 	if (rule.dependsOn.length) {
 		rule.dependsOn.forEach(rule => useRule(rule));
 	}
-}
-
-function isRuleForTag(name) {
-	return R_TAG.test(name);
 }
 
 function getCSSText({name, cssText, linked}: ComputedRule) {
@@ -130,7 +142,7 @@ export function revertCSSNode() {
 	parentNode.removeChild(dummyCSS);
 }
 
-export function getUsedCSS(): {names: string[], cssText: string} {
+export function getUsedCSS(all?: boolean): CSSResult {
 	const results = {
 		names: [],
 		cssText: '',
@@ -139,12 +151,11 @@ export function getUsedCSS(): {names: string[], cssText: string} {
 	Object.keys(registry).forEach(name => {
 		const {used} = registry[name];
 
-		if (used) {
+		if (all || used) {
 			results.names.push(name);
 			results.cssText += `${getCSSText(registry[name])}\n`;
 		}
 	});
-
 
 	return results;
 }
@@ -153,7 +164,7 @@ export function resetCSS() {
 	registry = {};
 }
 
-export default function css(rules: CSSRules): {[name: string]: string} {
+export default function css(rules: IRules): {[name: string]: string} {
 	const exports = {};
 	const compuledRules = {};
 	const proxy = {};
@@ -165,9 +176,9 @@ export default function css(rules: CSSRules): {[name: string]: string} {
 		if (name.indexOf(':') > -1) {
 			const [rootName, pseudoName] = name.split(':');
 			const rootRule = registry[exports[rootName]];
-			const extraName = `${rootRule.name}-${rule.name}-${pseudoName}`;
+			const extraName = hash(`${rootRule.name}-${rule.name}-${pseudoName}`);
 
-			rule.linked.push(`.${extraName}`);
+			rule.linked.push(`.${extraName}:${pseudoName}`);
 			rootRule.dependsOn.push(rule);
 			exports[rootName] += ` ${extraName}`;
 		}
@@ -199,7 +210,9 @@ export default function css(rules: CSSRules): {[name: string]: string} {
 				},
 			});
 		});
-	}
 
-	return proxy;
+		return proxy;
+	} else {
+		return exports;
+	}
 }
