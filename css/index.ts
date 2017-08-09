@@ -1,4 +1,4 @@
-import css, {getUsedCSS, revertCSSNode} from './src/css/css';
+import css, {getUsedCSS, revertCSSNode, resetCSS} from './src/css/css';
 
-export {getUsedCSS, revertCSSNode};
+export {getUsedCSS, revertCSSNode, resetCSS};
 export default css;

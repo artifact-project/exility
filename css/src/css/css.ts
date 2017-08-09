@@ -6,7 +6,8 @@ interface ComputedRule {
 	used: boolean;
 	name: string;
 	cssText: string;
-	tags: string[];
+	linked: string[];
+	dependsOn: ComputedRule[];
 }
 
 interface ComputedRules {
@@ -16,8 +17,8 @@ interface ComputedRules {
 const R_TAG = /^<(.+)\/>$/;
 const R_UPPER = /[A-Z]/;
 
-const registry: ComputedRules = {};
 const SEED = +(process.env.SEED || 0);
+let registry: ComputedRules = {};
 
 const __cssNode__ = typeof document !== 'undefined' ? document.getElementById('__css__') : null;
 const __cssRules__ = {};
@@ -78,7 +79,8 @@ function computeRule(rule: any): ComputedRule {
 		registry[computedName] = {
 			used: false,
 			name: computedName,
-			tags: [],
+			linked: [],
+			dependsOn: [],
 			cssText,
 		};
 	}
@@ -86,17 +88,20 @@ function computeRule(rule: any): ComputedRule {
 	return registry[computedName];
 }
 
-function useRule(rule: ComputedRule, tagName?: string) {
+function useRule(rule: ComputedRule) {
 	rule.used = true;
-	tagName && rule.tags.push(tagName);
+
+	if (rule.dependsOn.length) {
+		rule.dependsOn.forEach(rule => useRule(rule));
+	}
 }
 
 function isRuleForTag(name) {
 	return R_TAG.test(name);
 }
 
-function getCSSText({tags, name, cssText}: ComputedRule) {
-	return `${tags && tags.length ? tags.join(',') + ',' : ''}.${name}{${cssText}}`;
+function getCSSText({name, cssText, linked}: ComputedRule) {
+	return `${(linked.length ? linked.join(',') + ',' : '')}.${name}{${cssText}}`;
 }
 
 function insertRule(rule: ComputedRule) {
@@ -111,21 +116,7 @@ function updateRules() {
 	__cssQueue__.forEach(([name, rule]) => {
 		const cssRule = __cssRules__[rule.name];
 
-		if (isRuleForTag(name)) {
-			const tagName = name.replace(R_TAG, '$1');
-			const tagRule = __cssRules__[name];
-
-			if (tagRule) {
-				tagRule.selectorText = tagRule.selectorText.replace(`${tagName}, `, '');
-			}
-
-			if (cssRule) {
-				cssRule.selectorText = `${tagName}, ${cssRule.selectorText}`;
-				__cssRules__[name] = cssRule;
-			} else {
-				insertRule(rule);
-			}
-		} else if (!cssRule) {
+		if (!cssRule) {
 			insertRule(rule);
 		}
 	});
@@ -158,11 +149,30 @@ export function getUsedCSS(): {names: string[], cssText: string} {
 	return results;
 }
 
+export function resetCSS() {
+	registry = {};
+}
+
 export default function css(rules: CSSRules): {[name: string]: string} {
 	const exports = {};
+	const compuledRules = {};
+	const proxy = {};
+	const keys = Object.keys(rules);
 
-	Object.keys(rules).forEach(name => {
+	keys.forEach(name => {
 		const rule = computeRule(rules[name]);
+
+		if (name.indexOf(':') > -1) {
+			const [rootName, pseudoName] = name.split(':');
+			const rootRule = registry[exports[rootName]];
+			const extraName = `${rootRule.name}-${rule.name}-${pseudoName}`;
+
+			rule.linked.push(`.${extraName}`);
+			rootRule.dependsOn.push(rule);
+			exports[rootName] += ` ${extraName}`;
+		}
+
+		compuledRules[name] = rule;
 
 		if (__cssNode__) {
 			exports[name] = rule.name;
@@ -172,17 +182,24 @@ export default function css(rules: CSSRules): {[name: string]: string} {
 				__cssQueueLock = true;
 				requestAnimationFrame(updateRules);
 			}
-		} else if (isRuleForTag(name)) {
-			useRule(rule, name.replace(R_TAG, '$1'));
 		} else {
-			Object.defineProperty(exports, name, {
-				get() {
-					rule.used || useRule(rule);
-					return process.env.NODE_ENV !== 'production' ? ` ${name}[ ${rule.name} ]` : rule.name;
-				}
-			});
+			exports[name] = rule.name;
 		}
 	});
 
-	return exports;
+	if (process.env.RUN_AT === 'server') {
+		keys.forEach(name => {
+			const rule = compuledRules[name];
+			const value = exports[name];
+
+			Object.defineProperty(proxy, name, {
+				get() {
+					rule.used || useRule(rule);
+					return process.env.NODE_ENV !== 'production' ? ` ${name}[ value ]` : value;
+				},
+			});
+		});
+	}
+
+	return proxy;
 }

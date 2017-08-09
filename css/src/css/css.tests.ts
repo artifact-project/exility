@@ -1,6 +1,8 @@
-import css, {getUsedCSS} from './css';
+import css, {getUsedCSS, resetCSS} from './css';
 
 it('css / used', () => {
+	process.env.RUN_AT = 'server';
+
 	const a = css({
 		'foo': {color: 'red'},
 		'bar': {color: 'green'},
@@ -34,4 +36,24 @@ it('css / production', () => {
 	const b = css({'bar': {color: 'red'}});
 
 	expect(a.foo).toBe(b.bar)
+});
+
+it('css / pseudo', () => {
+	resetCSS();
+
+	process.env.RUN_AT = 'server';
+
+	const link = css({
+		'main': {color: 'black'},
+		'root': {color: 'black'},
+		'root:hover': {color: 'green'},
+	});
+
+	expect(link.main).toBe('_3uavnk');
+	expect(link.root).toBe('_3uavnk _3uavnk-_yjvk7w-hover');
+
+	expect(getUsedCSS()).toEqual({
+		names: ['_3uavnk', '_yjvk7w'],
+		cssText: '._3uavnk{color:black}\n._3uavnk-_yjvk7w-hover,._yjvk7w{color:green}\n',
+	});
 });
