@@ -1,6 +1,5 @@
 Exility CSS
 -----------
-PoC: CSS in JS.
 
 
 ### Features
