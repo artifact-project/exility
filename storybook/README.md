@@ -1,6 +1,6 @@
 Exility Storybook
 -----------------
-Спец. враппер над оригинальным storybook.
+A special wrapper over the original [storybook](storybook.js.org).
 
 
 ### Development

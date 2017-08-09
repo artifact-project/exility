@@ -1,6 +1,6 @@
 Exility STDLib
 ---------------
-Набор стандартных библиотек.
+A set of standard libraries.
 
 
 ### Index

@@ -44,6 +44,19 @@ The project is in active development and it can be collected only in one way:
  - etc.
 
 
+### Modules
+
+ - [./block](block) — Basic "Block" for building UI (based on web components spec)
+ - [./css](css) — CSS in JS (minimally necessary functional)
+ - [./dom](dom) — DOM Renderer (isomorphic)
+ - [./jacket](jacket) — Utility for testing your ui-blocks.
+ - [./parser](parser) — Language parser
+ - [./stdlib](stdlib) — A set of standard libraries.
+ - [./storybook](storybook) — A special wrapper over the original [storybook](storybook.js.org).
+ - [./string](string) — String Renderer
+ - [./ts-transformer](ts-transformer) — TypeScript transformer for template precompilation
+
+
 ### Syntax
 
 #### Basic

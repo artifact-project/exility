@@ -1,6 +1,6 @@
 Exility Jacket
 --------------
-Utility for testing your blocks.
+Utility for testing your ui-blocks.
 
 
 ### Пример

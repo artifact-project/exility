@@ -1,6 +1,7 @@
-Exility TypeScript Transformer
-------------------------------
-Препроцессор для компиляции шаблонов
+Exility TSTransformer
+---------------------
+TypeScript transformer for template precompilation
+
 
 ### Development
 
