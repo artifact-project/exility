@@ -42,7 +42,7 @@ Add `style#__css__` into `head` and before including `@exility/css`.
 ### API
 
  - `css(rules): {[name:string]: string}`
- - `getUsedCSS(): {names: string[], cssText: string}`
+ - `getUsedCSS(all?: boolean): {names: string[], cssText: string}`
 
 
 ### Killer-feature
