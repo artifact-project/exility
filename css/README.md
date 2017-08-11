@@ -4,8 +4,8 @@ Exility CSS
 
 ### Features
 
- - Smaller Critical CSS
  - CSS deduplication
+ - Smaller Critical CSS
  - Nesting
  - Media Queries (todo)
  - Minimalistic API
@@ -21,22 +21,35 @@ const cx = css({
 	},
 });
 
-console.log(cx.main); // "main[ _nssjx7 ]" (dev)
-console.log(cx.main); // "_nssjx7" (production)
+console.log(cx.main); // "main-nssjx7" (dev)
+console.log(cx.main); // "_rs" (production)
 
 console.log(getUsedCSS());
 // {
-// 	names: ['main'],
-// 	cssText: '._nssjx7 {color red;font-size: 14px}',
+// 	names: ['nssjx7'],
+// 	cssText: '._nssjx7{color red;font-size: 14px;}',
 // }
 ```
 
 
-### Setup
+### Usage
 Add `style#__css__` into `head` and before including `@exility/css`.
 
 ```html
-<style id="__css__"></style>
+<style id="__css__" data-names="%__USED_CSS_NAMES__%">%__USED_CSS_TEXT__%</style>
+<script type="module">
+	import css from '/node_modules/@exility/css/index.js';
+
+	const cx = css({
+		'link': {
+			color: '#3c0',
+
+			'&:hover': {
+				color: 'red',
+			},
+		},
+	});
+</script>
 ```
 
 
@@ -62,25 +75,20 @@ const link = css({
 	'root': {
 		color: '#333',
 		fontSize: 14,
-	},
 
-	'root:hover': {
-		color: 'red',
+		'&:hover': {
+			color: 'red',
+		},
 	},
 });
 
-console.log(some.main); // "_nssjx7" (1)
-console.log(link.root); // "_nssjx7 _1p346d8" (2)
+console.log(some.main); // "_rs" (1)
+console.log(link.root); // "_rt" (2)
 
 // and CSS result, wow! (3)
-console.log(getUsedCSS());
-// {
-// 	names: ['_nssjx7', '_ac7b3'],
-// 	cssText: `
-// 		._nssjx7 {color #333;font-size: 14px}
-// 		._1p346d8:hover {color red;}
-// 	`,
-// }
+console.log(getUsedCSS().cssText);
+//  ._rs, _rt {color #333;font-size: 14px;}
+//  ._rs:hover {color red;}
 ```
 
 

@@ -40,10 +40,14 @@ let __cssSheet__: CSSStyleSheet;
 const __cssQueue__: IRuleRegistryEntry[] = [];
 let __cssQueueLock__ = false;
 
-export function setStyleNode(el: HTMLElement, names: string[]) {
+export function setStyleNode(el: HTMLElement, names?: string[]) {
 	if (el && el['sheet']) {
 		__cssNode__ = <HTMLStyleElement>el;
 		__cssSheet__ = el['sheet'];
+
+		if (names == null) {
+			names = (__cssNode__.getAttribute('data-names') || '').split(',');
+		}
 
 		[].forEach.call(__cssSheet__.cssRules, (rule, idx) => {
 			__cssRules__[names[idx]] = rule;
@@ -255,6 +259,5 @@ export default function css(rules: IRuleDefinitions): {[name: string]: string} {
 if (process.env.RUN_AT !== 'server') {
 	setStyleNode(
 		typeof document !== 'undefined' ? document.getElementById('__css__') : null,
-		(process.env.EXILITY_CSS || '').split(','),
 	);
 }

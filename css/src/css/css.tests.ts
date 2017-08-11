@@ -107,9 +107,11 @@ it('hrm', async () => {
 	const usedCSS = getUsedCSS(true);
 
 	__css__.textContent = usedCSS.cssText;
+	__css__.setAttribute('data-names', usedCSS.names.join(','));
+
 	document.body.appendChild(__css__);
 
-	setStyleNode(__css__, usedCSS.names);
+	setStyleNode(__css__);
 
 	expect(__css__.sheet['cssRules'].length).toBe(1);
 	expect(__css__.sheet['cssRules'][0].selectorText).toBe('.nnolt3,.foo-nnolt3');
