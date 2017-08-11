@@ -42,7 +42,7 @@ let __cssQueueLock__ = false;
 
 export function setStyleNode(el: HTMLElement, names: string[]) {
 	if (el && el['sheet']) {
-		__cssNode__ = el;
+		__cssNode__ = <HTMLStyleElement>el;
 		__cssSheet__ = el['sheet'];
 
 		[].forEach.call(__cssSheet__.cssRules, (rule, idx) => {
