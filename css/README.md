@@ -5,8 +5,10 @@ Exility CSS
 ### Features
 
  - Smaller Critical CSS
- - CSS Rules deduplication
- - Minimalist API
+ - CSS deduplication
+ - Nesting
+ - Media Queries (todo)
+ - Minimalistic API
 
 
 ```ts
@@ -68,7 +70,7 @@ const link = css({
 });
 
 console.log(some.main); // "_nssjx7" (1)
-console.log(link.root); // "_nssjx7 _nssjx7-_ac7b3" (2)
+console.log(link.root); // "_nssjx7 _1p346d8" (2)
 
 // and CSS result, wow! (3)
 console.log(getUsedCSS());
@@ -76,7 +78,7 @@ console.log(getUsedCSS());
 // 	names: ['_nssjx7', '_ac7b3'],
 // 	cssText: `
 // 		._nssjx7 {color #333;font-size: 14px}
-// 		._ac7b3, ._1p346d8:hover {color red;}
+// 		._1p346d8:hover {color red;}
 // 	`,
 // }
 ```
