@@ -34,8 +34,8 @@ let SEED = +(process.env.SEED || Math.round(Math.random() * 1e4));
 let cid = SEED;
 
 let __cssNode__: HTMLStyleElement = null;
-let __cssRules__: {[computedName: string]: CSSStyleRule};
-let __cssSheet__: CSSStyleSheet;
+let __cssRules__: {[computedName: string]: CSSStyleRule} = {};
+let __cssSheet__: CSSStyleSheet = null;
 
 const __cssQueue__: IRuleRegistryEntry[] = [];
 let __cssQueueLock__ = false;
@@ -91,12 +91,13 @@ function toKebabCase(name) {
 function insertRule({name, linked, cssText}: IRuleRegistryEntry) {
 	const idx = __cssSheet__.cssRules.length;
 
-	__cssSheet__.insertRule(`.${name},${linked.join(',')}{${cssText}}\n`, idx);
+	__cssSheet__.insertRule(`._${name},${linked.join(',')}{${cssText}}\n`, idx);
 	__cssRules__[name] = <CSSStyleRule>__cssSheet__.cssRules[idx];
 }
 
 function updateRules() {
 	__cssQueueLock__ = false;
+
 	__cssQueue__.forEach(rule => {
 		const cssRule = __cssRules__[rule.name];
 
@@ -106,6 +107,7 @@ function updateRules() {
 			cssRule.selectorText = [`.${rule.name}`].concat(rule.linked).join(',');
 		}
 	});
+
 	__cssQueue__.length = 0;
 }
 
@@ -115,6 +117,8 @@ export function revertCSSNode() {
 
 	parentNode.insertBefore(__cssNode__, dummyCSS);
 	parentNode.removeChild(dummyCSS);
+
+	__cssSheet__ = <CSSStyleSheet>__cssNode__['sheet'];
 }
 
 export function getUsedCSS(all?: boolean): IUsedCSS {
@@ -127,12 +131,14 @@ export function getUsedCSS(all?: boolean): IUsedCSS {
 		const {used, linked, cssText} = registry[name];
 
 		if (all || used) {
-			results.names.push(name);
-			results.cssText += `${linked.join(',')}{${cssText}}\n`;
+			let value = `${linked.join(',')}{${cssText}}\n`;
 
 			if (process.env.NODE_ENV !== 'production') {
-				results.cssText = `.${name},${results.cssText}`;
+				value = `._${name},${value}`;
 			}
+
+			results.names.push(name);
+			results.cssText += value;
 		}
 	});
 
@@ -247,7 +253,7 @@ export default function css(rules: IRuleDefinitions): {[name: string]: string} {
 
 				if (!__cssQueueLock__) {
 					__cssQueueLock__ = true;
-					updateRules();
+					requestAnimationFrame(updateRules);
 				}
 			});
 		});
