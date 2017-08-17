@@ -16,7 +16,7 @@
     "src/*/*.js",
     "src/*/*.d.ts"
   ],
-  "author": "RubaXa <tarsh@rubaxa.org>",
+  "author": "RubaXa <ibnRubaXa@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "skeletik": "^0.7.0"

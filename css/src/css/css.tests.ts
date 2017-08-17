@@ -64,7 +64,7 @@ it('dev', () => {
 	expect(cx.foo).toBe('foo-nnolt3');
 	expect(getUsedCSS(true)).toEqual({
 		names: ['nnolt3'],
-		cssText: '.nnolt3,.foo-nnolt3{color:red;}\n',
+		cssText: '._nnolt3,.foo-nnolt3{color:red;}\n',
 	});
 });
 
@@ -114,7 +114,7 @@ it('hrm', async () => {
 	setStyleNode(__css__);
 
 	expect(__css__.sheet['cssRules'].length).toBe(1);
-	expect(__css__.sheet['cssRules'][0].selectorText).toBe('.nnolt3,.foo-nnolt3');
+	expect(__css__.sheet['cssRules'][0].selectorText).toBe('._nnolt3,.foo-nnolt3');
 
 	// Client: add class (deduplicate)
 	process.env.RUN_AT = 'client';
@@ -132,7 +132,7 @@ it('hrm', async () => {
 	await pause();
 
 	expect(__css__.sheet['cssRules'].length).toBe(2);
-	expect(__css__.sheet['cssRules'][1].selectorText).toBe('.g8rsf,.qux-g8rsf');
+	expect(__css__.sheet['cssRules'][1].selectorText).toBe('._g8rsf,.qux-g8rsf');
 
 	// Client: change class
 	process.env.RUN_AT = 'client';

@@ -24,6 +24,7 @@ const R_SELECTOR = /(?:^|\.)([a-z][a-z\d_-]+)/ig;
 const R_HAS_REF = /&/;
 const R_REFS = /&/g;
 const DOT_CODE = '.'.charCodeAt(0);
+const nextTick = typeof requestAnimationFrame === 'undefined' ? setTimeout : requestAnimationFrame;
 
 const notPx = {
 	opacity: 1,
@@ -89,10 +90,13 @@ function toKebabCase(name) {
 }
 
 function insertRule({name, linked, cssText}: IRuleRegistryEntry) {
-	const idx = __cssSheet__.cssRules.length;
+	__cssRules__[name] = insertCSSRule(`._${name},${linked.join(',')}`, cssText);
+}
 
-	__cssSheet__.insertRule(`._${name},${linked.join(',')}{${cssText}}\n`, idx);
-	__cssRules__[name] = <CSSStyleRule>__cssSheet__.cssRules[idx];
+function insertCSSRule(selectorText: string, cssText: string): CSSStyleRule {
+	const idx = __cssSheet__.cssRules.length;
+	__cssSheet__.insertRule(`${selectorText}{${cssText}}`, idx);
+	return <CSSStyleRule>__cssSheet__.cssRules[idx];
 }
 
 function updateRules() {
@@ -109,16 +113,6 @@ function updateRules() {
 	});
 
 	__cssQueue__.length = 0;
-}
-
-export function revertCSSNode() {
-	const dummyCSS = document.getElementById('__css__');
-	const {parentNode} = dummyCSS;
-
-	parentNode.insertBefore(__cssNode__, dummyCSS);
-	parentNode.removeChild(dummyCSS);
-
-	__cssSheet__ = <CSSStyleSheet>__cssNode__['sheet'];
 }
 
 export function getUsedCSS(all?: boolean): IUsedCSS {
@@ -253,7 +247,7 @@ export default function css(rules: IRuleDefinitions): {[name: string]: string} {
 
 				if (!__cssQueueLock__) {
 					__cssQueueLock__ = true;
-					requestAnimationFrame(updateRules);
+					nextTick(updateRules);
 				}
 			});
 		});
