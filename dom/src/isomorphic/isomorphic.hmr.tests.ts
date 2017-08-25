@@ -75,7 +75,9 @@ function fromString(tpl, data?, debug?) {
 		function updateNode(parentNode, el, vnode, ctx) {
 			if (el) {
 				if (el.tagName !== vnode.tagName) {
-					throw 'todo: updateNode';
+					const newEl = createNode(vnode);
+					parentNode.replaceChild(newEl, el);
+					el = newEl;
 				}
 			} else {
 				el = createNode(vnode);
@@ -118,8 +120,9 @@ function fromString(tpl, data?, debug?) {
 					updateNode(el, oldChildren[idx], newChildren[idx], ctx);
 				}
 
-				for (; idx < oldLength; idx++) {
-					el.removeChild(oldChildren[idx]);
+				idx = oldLength;
+				while (idx > newLength) {
+					el.removeChild(oldChildren[--idx]);
 				}
 			} else {
 				el.textContent = '';
@@ -143,7 +146,7 @@ function fromString(tpl, data?, debug?) {
 		updateChildren(view.container, root, newView.ctx);
 
 		Object['assign'](view, newView);
-		console.log(root);
+		// console.log(scope);
 	};
 
 	return view;
@@ -164,6 +167,20 @@ it('iso / hmr / value', () => {
 	view.reload(compile('h1 | -${y}-${x}-'), scope());
 	expect(view.container.innerHTML).toBe('<h1>-2-1-</h1>');
 
-	view.update({x: 2, y: 1});
+	view.update(scope({x: 2, y: 1}));
 	expect(view.container.innerHTML).toBe('<h1>-1-2-</h1>');
+
+	view.reload(compile('h2 | ${x}-${y}'), scope());
+	expect(view.container.innerHTML).toBe('<h2>2-1</h2>');
+});
+
+it('iso / hmr / if', () => {
+	let scope = newScope();
+	const view = fromString('h1\n\t| ${x}\n\tif (x) > i | ${y}', scope({x: 1, y: '!'}));
+
+	expect(view.container.innerHTML).toBe('<h1>1<i>!</i></h1>');
+
+	console.log(view.ctx);
+	// view.reload(compile('h1 | -${y}-'), scope());
+	// expect(view.container.innerHTML).toBe('<h1>-!-</h1>');
 });
