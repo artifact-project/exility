@@ -56,21 +56,7 @@ function fromString(tpl, data?, debug?) {
 
 		const root = doc.createElement('div');
 		const newView = template(scope, {}).mountTo(root);
-
-		function updateCtx(ctx, vnode, el) {
-			if (!ctx.__vmap__) {
-				ctx.__vmap__ = true;
-				Object.keys(ctx).forEach((id) => {
-					if (+id > 0) {
-						ctx[id].el.__id__ = id;
-					}
-				});
-			}
-
-			if (vnode.__id__) {
-				ctx[vnode.__id__].el = el;
-			}
-		}
+		const nodeMap = new WeakMap();
 
 		function updateNode(parentNode, el, vnode, ctx) {
 			if (el) {
@@ -91,7 +77,7 @@ function fromString(tpl, data?, debug?) {
 				el.nodeValue = vnode.nodeValue;
 			}
 
-			updateCtx(ctx, vnode, el);
+			nodeMap.set(vnode, el);
 
 			return el;
 		}
@@ -142,15 +128,45 @@ function fromString(tpl, data?, debug?) {
 			return el;
 		}
 
+		// console.log(view.ctx);
+		// console.log(newView.ctx);
+
 		newView.container = view.container;
 		updateChildren(view.container, root, newView.ctx);
 
 		Object['assign'](view, newView);
-		// console.log(scope);
+
+		(function _next(frag, ctx) {
+			Object.keys(ctx).forEach(id => {
+				if (+id > 0) {
+					const item = ctx[id];
+
+					if (item.node) { // IF
+						item.anchor = nodeMap.get(item.anchor);
+						item.parent = nodeMap.get(item.parent);
+						_next(item.node.frag, item.node.ctx);
+					} else {
+						item.el = nodeMap.get(item.el);
+					}
+				}
+			});
+
+			let idx = frag.length;
+
+			frag.parentNode = nodeMap.get(frag.parentNode);
+
+			while (idx--) {
+				frag[idx] = nodeMap.get(frag[idx]);
+			}
+		})(newView.frag, newView.ctx);
 	};
 
 	return view;
 }
+
+beforeEach(() => {
+	stddom.SET_DOCUMENT(document);
+});
 
 it('iso / hmr / value', () => {
 	let scope = newScope();
@@ -176,11 +192,19 @@ it('iso / hmr / value', () => {
 
 it('iso / hmr / if', () => {
 	let scope = newScope();
-	const view = fromString('h1\n\t| ${x}\n\tif (x) > i | ${y}', scope({x: 1, y: '!'}));
+	const view = fromString('h1\n\t| ${x}', scope({x: 1, y: '!'}));
 
+	expect(view.container.innerHTML).toBe('<h1>1</h1>');
+
+	view.reload(compile('h1\n\t| ${x}\n\tif (x) > i | ${y}'), scope());
 	expect(view.container.innerHTML).toBe('<h1>1<i>!</i></h1>');
 
-	console.log(view.ctx);
-	// view.reload(compile('h1 | -${y}-'), scope());
-	// expect(view.container.innerHTML).toBe('<h1>-!-</h1>');
+	view.update(scope({y: '?'}));
+	expect(view.container.innerHTML).toBe('<h1>1<i>?</i></h1>');
+
+	view.update(scope({x: 0}));
+	expect(view.container.innerHTML).toBe('<h1>0</h1>');
+
+	view.update(scope({x: 1, y: 'wow'}));
+	expect(view.container.innerHTML).toBe('<h1>1<i>wow</i></h1>');
 });
