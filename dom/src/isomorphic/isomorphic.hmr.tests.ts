@@ -129,7 +129,7 @@ function fromString(tpl, data?, debug?) {
 		}
 
 		// console.log(view.ctx);
-		// console.log(newView.ctx);
+		// console.log(newView.ctx[3]);
 
 		newView.container = view.container;
 		updateChildren(view.container, root, newView.ctx);
@@ -141,12 +141,19 @@ function fromString(tpl, data?, debug?) {
 				if (+id > 0) {
 					const item = ctx[id];
 
-					if (item.node) { // IF
+					if (item.el) {
+						item.el = nodeMap.get(item.el);
+					} else {
 						item.anchor = nodeMap.get(item.anchor);
 						item.parent = nodeMap.get(item.parent);
-						_next(item.node.frag, item.node.ctx);
-					} else {
-						item.el = nodeMap.get(item.el);
+
+						if (item.node) { // IF
+							_next(item.node.frag, item.node.ctx);
+						} else if (item.nodes) { // FOR
+							item.nodes.forEach(node => {
+								_next(node.frag, node.ctx);
+							});
+						}
 					}
 				}
 			});
@@ -207,4 +214,24 @@ it('iso / hmr / if', () => {
 
 	view.update(scope({x: 1, y: 'wow'}));
 	expect(view.container.innerHTML).toBe('<h1>1<i>wow</i></h1>');
+});
+
+
+it('iso / hmr / for', () => {
+	let scope = newScope();
+	const view = fromString('div > for (i in x) > | ${i}', scope({x: [1, 2, 3]}));
+
+	expect(view.container.innerHTML).toBe('<div>123</div>');
+
+	view.reload(compile('ul > for (i in x) > li | ${i}'), scope());
+	expect(view.container.innerHTML).toBe('<ul><li>1</li><li>2</li><li>3</li></ul>');
+
+	view.update(scope({x: [2, 1]}));
+	expect(view.container.innerHTML).toBe('<ul><li>2</li><li>1</li></ul>');
+
+	// view.update(scope({x: 0}));
+	// expect(view.container.innerHTML).toBe('<h1>0</h1>');
+	//
+	// view.update(scope({x: 1, y: 'wow'}));
+	// expect(view.container.innerHTML).toBe('<h1>1<i>wow</i></h1>');
 });
