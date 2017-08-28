@@ -2,6 +2,7 @@ import {
 	core as stdlib,
 	dom as stddom,
 } from '@exility/stdlib';
+import Block from '@exility/block';
 import createDOMCompiler from '../compiler/compiler';
 
 const domCompiler = createDOMCompiler({
@@ -9,16 +10,24 @@ const domCompiler = createDOMCompiler({
 	isomorphic: true,
 });
 
+const domCompilerWithBlocks = createDOMCompiler({
+	blocks: ['Foo'],
+	scope: ['x', 'y', 'z', '__blocks__'],
+	isomorphic: true,
+});
 
-function compile(tpl) {
-	return domCompiler(tpl)({
+
+function compile(tpl, hasBlocks = false) {
+	return (hasBlocks ? domCompilerWithBlocks : domCompiler)(tpl)({
 		stdlib,
 		stddom,
 	});
 }
 
-function newScope() {
-	let scope = {};
+function newScope(blocks?) {
+	let scope = {
+		__blocks__: blocks,
+	};
 
 	return (patch = {}) => {
 		scope = {...scope, ...patch};
@@ -27,7 +36,7 @@ function newScope() {
 }
 
 function fromString(tpl, data?, debug?) {
-	const domTemplate = compile(tpl);
+	const domTemplate = compile(tpl, !!data.__blocks__);
 
 	debug && console.log(domTemplate.toString());
 
@@ -129,7 +138,7 @@ function fromString(tpl, data?, debug?) {
 		}
 
 		// console.log(view.ctx);
-		// console.log(newView.ctx[3]);
+		// console.log(newView.ctx[3].nodes);
 
 		newView.container = view.container;
 		updateChildren(view.container, root, newView.ctx);
@@ -145,11 +154,14 @@ function fromString(tpl, data?, debug?) {
 						item.el = nodeMap.get(item.el);
 					} else {
 						item.anchor = nodeMap.get(item.anchor);
-						item.parent = nodeMap.get(item.parent);
+
+						if (nodeMap.has(item.parent)) {
+							item.parent = nodeMap.get(item.parent);
+						}
 
 						if (item.node) { // IF
 							_next(item.node.frag, item.node.ctx);
-						} else if (item.nodes) { // FOR
+						} else if (item.hasOwnProperty('pool')) { // FOR
 							item.nodes.forEach(node => {
 								_next(node.frag, node.ctx);
 							});
@@ -160,20 +172,20 @@ function fromString(tpl, data?, debug?) {
 
 			let idx = frag.length;
 
-			frag.parentNode = nodeMap.get(frag.parentNode);
+			if (nodeMap.has(frag.parentNode)) {
+				frag.parentNode = nodeMap.get(frag.parentNode);
+			}
 
 			while (idx--) {
 				frag[idx] = nodeMap.get(frag[idx]);
 			}
 		})(newView.frag, newView.ctx);
+
+		stddom.SET_DOCUMENT(document);
 	};
 
 	return view;
 }
-
-beforeEach(() => {
-	stddom.SET_DOCUMENT(document);
-});
 
 it('iso / hmr / value', () => {
 	let scope = newScope();
@@ -216,7 +228,6 @@ it('iso / hmr / if', () => {
 	expect(view.container.innerHTML).toBe('<h1>1<i>wow</i></h1>');
 });
 
-
 it('iso / hmr / for', () => {
 	let scope = newScope();
 	const view = fromString('div > for (i in x) > | ${i}', scope({x: [1, 2, 3]}));
@@ -229,9 +240,20 @@ it('iso / hmr / for', () => {
 	view.update(scope({x: [2, 1]}));
 	expect(view.container.innerHTML).toBe('<ul><li>2</li><li>1</li></ul>');
 
-	// view.update(scope({x: 0}));
-	// expect(view.container.innerHTML).toBe('<h1>0</h1>');
-	//
-	// view.update(scope({x: 1, y: 'wow'}));
-	// expect(view.container.innerHTML).toBe('<h1>1<i>wow</i></h1>');
+	view.reload(compile('ol > for (i in x) > if (i % 2) > li | ${i}'), scope({x: [3, 2, 1, 0]}));
+	expect(view.container.innerHTML).toBe('<ol><li>3</li><li>1</li></ol>');
+
+	view.update(scope({x: [1, 2, 3]}));
+	expect(view.container.innerHTML).toBe('<ol><li>1</li><li>3</li></ol>');
+});
+
+it('iso / hmr / blocks', () => {
+	class Foo extends Block<null> {
+		static template = `i | OK`;
+	}
+
+	let scope = newScope({Foo});
+	const view = fromString('div > Foo', scope());
+
+	expect(view.container.innerHTML).toBe('<div></div>');
 });

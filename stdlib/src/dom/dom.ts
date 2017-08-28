@@ -771,6 +771,14 @@ function CMP_CREATE_DUMMY(name, attrs) {
 	return node;
 }
 
+function CMP_BLOCK_FACTORY(XBlock, attrs, parent, events, slots) {
+	return new XBlock(attrs, {
+		parent,
+		events,
+		slots,
+	})
+}
+
 function CMP_CREATE(ctx, blocks, parentFrag, parentThis, name, attrs, events, slots) {
 	const ISO_FRAG = ISOMORPHIC_FRAG;
 	let isoParentNode;
@@ -790,11 +798,13 @@ function CMP_CREATE(ctx, blocks, parentFrag, parentThis, name, attrs, events, sl
 
 		Block
 			.then((XBlock) => {
-				const cmpNode = new XBlock(node.attrs, {
-					parent: parentThis,
+				const cmpNode = CMP_BLOCK_FACTORY(
+					XBlock,
+					node.attrs,
+					parentThis,
 					events,
 					slots,
-				});
+				);
 				const view = cmpNode['__view__'];
 
 				ctx.blocks.push(cmpNode);
@@ -816,11 +826,13 @@ function CMP_CREATE(ctx, blocks, parentFrag, parentThis, name, attrs, events, sl
 				CMP_DUMMY_STATE(node.frag[0], 'failed', err.stack || err.toString());
 			});
 	} else {
-		const cmpNode = new Block(attrs, {
-			parent: parentThis,
+		const cmpNode = CMP_BLOCK_FACTORY(
+			Block,
+			attrs,
+			parentThis,
 			events,
 			slots,
-		});
+		);
 
 		node = {
 			frag: cmpNode['__view__'].frag,
@@ -931,6 +943,7 @@ export default {
 
 	CMP_INLINE,
 	CMP_CREATE_INLINE,
+	CMP_BLOCK_FACTORY,
 	CMP_CREATE,
 
 	ISOMORPHIC,
