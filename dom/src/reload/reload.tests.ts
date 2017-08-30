@@ -125,13 +125,14 @@ it('reload / blocks', () => {
 	expect(view.container.innerHTML).toBe('<div><i>OK</i></div>');
 
 	// Обновляем шаблон!
-	Foo.template = `i | \${attrs.val}!`;
+	Foo.template = `b | \${attrs.val}!`;
 	delete Foo.prototype['__template__'];
 
 	view.reload(compile('div > Foo[val=${x}]', true), scope({x: 'Wow'}));
 
-	expect(view.container.innerHTML).toBe('<div><i>Wow!</i></div>');
+	expect(view.container.innerHTML).toBe('<div><b>Wow!</b></div>');
 
 	view.update(scope({x: 'Yes'}));
-	expect(view.container.innerHTML).toBe('<div><i>Wow!</i></div>');
+
+	expect(view.container.innerHTML).toBe('<div><b>Yes!</b></div>');
 });

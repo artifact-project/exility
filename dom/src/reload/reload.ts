@@ -158,6 +158,10 @@ function relinking(map: VMap, frag, ctx) {
 	while (idx--) {
 		frag[idx] = map.get(frag[idx]);
 	}
+
+	ctx.blocks && ctx.blocks.forEach(({__view__:{ctx, frag}}) => {
+		relinking(map, frag, ctx);
+	});
 }
 
 export default function reload(view, template, scope) {
