@@ -22,12 +22,7 @@ const BOOL_ATTRS = {
 	'autofocus': true,
 };
 
-let document = window.document;
 let ISOMORPHIC_FRAG: any = null;
-
-function SET_DOCUMENT(node) {
-	document = node;
-}
 
 function ISOMORPHIC(frag) {
 	frag && (frag.__iso = 0);
@@ -894,8 +889,6 @@ function CMP_INIT(blocks, names) {
 
 // All
 export default {
-	SET_DOCUMENT,
-
 	BOOL_ATTRS,
 	ATTR_TO_PROPS,
 

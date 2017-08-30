@@ -75,6 +75,7 @@ export default class Block<A> implements IEmitter<IBlock> {
 	private __template__;
 	private __parent__;
 	private __events__;
+	protected __options__: IBlockOptions;
 
 	// Базлвый шаблон
 	static template: string | ((attrs) => void) = null;
@@ -96,11 +97,16 @@ export default class Block<A> implements IEmitter<IBlock> {
 		}
 
 		this.attrs = attrs;
+		this.__init__(options);
+	}
+
+	protected __init__(options: IBlockOptions) {
 		this.__events__ = options.events;
 		this.__parent__ = options.parent;
+		this.__options__ = options;
 
 		this.__scope__ = {
-			attrs,
+			attrs: this.attrs,
 			__blocks__: this.constructor['blocks'],
 			__classNames__: this.constructor['classNames'],
 			__this__: this,
