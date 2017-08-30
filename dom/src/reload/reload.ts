@@ -2,7 +2,7 @@ import {dom} from '@exility/stdlib';
 
 type VMap = WeakMap<VElement, HTMLElement>;
 
-const {ATTR_TO_PROPS} = dom;
+const {ATTR_TO_PROPS, LIFECYCLE} = dom;
 const {createElement, createTextNode} = document;
 
 class VElement {
@@ -175,6 +175,9 @@ export default function reload(view, template, scope) {
 
 	updateChildren(map, view.container, newView.frag);
 	relinking(map, newView.frag, newView.ctx);
+
+	LIFECYCLE(view.ctx, 'disconnectedCallback');
+	LIFECYCLE(newView.ctx, 'connectedCallback');
 
 	Object['assign'](view, newView);
 

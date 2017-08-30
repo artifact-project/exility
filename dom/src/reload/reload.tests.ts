@@ -115,8 +115,18 @@ it('reload / for', () => {
 });
 
 it('reload / blocks', () => {
-	class Foo extends Block<null> {
+	const log = [];
+	class Foo extends Block<{val: string}> {
 		static template = `i | OK`;
+
+		connectedCallback() {
+			log.push(`mount:${this.attrs.val}`);
+		}
+
+		disconnectedCallback() {
+			log.push(`unmount:${this.attrs.val}`);
+		}
+
 	}
 
 	let scope = newScope({Foo});
@@ -135,4 +145,9 @@ it('reload / blocks', () => {
 	view.update(scope({x: 'Yes'}));
 
 	expect(view.container.innerHTML).toBe('<div><b>Yes!</b></div>');
+	expect(log).toEqual([
+		'mount:undefined',
+		'unmount:undefined',
+		'mount:Wow',
+	]);
 });
