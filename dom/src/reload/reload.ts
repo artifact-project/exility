@@ -22,12 +22,14 @@ class VElement {
 	setAttribute(name, value) {
 		this.attributes[name] = value;
 	}
+
+	hasAttribute(name) {
+		return this.attributes.hasOwnProperty(name);
+	}
 }
 
 Object.keys(dom.ATTR_TO_PROPS).forEach(key => {
-	const proto = VElement.prototype;
-
-	Object.defineProperty(proto, key, {
+	Object.defineProperty(VElement.prototype, key, {
 		get() {
 			return this.attributes[ATTR_TO_PROPS[key]];
 		},
@@ -60,8 +62,13 @@ function updateAttributes(el: HTMLElement, vnode: VElement, onlySet?) {
 		let idx = oldAttributes.length;
 
 		while (idx--) {
-			const attrName = oldAttributes[idx].name;
-			attributes.hasOwnProperty(attrName) || el.removeAttribute(attrName);
+			const {name} = oldAttributes[idx];
+
+			if ((attributes.hasOwnProperty(name) || attributes.hasOwnProperty(ATTR_TO_PROPS[name]))) {
+				continue;
+			}
+
+			el.removeAttribute(name);
 		}
 	}
 }
@@ -80,21 +87,27 @@ function createNode(vnode: VElement): HTMLElement {
 }
 
 function updateNode(map: VMap, parentNode: HTMLElement, el: HTMLElement, vnode: VElement) {
+	let isNew = false;
+
 	if (el) {
 		if (el.tagName !== vnode.tagName) {
 			const newEl = createNode(vnode);
 
 			parentNode.replaceChild(newEl, el);
 			el = newEl;
+			isNew = true;
 		}
 	} else {
 		el = createNode(vnode);
+		isNew = true;
 		parentNode.appendChild(el);
 	}
 
 	if (vnode.tagName) {
-		updateAttributes(el, vnode);
-		updateChildren(map, el, vnode.childNodes);
+		if (isNew || !vnode.hasAttribute('--freezed')) {
+			updateChildren(map, el, vnode.childNodes);
+			updateAttributes(el, vnode); // todo: innerHTML
+		}
 	} else {
 		el.nodeValue = vnode.nodeValue;
 	}
@@ -106,9 +119,14 @@ function updateChildren(map: VMap, el: HTMLElement, newChildren: VElement[]) {
 	const newLength = newChildren.length;
 
 	if (newLength) {
-		const oldChildren = el.childNodes;
+		let oldChildren = el.childNodes;
 		let oldLength = oldChildren.length;
 		let idx = 0;
+
+		if (oldLength > 0 && oldChildren[0].nodeType === 10) {
+			oldLength--;
+			oldChildren = [].slice.call(oldChildren, 1);
+		}
 
 		for (; idx < newLength; idx++) {
 			updateNode(map, el, <HTMLElement>oldChildren[idx], newChildren[idx]);
@@ -183,6 +201,19 @@ export default function reload(view, template, scope) {
 
 	document.createElement = createElement;
 	document.createTextNode = createTextNode;
+}
+
+export function reloadBlock(block, XBlock) {
+	const scope = block.__scope__;
+
+	scope.__blocks__ = XBlock.blocks;
+	scope.__classNames__ = XBlock.classNames;
+
+	reload(
+		block.__view__,
+		XBlock.prototype.__template__,
+		scope,
+	);
 }
 
 
