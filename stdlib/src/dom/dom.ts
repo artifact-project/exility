@@ -152,8 +152,10 @@ function PROP(el, name, value) {
 }
 
 function D_PROP(node, name, value) {
+	value = value == null ? '' : value;
+
 	if (node.attrs[name] !== value) {
-		node.el[name] = value == null ? '' : value;
+		node.el[name] = value;
 		node.attrs[name] = value;
 	}
 }
@@ -231,9 +233,11 @@ function VALUE(parent, ctx, id, value) {
 }
 
 function UPD_VALUE(node, value) {
+	value = value == null ? '' : value;
+
 	if (node.value !== value) {
 		node.value = value;
-		node.el.nodeValue = value == null ? '' : value;
+		node.el.nodeValue = value;
 	}
 }
 

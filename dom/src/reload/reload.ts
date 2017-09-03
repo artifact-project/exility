@@ -122,19 +122,32 @@ function updateChildren(map: VMap, el: HTMLElement, newChildren: VElement[]) {
 		let oldChildren = el.childNodes;
 		let oldLength = oldChildren.length;
 		let idx = 0;
+		let oldIdx = 0;
 
 		if (oldLength > 0 && oldChildren[0].nodeType === 10) {
-			oldLength--;
-			oldChildren = [].slice.call(oldChildren, 1);
+			oldIdx++;
 		}
 
 		for (; idx < newLength; idx++) {
-			updateNode(map, el, <HTMLElement>oldChildren[idx], newChildren[idx]);
+			let child;
+
+			if (oldIdx < oldLength) {
+				child = <HTMLElement>oldChildren[oldIdx++];
+
+				if (child.nodeType === child.COMMENT_NODE) { // COMMENT_NODE
+					el.removeChild(child);
+					idx--;
+					oldIdx--;
+					oldLength--;
+					continue;
+				}
+			}
+
+			updateNode(map, el, child, newChildren[idx]);
 		}
 
-		idx = oldLength;
-		while (idx > newLength) {
-			el.removeChild(oldChildren[--idx]);
+		for (; oldIdx < oldLength; oldIdx++) {
+			el.removeChild(oldChildren[oldIdx]);
 		}
 	} else {
 		el.textContent = '';
