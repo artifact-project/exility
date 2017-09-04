@@ -1,4 +1,4 @@
-import css, {getUsedCSS, resetCSS, setStyleNode} from './css';
+import css, {fx, getUsedCSS, resetCSS, setStyleNode} from './css';
 
 function pause(ms = 30) {
 	return new Promise(resolve => setTimeout(resolve, ms));
@@ -40,6 +40,10 @@ it('used with nested', () => {
 			'&.bar': {
 				opacity: .5
 			},
+
+			'&.qux': {
+				opacity: .1
+			},
 		},
 
 		'bar': {
@@ -49,9 +53,12 @@ it('used with nested', () => {
 
 	expect(cx.foo).toBe('_rs');
 	expect(cx.bar).toBe('_rt');
+	expect(cx.qux).toBe('_ru');
+
 	expect(getUsedCSS().cssText.trim().split('\n')).toEqual([
 		`.${cx.foo} + .${cx.foo},.${cx.bar}{margin-left:10px;}`,
 		`.${cx.foo}.${cx.bar}{opacity:0.5;}`,
+		`.${cx.foo}.${cx.qux}{opacity:0.1;}`,
 		`.${cx.foo}{color:red;}`
 	]);
 });
@@ -94,6 +101,29 @@ it('&:pseudo', () => {
 
 	expect(getUsedCSS(true).cssText).toEqual(
 		`.${link.root}:hover{color:green;}\n.${link.root}{color:black;}\n`,
+	);
+});
+
+it('fx/@keyframes', () => {
+	process.env.RUN_AT = 'server';
+
+	const colorFx = css.fx({
+		from: {color: 'red'},
+		to: {color: 'black'},
+	});
+
+	const text = css({
+		'root': {
+			opacity: .5,
+			animation: colorFx('.8s'),
+		},
+	});
+
+	const sel = text.root;
+	const fxRule = colorFx('').computedRule;
+
+	expect(getUsedCSS().cssText).toEqual(
+		`@keyframes _${fxRule.name}{${fxRule.cssText}}\n.${sel}{opacity:0.5;animation:_${fxRule.name} .8s;}\n`,
 	);
 });
 

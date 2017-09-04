@@ -23,7 +23,10 @@ const R_SELECTOR_GLUE = /\s*,\s*/;
 const R_SELECTOR = /(?:^|\.)([a-z][a-z\d_-]+)/ig;
 const R_HAS_REF = /&/;
 const R_REFS = /&/g;
+
 const DOT_CODE = '.'.charCodeAt(0);
+const AT_CODE = '@'.charCodeAt(0);
+
 const nextTick = typeof requestAnimationFrame === 'undefined' ? setTimeout : requestAnimationFrame;
 
 const notPx = {
@@ -74,7 +77,7 @@ function hash(value: string): string {
 }
 
 function computeCSSPropValue(name, value) {
-	if (!notPx.hasOwnProperty(name) && value >= 0 || value <= 0) {
+	if (!notPx.hasOwnProperty(name) && (value >= 0 || value <= 0)) {
 		value += 'px';
 	}
 
@@ -122,10 +125,10 @@ export function getUsedCSS(all?: boolean): IUsedCSS {
 	};
 
 	Object.keys(registry).forEach(name => {
-		const {used, linked, cssText} = registry[name];
+		const {used, isFx, linked, cssText} = registry[name];
 
 		if (all || used) {
-			let value = `${linked.join(',')}{${cssText}}\n`;
+			let value = `${isFx ? `@keyframes _${name}` : linked.join(',')}{${cssText}}\n`;
 
 			if (process.env.NODE_ENV !== 'production') {
 				value = `._${name},${value}`;
@@ -159,11 +162,12 @@ function getPublicName(exports, name, computedName) {
 	return exports[name];
 }
 
-function getComputedRule(cssText) {
+function getComputedRule(cssText, isFx = false) {
 	const computedName = hash(cssText);
 
 	if (!registry.hasOwnProperty(computedName)) {
 		registry[computedName] = {
+			isFx,
 			used: false,
 			name: computedName,
 			cssText,
@@ -178,42 +182,72 @@ function addDot(selector) {
 	return selector.charCodeAt(0) === DOT_CODE ? selector : `.${selector}`;
 }
 
+function compileRawRuleProps(rawRule, origSelector?, linkedRules?, exports?) {
+	return Object.keys(rawRule).map(propName => {
+		let value = rawRule[propName];
+
+		if (R_HAS_REF.test(<string>propName)) {
+			return compileRawRule(
+				propName.replace(R_REFS, addDot(origSelector)),
+				<IRuleEntries>value,
+				exports,
+				linkedRules,
+			);
+		} else {
+			if (propName === 'animation') {
+				linkRules(linkedRules, origSelector.split(/\s*\./).pop(), value.computedRule);
+				value = value.value;
+			}
+
+			return `${toKebabCase(propName)}:${computeCSSPropValue(propName, value)};`;
+		}
+	}).join('');
+}
+
+function linkRules(linkedRules, name, computedRule) {
+	!linkedRules[name] && (linkedRules[name] = []);
+	linkedRules[name].push(computedRule);
+}
+
 function compileRawRule(selectors: string, rawRule: IRuleEntries, exports, linkedRules) {
 	selectors.split(R_SELECTOR_GLUE).forEach(origSelector => {
-		let cssText = '';
-
-		Object.keys(rawRule).forEach(propName => {
-			const value = rawRule[propName];
-
-			if (R_HAS_REF.test(<string>propName)) {
-				compileRawRule(
-					propName.replace(R_REFS, addDot(origSelector)),
-					<IRuleEntries>value,
-					exports,
-					linkedRules,
-				);
-			} else {
-				cssText += `${toKebabCase(propName)}:${computeCSSPropValue(propName, value)};`;
-			}
-		});
-
-		const computedRule = getComputedRule(cssText);
+		const cssText = compileRawRuleProps(rawRule, origSelector, linkedRules, exports);
 		const origNames = [];
+		const computedRule = getComputedRule(cssText);
 		const publicSelector = origSelector.replace(R_SELECTOR, (_, origName) => {
 			origNames.push(origName);
 			return addDot(getPublicName(exports, origName, computedRule.name));
 		});
 
 		origNames.forEach(name => {
-			!linkedRules[name] && (linkedRules[name] = []);
-			linkedRules[name].push(computedRule);
+			linkRules(linkedRules, name, computedRule);
 		});
 
 		!computedRule.linked.includes(publicSelector) && computedRule.linked.push(publicSelector);
 	});
 }
 
-export default function css(rules: IRuleDefinitions): {[name: string]: string} {
+export function fx(keyframes: {[frame:string]: IRuleEntries}) {
+	const cssText = Object.keys(keyframes).map(name => {
+		return `${(+name >= 0) ? `${name}%` : name}{${compileRawRuleProps(keyframes[name])}}`;
+	}).join('');
+
+	const computedRule = getComputedRule(cssText, true);
+
+	return function fxConfigure(detail) {
+		return {
+			value: `_${computedRule.name} ${detail}`,
+			computedRule,
+		};
+	};
+}
+
+export interface ICSSFactory {
+	(rules: IRuleDefinitions): {[name: string]: string};
+	fx: (keyframes: {[frame:string]: IRuleEntries}) => (detail: string) => any;
+}
+
+function css(rules: IRuleDefinitions): {[name: string]: string} {
 	const exports = {};
 	const linkedRules = {};
 
@@ -255,6 +289,10 @@ export default function css(rules: IRuleDefinitions): {[name: string]: string} {
 
 	return exports;
 }
+
+css['fx'] = fx;
+
+export default <ICSSFactory>css;
 
 if (process.env.RUN_AT !== 'server') {
 	setStyleNode(

@@ -1,6 +1,7 @@
 {
   "@exility/block": "./block",
   "@exility/compile": "./compile",
+  "@exility/css": "./css",
   "@exility/dom": "./dom",
   "@exility/jacket": "./jacket",
   "@exility/parser": "./parser",

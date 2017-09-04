@@ -1,4 +1,4 @@
-import css, {getUsedCSS, resetCSS} from './src/css/css';
+import css, {fx, getUsedCSS, resetCSS} from './src/css/css';
 
-export {getUsedCSS, resetCSS};
+export {fx, getUsedCSS, resetCSS};
 export default css;
