@@ -2,8 +2,21 @@ export interface IRuleDefinitions {
 	[selector: string]: IRuleEntries;
 }
 
+export interface IComputedRule {
+	isFx: boolean;
+	used: boolean;
+	name: string;
+	cssText: string;
+	linked: string[];
+}
+
+export interface IFx {
+	value: string;
+	computedRule: IComputedRule;
+}
+
 export interface IRuleEntries {
-	[selector: string]: string | number | IRuleEntries;
+	[selector: string]: string | number | IRuleEntries | IFx;
 }
 
 interface IRuleRegistryEntry {
@@ -25,7 +38,6 @@ const R_HAS_REF = /&/;
 const R_REFS = /&/g;
 
 const DOT_CODE = '.'.charCodeAt(0);
-const AT_CODE = '@'.charCodeAt(0);
 
 const nextTick = typeof requestAnimationFrame === 'undefined' ? setTimeout : requestAnimationFrame;
 
@@ -33,7 +45,7 @@ const notPx = {
 	opacity: 1,
 };
 
-let registry = {};
+let registry: {[index:string]: IComputedRule} = {};
 let SEED = +(process.env.SEED || Math.round(Math.random() * 1e4));
 let cid = SEED;
 
@@ -233,7 +245,7 @@ export function fx(keyframes: {[frame:string]: IRuleEntries}) {
 		.join('');
 	const computedRule = getComputedRule(cssText, true);
 
-	return (detail: string) => ({
+	return (detail: string): IFx => ({
 		value: `_${computedRule.name} ${detail}`,
 		computedRule,
 	});
@@ -241,7 +253,7 @@ export function fx(keyframes: {[frame:string]: IRuleEntries}) {
 
 export interface ICSSFactory {
 	(rules: IRuleDefinitions): {[name: string]: string};
-	fx: (keyframes: {[frame:string]: IRuleEntries}) => (detail: string) => object;
+	fx: (keyframes: {[frame:string]: IRuleEntries}) => (detail: string) => IFx;
 }
 
 function css(rules: IRuleDefinitions): {[name: string]: string} {
