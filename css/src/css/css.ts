@@ -131,7 +131,7 @@ export function getUsedCSS(all?: boolean): IUsedCSS {
 			let value = `${isFx ? `@keyframes _${name}` : linked.join(',')}{${cssText}}\n`;
 
 			if (process.env.NODE_ENV !== 'production') {
-				value = `._${name},${value}`;
+				!isFx && (value = `._${name},${value}`);
 			}
 
 			results.names.push(name);
@@ -228,23 +228,20 @@ function compileRawRule(selectors: string, rawRule: IRuleEntries, exports, linke
 }
 
 export function fx(keyframes: {[frame:string]: IRuleEntries}) {
-	const cssText = Object.keys(keyframes).map(name => {
-		return `${(+name >= 0) ? `${name}%` : name}{${compileRawRuleProps(keyframes[name])}}`;
-	}).join('');
-
+	const cssText = Object.keys(keyframes)
+		.map(name => `${(+name >= 0) ? `${name}%` : name}{${compileRawRuleProps(keyframes[name])}}`)
+		.join('');
 	const computedRule = getComputedRule(cssText, true);
 
-	return function fxConfigure(detail) {
-		return {
-			value: `_${computedRule.name} ${detail}`,
-			computedRule,
-		};
-	};
+	return (detail: string) => ({
+		value: `_${computedRule.name} ${detail}`,
+		computedRule,
+	});
 }
 
 export interface ICSSFactory {
 	(rules: IRuleDefinitions): {[name: string]: string};
-	fx: (keyframes: {[frame:string]: IRuleEntries}) => (detail: string) => any;
+	fx: (keyframes: {[frame:string]: IRuleEntries}) => (detail: string) => object;
 }
 
 function css(rules: IRuleDefinitions): {[name: string]: string} {
