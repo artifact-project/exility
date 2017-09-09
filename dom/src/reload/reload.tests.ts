@@ -53,6 +53,28 @@ function fromString(tpl, data?, debug?) {
 	return view;
 }
 
+it('reload / attrs', () => {
+	let scope = newScope();
+	const view = fromString('h1.is-${x}', scope({x: 'foo'}));
+
+	expect(view.container.innerHTML).toBe('<h1 class="is-foo"></h1>');
+
+	view.reload(compile('h1.has-${x}'), scope());
+	expect(view.container.innerHTML).toBe('<h1 class="has-foo"></h1>');
+
+	view.update(scope({x: 'qux'}));
+	expect(view.container.innerHTML).toBe('<h1 class="has-qux"></h1>');
+});
+
+it('reload / events', () => {
+	let scope = newScope();
+	const view = fromString('h1[@click]', scope({}));
+
+	expect(view.container.innerHTML).toBe('<h1></h1>');
+
+	view.reload(compile('h1[@mouseover]'), scope());
+	expect(view.container.innerHTML).toBe('<h1></h1>');
+});
 
 it('reload / value', () => {
 	let scope = newScope();

@@ -39,7 +39,7 @@ const R_REFS = /&/g;
 
 const DOT_CODE = '.'.charCodeAt(0);
 
-const nextTick = typeof requestAnimationFrame === 'undefined' ? setTimeout : requestAnimationFrame;
+const nextTick = typeof requestAnimationFrame === 'function' ? requestAnimationFrame : setTimeout;
 
 const notPx = {
 	opacity: 1,

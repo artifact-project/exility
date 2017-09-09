@@ -9,6 +9,8 @@ class VElement {
 	tagName: string;
 	nodeValue: string;
 	childNodes: VElement[] = [];
+
+	events: Array<[string, EventListenerOrEventListenerObject, object|boolean]> = [];
 	attributes: {[name: string]: string} = {};
 
 	constructor(name) {
@@ -26,6 +28,10 @@ class VElement {
 	hasAttribute(name) {
 		return this.attributes.hasOwnProperty(name);
 	}
+
+	addEventListener(name, fn, capture) {
+		this.events.push([name, fn, capture]);
+	}
 }
 
 Object.keys(dom.ATTR_TO_PROPS).forEach(key => {
@@ -41,7 +47,7 @@ Object.keys(dom.ATTR_TO_PROPS).forEach(key => {
 });
 
 function updateAttributes(el: HTMLElement, vnode: VElement, onlySet?) {
-	const {attributes} = vnode;
+	const {attributes, events} = vnode;
 
 	for (const attrName in attributes) {
 		if (attributes.hasOwnProperty(attrName)) {
@@ -71,6 +77,10 @@ function updateAttributes(el: HTMLElement, vnode: VElement, onlySet?) {
 			el.removeAttribute(name);
 		}
 	}
+
+	events.forEach(args => {
+		el.addEventListener(args[0], args[1], <boolean>args[2]);
+	});
 }
 
 function createNode(vnode: VElement): HTMLElement {
