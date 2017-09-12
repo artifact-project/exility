@@ -34,6 +34,7 @@ export default class XEvent<T, D extends object, E extends DOMEvent> implements 
 
 	readonly target: T = null;
 	readonly currentTarget: T = null;
+	readonly domTarget: HTMLElement = null;
 
 	readonly defaultPrevented: boolean = false;
 	readonly propagationStopped: boolean = false;
@@ -43,6 +44,11 @@ export default class XEvent<T, D extends object, E extends DOMEvent> implements 
 		this.type = type;
 		this.detail = detail || null;
 		this.originalEvent = originalEvent || null;
+
+		if (originalEvent && originalEvent.target && (originalEvent.target as HTMLElement).nodeType) {
+			// todo: Cover me!
+			this.domTarget = originalEvent.target as HTMLElement;
+		}
 	}
 
 	preventDefault() {
