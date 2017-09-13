@@ -151,6 +151,7 @@ it('reload / for', () => {
 
 it('reload / blocks', () => {
 	const log = [];
+
 	class Foo extends Block<{val: string}> {
 		static template = `i | OK`;
 
@@ -161,7 +162,6 @@ it('reload / blocks', () => {
 		disconnectedCallback() {
 			log.push(`unmount:${this.attrs.val}`);
 		}
-
 	}
 
 	const scope = newScope({Foo});
