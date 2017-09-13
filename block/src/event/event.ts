@@ -7,6 +7,8 @@ export interface IEvent<T, D, E> {
 
 	readonly target: T;
 	readonly currentTarget: T;
+	readonly domType: string;
+	readonly domTarget: HTMLElement;
 
 	readonly defaultPrevented: boolean;
 	readonly propagationStopped: boolean;
@@ -22,6 +24,11 @@ interface IWritable<T> {
 	propagationImmediateStopped: boolean;
 }
 
+function _callOriginalEventMethod(target, name) {
+	const originalEvent = target.originalEvent;
+	originalEvent && (typeof originalEvent[name] === 'function') && originalEvent[name]();
+}
+
 export interface IEmitter<T> {
 	dispatchEvent<D extends object, E extends DOMEvent>(event: XEvent<T, D, E>);
 	dispatchEvent<D extends object, E extends DOMEvent>(type: string, detail?: D, originalEvent?: E);
@@ -34,6 +41,8 @@ export default class XEvent<T, D extends object, E extends DOMEvent> implements 
 
 	readonly target: T = null;
 	readonly currentTarget: T = null;
+
+	readonly domType: string = null;
 	readonly domTarget: HTMLElement = null;
 
 	readonly defaultPrevented: boolean = false;
@@ -47,34 +56,29 @@ export default class XEvent<T, D extends object, E extends DOMEvent> implements 
 
 		if (originalEvent && originalEvent.target && (originalEvent.target as HTMLElement).nodeType) {
 			// todo: Cover me!
+			this.domType = originalEvent.type;
 			this.domTarget = originalEvent.target as HTMLElement;
 		}
 	}
 
 	preventDefault() {
 		if (!this.defaultPrevented) {
-			const {originalEvent} = this;
-
 			(this as IWritable<T>).defaultPrevented = true;
-			originalEvent && originalEvent.preventDefault && originalEvent.preventDefault();
+			_callOriginalEventMethod(this, 'preventDefault');
 		}
 	}
 
 	stopPropagation() {
 		if (!this.propagationStopped) {
-			const {originalEvent} = this;
-
 			(this as IWritable<T>).propagationStopped = true;
-			originalEvent && originalEvent.stopPropagation && originalEvent.stopPropagation();
+			_callOriginalEventMethod(this, 'stopPropagation');
 		}
 	}
 
 	stopImmediatePropagation() {
 		if (!this.propagationImmediateStopped) {
-			const {originalEvent} = this;
-
 			(this as IWritable<T>).propagationImmediateStopped = true;
-			originalEvent && originalEvent.stopImmediatePropagation && originalEvent.stopImmediatePropagation();
+			_callOriginalEventMethod(this, 'stopImmediatePropagation');
 		}
 	}
 

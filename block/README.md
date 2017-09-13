@@ -21,7 +21,7 @@ class Button extends Block<IBtnAttrs> {
 	static blocks = {Icon};
 
 	static template = (attrs) => `
-		button.btn[type="${attrs.type}"]
+		button.btn[type="${attrs.type}" @click.prevent]
 			if (${attrs.icon}) > Icon[name=attrs.icon]
 			| ${attrs.value}
 	`;
@@ -30,6 +30,10 @@ class Button extends Block<IBtnAttrs> {
 		return {
 			type: 'button',
 		};
+	}
+	
+	'@click'(evt: XEvent) {
+		// ...
 	}
 
 	protected connectedCallback(): void {
@@ -42,6 +46,24 @@ class Button extends Block<IBtnAttrs> {
 	}
 }
 ```
+
+
+### XEvent
+
+ - `type: string` - тип события
+ - `detail: <D>` - детали
+ - `originalEvent: E` - оригинальное событие
+
+ - `target: <T>` - ссылка на Block
+ - `currentTarget: <T>` - ссылка на Block
+
+ - `domType: string` - тип dom-события
+ - `domTarget: HTMLElement` - ссылка на DOM-элемент
+
+ - `defaultPrevented: boolean`
+ - `propagationStopped: boolean`
+ - `propagationImmediateStopped: boolean`
+
 
 
 ### Development
