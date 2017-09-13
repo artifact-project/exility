@@ -205,6 +205,22 @@ function relinking(map: VMap, frag, ctx) {
 	});
 }
 
+function removeOldListeners(ctx) {
+	Object.keys(ctx).forEach(id => {
+		const node = ctx[id];
+
+		if (node && node.handleEvent) {
+			Object.keys(node.events).forEach(name => {
+				node.el.removeEventListener(name, node);
+			});
+		}
+	});
+
+	ctx.blocks.forEach(block => {
+		removeOldListeners(block.__view__.ctx);
+	});
+}
+
 export default function reload(view, template, scope) {
 	document.createElement = (name) => <any>new VElement(name);
 	document.createTextNode = (value) => <any>({nodeValue: value});
@@ -214,6 +230,7 @@ export default function reload(view, template, scope) {
 
 	newView.container = view.container;
 
+	removeOldListeners(view.ctx);
 	updateChildren(map, view.container, newView.frag);
 	relinking(map, newView.frag, newView.ctx);
 

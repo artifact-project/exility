@@ -82,17 +82,12 @@ function HANDLE_EVENT(evt) {
 	if (handle.hasOwnProperty('fn')) {
 		const {ctx} = handle;
 		const fnName = handle.fn;
+		const detail = handle.detail == null ? null : handle.detail;
 
 		if (ctx.dispatchEvent) {
-			ctx.dispatchEvent(fnName, handle.detail == null ? null : handle.detail, evt);
+			ctx.dispatchEvent(fnName, detail, evt);
 		} else {
-			let fn = ctx[`@${ctx}`];
-
-			if (handle.hasOwnProperty('detail')) {
-				fn.call(ctx, handle.detail);
-			} else {
-				fn(evt, null);
-			}
+			ctx[`@${fnName}`].call(ctx, evt, detail);
 		}
 	} else {
 		handle(evt);

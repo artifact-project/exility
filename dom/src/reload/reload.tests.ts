@@ -7,7 +7,7 @@ import createDOMCompiler from '../compiler/compiler';
 import reload from './reload';
 
 const domCompiler = createDOMCompiler({
-	scope: ['x', 'y', 'z'],
+	scope: ['x', 'y', 'z', '__this__'],
 	isomorphic: true,
 });
 
@@ -25,9 +25,10 @@ function compile(tpl, hasBlocks = false) {
 	});
 }
 
-function newScope(blocks?) {
+function newScope(blocks?, initialScope?) {
 	let scope = {
 		__blocks__: blocks,
+		...Object(initialScope),
 	};
 
 	return (patch = {}) => {
@@ -54,7 +55,7 @@ function fromString(tpl, data?, debug?) {
 }
 
 it('reload / attrs', () => {
-	let scope = newScope();
+	const scope = newScope();
 	const view = fromString('h1.is-${x}', scope({x: 'foo'}));
 
 	expect(view.container.innerHTML).toBe('<h1 class="is-foo"></h1>');
@@ -67,17 +68,29 @@ it('reload / attrs', () => {
 });
 
 it('reload / events', () => {
-	let scope = newScope();
+	const log = [];
+	const scope = newScope(null, {
+		__this__: {
+			'@click': ({type}) => log.push(type),
+			'@mousedown': ({type}) => log.push(type),
+		},
+	});
 	const view = fromString('h1[@click]', scope({}));
 
 	expect(view.container.innerHTML).toBe('<h1></h1>');
+	view.container.firstChild.dispatchEvent(new Event('click'));
 
-	view.reload(compile('h1[@mouseover]'), scope());
+	view.reload(compile('h1[@mousedown]'), scope());
 	expect(view.container.innerHTML).toBe('<h1></h1>');
+
+	view.container.firstChild.dispatchEvent(new Event('click'));
+	view.container.firstChild.dispatchEvent(new Event('mousedown'));
+
+	expect(log).toEqual(['click', 'mousedown']);
 });
 
 it('reload / value', () => {
-	let scope = newScope();
+	const scope = newScope();
 	const view = fromString('h1 | ${x}\nb', scope({x: 1, y: '!'}));
 
 	expect(view.container.innerHTML).toBe('<h1>1</h1><b></b>');
@@ -99,7 +112,7 @@ it('reload / value', () => {
 });
 
 it('reload / if', () => {
-	let scope = newScope();
+	const scope = newScope();
 	const view = fromString('h1\n\t| ${x}', scope({x: 1, y: '!'}));
 
 	expect(view.container.innerHTML).toBe('<h1>1</h1>');
@@ -118,7 +131,7 @@ it('reload / if', () => {
 });
 
 it('reload / for', () => {
-	let scope = newScope();
+	const scope = newScope();
 	const view = fromString('div > for (i in x) > | ${i}', scope({x: [1, 2, 3]}));
 
 	expect(view.container.innerHTML).toBe('<div>123</div>');
@@ -151,7 +164,7 @@ it('reload / blocks', () => {
 
 	}
 
-	let scope = newScope({Foo});
+	const scope = newScope({Foo});
 	const view = fromString('div > Foo', scope());
 
 	expect(view.container.innerHTML).toBe('<div><i>OK</i></div>');
