@@ -255,34 +255,3 @@ export function reloadBlock(block, XBlock) {
 		scope,
 	);
 }
-
-
-// 	const allBlocks = {};
-//
-// 	(function _collect(ctx) {
-// 		ctx.blocks.forEach(block => {
-// 			const id = block.__id__;
-// 			(allBlocks[id] || (allBlocks[id] = [])).push(block);
-// 		});
-// 	})(view.ctx);
-//
-// 	stddom.CMP_BLOCK_FACTORY = function (XBlock, attrs, parent, events, slots) {
-// 		const id = XBlock.prototype.__id__;
-// 		let inst = (allBlocks[id] || []).pop();
-//
-// 		if (inst) {
-// 			inst.disconnectedCallback();
-// 			inst.update(attrs);
-// 			inst.__init__({
-// 				...inst.__options__,
-// 				parent,
-// 				events,
-// 				slots,
-// 			});
-// 		} else {
-// 			inst = CMP_BLOCK_FACTORY(XBlock, attrs, parent, events, slots);
-// 		}
-//
-// 		return inst;
-// 	};
-//

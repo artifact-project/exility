@@ -82,6 +82,7 @@ export default class Block<A> implements IEmitter<IBlock> {
 	static blocks: object;
 
 	constructor(attrs: A, options?: IBlockOptions) {
+		const self = this.constructor;
 		const defaults = this.getDefaults();
 
 		for (const key in defaults) {
@@ -97,18 +98,14 @@ export default class Block<A> implements IEmitter<IBlock> {
 		}
 
 		this.attrs = attrs;
-		this.__init__(options);
-	}
-
-	protected __init__(options: IBlockOptions) {
 		this.__events__ = options.events;
 		this.__parent__ = options.parent;
 		this.__options__ = options;
 
 		this.__scope__ = {
-			attrs: this.attrs,
-			__blocks__: this.constructor['blocks'],
-			__classNames__: this.constructor['classNames'],
+			attrs,
+			__blocks__: self['blocks'],
+			__classNames__: self['classNames'],
 			__this__: this,
 			__slots__: options.slots,
 		};
@@ -116,14 +113,17 @@ export default class Block<A> implements IEmitter<IBlock> {
 		if (this.__template__ === void 0) {
 			console.warn(`[@exility/block] Not compiled`);
 		} else {
-			this.__view__ = this.__template__(this.__scope__, {
-				isomorphic: options.isomorphic,
-			});
+			this.__view__ = Block.createView(
+				this,
+				this.__template__,
+				this.__scope__,
+				{isomorphic: options.isomorphic}
+			);
 		}
 	}
 
-	isBlock() {
-		return true;
+	static createView(block, template: Function, scope, options) {
+		return template(scope, options);
 	}
 
 	protected getDefaults(): Partial<A> {
@@ -137,6 +137,10 @@ export default class Block<A> implements IEmitter<IBlock> {
 	}
 
 	protected attributeChangedCallback<K extends keyof A>(attrName: K, oldValue: A[K], newValue: A[K]): void {
+	}
+
+	isBlock() {
+		return true;
 	}
 
 	dispatchEvent<D extends object, E extends DOMEvent>(event: XEvent<IBlock, D, E>);
@@ -223,5 +227,9 @@ export default class Block<A> implements IEmitter<IBlock> {
 				this.attributeChangedCallback(changed[idx], changed[idx + 1], changed[idx + 2]);
 			}
 		}
+	}
+
+	forceUpdate() {
+		this.__view__.update(this.__scope__);
 	}
 }
