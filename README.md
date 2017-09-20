@@ -20,17 +20,16 @@ The project is in active development and it can be collected only in one way:
 ---
 
 
-### Quick start (todo)
+### Quick start
 
- 0. `npm i -g exility-create-app`
- 1. `exility-create-app my-app-name`
+ 0. __todo__
 
 
 
 ### Features
 
  - Ultimate isomorphic render
- - CSS Modules out of the box
+ - CSS Modules and Hot reloading out of the box
  - [Storybook](./storybook) for development ui-blocks (Wrapper over the original [storybook](https://storybook.js.org/))
  - Testing out of the box, see [jacket](./jacket)
  - Ready to use UI libraries:
@@ -46,11 +45,12 @@ The project is in active development and it can be collected only in one way:
 
 ### Modules
 
- - [block](./block) — Basic "Block" for building UI (based on web components spec)
- - [css](./css) — CSS in JS (minimally necessary functional)
+ - [block](./block) — Basic "Block" for building UI (based on web components spec).
+ - [css](./css) — CSS in JS (minimally necessary functional).
  - [dom](./dom) — DOM Renderer (isomorphic)
+ - [form](./form) — Working with forms in all its glory.
  - [jacket](./jacket) — Utility for testing your ui-blocks.
- - [parser](./parser) — Language parser
+ - [parser](./parser) — Language parser.
  - [stdlib](./stdlib) — A set of standard libraries.
  - [storybook](./storybook) — A special wrapper over the original [storybook](storybook.js.org).
  - [string](./string) — String Renderer
