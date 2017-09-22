@@ -341,6 +341,9 @@ const compiler = createCompiler<IDOMCompilerOptions>((options: IDOMCompilerOptio
 						${compileChildren(parentName, children, updaters, fragments)}
 					});
 				`;
+			} else if ('const' === name) {
+				// Импорт блоков
+				return `var ${node.attrs.name} = ${node.attrs.expr};`;
 			} else if ('import' === name) {
 				// Импорт блоков
 				return `__STDDOM_CMP_IMPORT("${node.attrs.name}", ${node.attrs.from.replace(/;+$/, '')});`;
