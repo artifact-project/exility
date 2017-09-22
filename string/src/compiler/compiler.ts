@@ -28,6 +28,8 @@ const {
 
 let mcid = 0;
 const KEYWORDS = {
+	'const': ({name, expr}) => [`var ${name} = ${expr};\n`, ''],
+
 	'if': ({test}) => [
 		`if (${test}) {`,
 		'}',
@@ -332,7 +334,9 @@ const compiler = createCompiler<StringModeOptions>((options) => (node: XNode) =>
 		return code;
 	}
 
-	let code = `var ${compile(node, '')}\nreturn __ROOT`;
+	let code = `${compile(node, '')}\nreturn __ROOT`;
+
+	code = `var ${(/^__ROOT/.test(code) ? '' : '__ROOT = "";\n')}${code}`;
 
 	if (hasBlocks) {
 		globalFragments.unshift(`

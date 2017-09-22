@@ -1,5 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`COMMON_TEST CONST statement {"x":3} 1`] = `
+function templateFactory(__DEPS__) {
+	"use strict";
+	var __STDLIB = __DEPS__.stdlib;
+	var __STDLIB_HTML_ENCODE = __STDLIB.HTML_ENCODE;
+	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var x = __SCOPE__.x;
+
+		var __ROOT = "";
+		var y = x * 2;
+
+		__ROOT += __STDLIB_HTML_ENCODE(y) + "!";
+		return __ROOT
+	}
+}
+`;
+
 exports[`COMMON_TEST Custom element {"text":"Wow!","href":null} 1`] = `
 function templateFactory(__DEPS__) {
 	"use strict";

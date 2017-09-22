@@ -740,6 +740,21 @@ describe('syntax / exility', () => {
 		expect(frag.first.nodes[2].raw).toEqualFrag({name: 'ul', attrs: {class: 'list'}});
 	});
 
+	describe('const', () => {
+		it('base', () => {
+			const frag = exilityParser('const value = 123 * 2 + "!"');
+
+			expect(frag.length).toBe(1);
+			expect(frag.first.raw).toEqualFrag({
+				name: 'const',
+				attrs: {
+					name: 'value',
+					expr: '123 * 2 + "!"',
+				},
+			});
+		});
+	});
+
 	describe('if', () => {
 		function testMe(val, tpl, length?) {
 			it(`val: ${val}, tpl: ${tpl}, length: ${length}`, () => {

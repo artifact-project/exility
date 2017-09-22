@@ -4,6 +4,7 @@ exports[`CSS Module 1`] = `
 function compiledTemplate(__SCOPE__, __OPTIONS__) {
 		__SCOPE__ = __SCOPE__ || {};
 		var attrs = __SCOPE__.attrs;
+		var context = __SCOPE__.context;
 		var __this__ = __SCOPE__.__this__;
 		var __blocks__ = __SCOPE__.__blocks__;
 		var __slots__ = __SCOPE__.__slots__;

@@ -867,6 +867,10 @@ export const keywords = (function () {
 })();
 
 // Define base keywords
+keywords.add('const', ' @name:var = @expr:js ', {
+	stopper: ENTER_CODE
+});
+
 keywords.add('if', ' ( @test:js )');
 
 keywords.add('else', ' if ( @test:js )', {

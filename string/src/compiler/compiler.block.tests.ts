@@ -110,7 +110,7 @@ it('Pseudo Elements: super', () => {
 });
 
 it('CSS Module', () => {
-	const Foo = class extends Block<{}> {
+	const Foo = class extends Block<{}, null> {
 		static template = '.alert.${attrs.x}.is-${attrs.y} > ::children';
 		static classNames: object = {
 			'alert': '_$a',

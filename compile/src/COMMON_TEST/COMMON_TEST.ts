@@ -71,6 +71,14 @@ const COMMON_TEST:ICT[] = [
 	},
 
 	{
+		title: 'CONST statement',
+		template: 'const y = x * 2\n| \${y}!',
+		snapshot: true,
+		data: {x: 3},
+		results: '6!'
+	},
+
+	{
 		title: 'IF statement',
 		template: 'foo\nif (x)\n  bar',
 		snapshot: true,
