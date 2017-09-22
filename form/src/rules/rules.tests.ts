@@ -1,33 +1,93 @@
-import {required, minLength, email, password, ValueBox} from './rules';
+import {required, minLength, email, password, ValueBox, custom} from './rules';
 
 it('minLength', () => {
-	expect(minLength(2)({value: 'a'})).toBe('minLength');
-	expect(minLength(2)({value: 'ab'})).toBe(null);
+	expect(minLength(2)({value: 'a'})).toEqual({
+		id: 'minLength',
+		detail: {min: 2},
+	});
+	expect(minLength(2)({value: 'ab'})).toEqual(null);
 });
 
 it('required', () => {
-	expect(required()({value: ''})).toBe('required.minLength');
-	expect(required()({value: 'a'})).toBe(null);
+	expect(required()({value: ''})).toEqual({
+		id: 'required',
+		detail: {},
+		nested: {
+			id: 'minLength',
+			detail: {min: 1},
+		},
+	});
+	expect(required()({value: 'a'})).toEqual(null);
 });
 
 it('email', () => {
-	expect(email()({value: ''})).toBe('email.regexp');
-	expect(email()({value: 'a'})).toBe('email.regexp');
-	expect(email()({value: 'a@a.r'})).toBe(null);
-	expect(email()({value: '@a.r'})).toBe('email.regexp');
-	expect(email()({value: 'a@@a.r'})).toBe('email.regexp');
+	expect(email()({value: ''}).id).toEqual('email');
+	expect(email()({value: 'a'}).id).toEqual('email');
+	expect(email()({value: 'a@a.r'})).toEqual(null);
+	expect(email()({value: '@a.r'}).id).toEqual('email');
+	expect(email()({value: 'a@@a.r'}).id).toEqual('email');
 });
 
 it('password', () => {
-	expect(password()({value: ''})).toBe('password.required.minLength');
-	expect(password()({value: '123'})).toBe('password.minLength');
-	expect(password()({value: '123456'})).toBe(null);
+	expect(password()({value: ''})).toEqual({
+		id: 'password',
+		detail: {},
+		nested: {
+			id: 'required',
+			detail: {},
+			nested: {
+				id: 'minLength',
+				detail: {min: 1},
+			},
+		},
+	});
+
+	expect(password()({value: '123'})).toEqual({
+		id: 'password',
+		detail: {},
+		nested: {
+			id: 'minLength',
+			detail: {min: 6},
+		},
+	});
+
+	expect(password()({value: '123456'})).toEqual(null);
 });
 
 it('password: additionalRules', () => {
-	const additionalRules = ({value}: ValueBox) => /^\d+$/.test(value) ? 'onlyNumbers' : null;
+	const additionalRules = [
+		({value}: ValueBox) => /^\d+$/.test(value) ? {id: 'onlyNumbers', detail: {}} : null
+	];
 
-	expect(password(additionalRules)({value: '123456'})).toBe('password.onlyNumbers');
-	expect(password(additionalRules)({value: 'a1234'})).toBe('password.minLength');
-	expect(password(additionalRules)({value: 'a1234dddd'})).toBe(null);
+	expect(password(additionalRules)({value: '123456'})).toEqual({
+		id: 'password',
+		detail: {},
+		nested: {
+			id: 'onlyNumbers',
+			detail: {},
+		},
+	});
+
+	expect(password(additionalRules)({value: 'a1234'})).toEqual({
+		id: 'password',
+		detail: {},
+		nested: {
+			id: 'minLength',
+			detail: {min: 6},
+		},
+	});
+
+	expect(password(additionalRules)({value: 'a1234dddd'})).toEqual(null);
+});
+
+it('custom', () => {
+	const validate = ({value}) => value === '123';
+	const upperCase = custom(validate);
+
+	expect(upperCase({value: ''})).toEqual({
+		id: 'custom',
+		detail: {validate},
+	});
+
+	expect(upperCase({value: '123'})).toEqual(null);
 });
