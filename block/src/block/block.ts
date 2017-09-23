@@ -7,7 +7,7 @@ export interface IBlockIds {
 }
 
 export interface IBlocks {
-	[index: string]: Block<any>;
+	[index: string]: Block<any, any>;
 }
 
 export interface IBlockRefs {
@@ -15,6 +15,7 @@ export interface IBlockRefs {
 }
 
 export interface IBlockOptions {
+	context?: object;
 	events?: object;
 	parent?: typeof Block;
 	slots?: object;
@@ -31,13 +32,14 @@ export interface IPlainBlock<A> {
 
 export const requiredScopeKeys = [
 	'attrs',
+	'context',
 	'__this__',
 	'__blocks__',
 	'__slots__',
 	'__classNames__',
 ];
 
-export default class Block<A> implements IEmitter<IBlock> {
+export default class Block<A, C extends object> implements IEmitter<IBlock> {
 	static classify<X>(ClassOrLike: string | IPlainBlock<X> | IBlock): typeof Block {
 		if (typeof ClassOrLike === 'string') {
 			ClassOrLike = <IPlainBlock<X>>{template: ClassOrLike};
@@ -45,7 +47,7 @@ export default class Block<A> implements IEmitter<IBlock> {
 			return <IBlock>ClassOrLike;
 		}
 
-		class NewBlock extends Block<X> {
+		class NewBlock extends Block<X, null> {
 			constructor(attrs, options) {
 				super(attrs, options);
 				ClassOrLike.hasOwnProperty('constructor') && ClassOrLike.constructor.call(this, attrs);
@@ -67,6 +69,7 @@ export default class Block<A> implements IEmitter<IBlock> {
 
 	name: string;
 	attrs: A;
+	context: C;
 
 	private __scope__ = null;
 	private __view__ = null;
@@ -98,12 +101,15 @@ export default class Block<A> implements IEmitter<IBlock> {
 		}
 
 		this.attrs = attrs;
+		this.context = <C>options.context;
+
 		this.__events__ = options.events;
 		this.__parent__ = options.parent;
 		this.__options__ = options;
 
 		this.__scope__ = {
-			attrs,
+			attrs: this.attrs,
+			context: this.context,
 			__blocks__: self['blocks'],
 			__classNames__: self['classNames'],
 			__this__: this,
@@ -128,6 +134,10 @@ export default class Block<A> implements IEmitter<IBlock> {
 
 	protected getDefaults(): Partial<A> {
 		return {};
+	}
+
+	protected getContextForNested(): object {
+		return this.context;
 	}
 
 	protected connectedCallback(): void {

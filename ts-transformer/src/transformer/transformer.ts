@@ -109,6 +109,7 @@ function visitNode(node, imports, options: TXOptions) {
 	const meta = getMeta(node.parent);
 	const scope = [
 		'attrs',
+		'context',
 		'__blocks__',
 		'__this__',
 		'__slots__',

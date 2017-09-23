@@ -24,14 +24,21 @@ export default class extends Block<{}> {
 	};
 
 	static template = `
-		Form
-			Element[name="name"]
+		Form[@submit]
+			Element[name="name" autoFocus]
 			Element[name="email"]
 			Element[name="password"]
 
 		if (attrs.$form.name.touched && attrs.$form.name.invalid)
 			| ${attrs.$form.name.hasError('firstLetter')}
 	`;
+
+	'@submit'({detail}) {
+		this.context.$form.await(fetch('/api/reg', {
+			method: 'post',
+			body: detail,
+		}));
+	}
 }
 ```
 

@@ -3,6 +3,7 @@
   "@exility/compile": "./compile",
   "@exility/css": "./css",
   "@exility/dom": "./dom",
+  "@exility/form": "./form",
   "@exility/jacket": "./jacket",
   "@exility/parser": "./parser",
   "@exility/stdlib": "./stdlib",

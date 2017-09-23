@@ -1,3 +1,5 @@
-import module from './src/rules/rules';
+import * as rules from './src/rules/rules';
 
-export default module;
+export {
+	rules,
+};
