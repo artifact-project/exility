@@ -51,8 +51,21 @@ it('EACH(object)', () => {
 	expect(result).toEqual({1: 'x', 2: 'y'});
 });
 
-it('NEXT_CONTEXT(foo, bar)', () => {
-	const result = core.NEXT_CONTEXT({foo: 1}, {bar: 2});
+it('NEXT_CONTEXT', () => {
+	const result = core.NEXT_CONTEXT({
+		context: {foo: 1}
+	});
+
+	expect(result).toEqual({foo: 1});
+});
+
+it('NEXT_CONTEXT: getContextForNested', () => {
+	const result = core.NEXT_CONTEXT({
+		context: {foo: 1},
+		getContextForNested() {
+			return {bar: 2};
+		}
+	});
 
 	expect(result).toEqual({bar: 2});
 	expect(result.foo).toEqual(1);

@@ -97,15 +97,20 @@ export default {
 		return cloned;
 	},
 
-	NEXT_CONTEXT(parent: object, ctx: object) {
+	NEXT_CONTEXT(block) {
 		// todo: можно попробовать ещё __proto__ использовать для скорости
-		const next = (NOOP.prototype = parent, new NOOP);
+		if (typeof block.getContextForNested === 'function') {
+			const next = (NOOP.prototype = block.context, new NOOP);
+			const ctx = block.getContextForNested();
 
-		for (const key in ctx) {
-			next[key] = ctx[key];
+			for (const key in ctx) {
+				next[key] = ctx[key];
+			}
+
+			return next;
+		} else {
+			return block.context;
 		}
-
-		return next;
 	},
 
 	CSS_MODULE(classNames:{[index:string]: string}) {

@@ -139,3 +139,36 @@ it('CSS Module', () => {
 
 	expect(Foo.prototype['__template__']).toMatchSnapshot();
 });
+
+it('Context', () => {
+	const Qux = class extends Block<{}, {value: string, postfix: string}> {
+		static template = 'i | ${context.value}${context.postfix}';
+	};
+
+	const Bar = class extends Block<{}, {value: string}> {
+		static blocks = {Qux};
+		static template = 'Qux';
+
+		getContextForNested() {
+			return {postfix: '!'};
+		}
+	};
+
+	const Foo = class extends Block<{x: string}, null> {
+		static blocks = {Bar};
+		static template = 'Bar';
+
+		getContextForNested() {
+			return {value: this.attrs.x};
+		}
+	};
+	const __blocks__ = {Foo};
+	const template = fromString(
+		'Foo[x=${x}]',
+		['x', 'y'],
+		__blocks__,
+	);
+
+
+	expect(template({__blocks__, x: '123'})).toBe('<i>123!</i>');
+});

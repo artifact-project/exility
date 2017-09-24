@@ -283,7 +283,7 @@ const compiler = createCompiler<StringModeOptions>((options) => (node: XNode) =>
 						.join(', ')}}`;
 
 				if (elem.external) {
-					code = `${pad}__ROOT += __BLOCK_RENDER(__blocks__, "${name}", ${attrsStr}, ${elem.slots});\n`;
+					code = `${pad}__ROOT += __BLOCK_RENDER(__blocks__, __nctx__, "${name}", ${attrsStr}, ${elem.slots});\n`;
 				} else {
 					code = `${pad}__ROOT += ${name}(${attrsStr}`;
 					code += node.nodes.length ? `, ${compileSlots(node.nodes)});\n` : `);\n`;
@@ -339,6 +339,12 @@ const compiler = createCompiler<StringModeOptions>((options) => (node: XNode) =>
 	code = `var ${(/^__ROOT/.test(code) ? '' : '__ROOT = "";\n')}${code}`;
 
 	if (hasBlocks) {
+		if (scopeVars.indexOf('__this__') !== -1) {
+			code = `var __nctx__ = __STDLIB_NEXT_CONTEXT(__this__);\n${code}`;
+		} else {
+			code = `var __nctx__;\n${code}`;
+		}
+
 		globalFragments.unshift(`
 			function __BLOCK_INIT(blocks, name) {
 				var XBlock = blocks[name];
@@ -348,11 +354,14 @@ const compiler = createCompiler<StringModeOptions>((options) => (node: XNode) =>
 				}
 			}
 		
-			function __BLOCK_RENDER(blocks, name, attrs, slots) {
+			function __BLOCK_RENDER(blocks, nctx, name, attrs, slots) {
 				var XBlock = blocks[name];
 				
 				if (XBlock.template) {
-					var block = new XBlock(attrs, {slots: slots});
+					var block = new XBlock(attrs, {
+						slots: slots,
+						context: nctx
+					});
 					return block.__view__;
 				} else {
 					return '<div data-block="' + name + '" class="block-dummy block-dummy-loading"></div>';

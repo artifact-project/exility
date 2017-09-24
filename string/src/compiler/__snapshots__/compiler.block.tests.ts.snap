@@ -75,11 +75,14 @@ function templateFactory() {
 		}
 	}
 
-	function __BLOCK_RENDER(blocks, name, attrs, slots) {
+	function __BLOCK_RENDER(blocks, nctx, name, attrs, slots) {
 		var XBlock = blocks[name];
 
 		if (XBlock.template) {
-			var block = new XBlock(attrs, {slots: slots});
+			var block = new XBlock(attrs, {
+				slots: slots,
+				context: nctx
+			});
 			return block.__view__;
 		} else {
 			return '<div data-block="' + name + '" class="block-dummy block-dummy-loading"></div>';
@@ -92,7 +95,8 @@ function templateFactory() {
 		var __blocks__ = __SCOPE__.__blocks__;
 
 		__BLOCK_INIT(__blocks__, "Pseudo");
-		return __BLOCK_RENDER(__blocks__, "Pseudo", {value: (text)}, null);
+		var __nctx__;
+		return __BLOCK_RENDER(__blocks__, __nctx__, "Pseudo", {value: (text)}, null);
 	}
 }
 `;
@@ -108,11 +112,14 @@ function templateFactory() {
 		}
 	}
 
-	function __BLOCK_RENDER(blocks, name, attrs, slots) {
+	function __BLOCK_RENDER(blocks, nctx, name, attrs, slots) {
 		var XBlock = blocks[name];
 
 		if (XBlock.template) {
-			var block = new XBlock(attrs, {slots: slots});
+			var block = new XBlock(attrs, {
+				slots: slots,
+				context: nctx
+			});
 			return block.__view__;
 		} else {
 			return '<div data-block="' + name + '" class="block-dummy block-dummy-loading"></div>';
@@ -124,7 +131,8 @@ function templateFactory() {
 		var __blocks__ = __SCOPE__.__blocks__;
 
 		__BLOCK_INIT(__blocks__, "Pseudo");
-		var __ROOT = __BLOCK_RENDER(__blocks__, "Pseudo", {}, {slotik: function __SLOT_slotik(__super__) {
+		var __nctx__;
+		var __ROOT = __BLOCK_RENDER(__blocks__, __nctx__, "Pseudo", {}, {slotik: function __SLOT_slotik(__super__) {
 			return "OK";
 			}});
 
@@ -144,11 +152,14 @@ function templateFactory() {
 		}
 	}
 
-	function __BLOCK_RENDER(blocks, name, attrs, slots) {
+	function __BLOCK_RENDER(blocks, nctx, name, attrs, slots) {
 		var XBlock = blocks[name];
 
 		if (XBlock.template) {
-			var block = new XBlock(attrs, {slots: slots});
+			var block = new XBlock(attrs, {
+				slots: slots,
+				context: nctx
+			});
 			return block.__view__;
 		} else {
 			return '<div data-block="' + name + '" class="block-dummy block-dummy-loading"></div>';
@@ -160,7 +171,8 @@ function templateFactory() {
 		var __blocks__ = __SCOPE__.__blocks__;
 
 		__BLOCK_INIT(__blocks__, "Pseudo");
-		var __ROOT = __BLOCK_RENDER(__blocks__, "Pseudo", {}, {children: function __SLOT_children(__super__) {
+		var __nctx__;
+		var __ROOT = __BLOCK_RENDER(__blocks__, __nctx__, "Pseudo", {}, {children: function __SLOT_children(__super__) {
 			return "OK";
 			}});
 
@@ -182,11 +194,14 @@ function templateFactory(__DEPS__) {
 		}
 	}
 
-	function __BLOCK_RENDER(blocks, name, attrs, slots) {
+	function __BLOCK_RENDER(blocks, nctx, name, attrs, slots) {
 		var XBlock = blocks[name];
 
 		if (XBlock.template) {
-			var block = new XBlock(attrs, {slots: slots});
+			var block = new XBlock(attrs, {
+				slots: slots,
+				context: nctx
+			});
 			return block.__view__;
 		} else {
 			return '<div data-block="' + name + '" class="block-dummy block-dummy-loading"></div>';
@@ -200,7 +215,8 @@ function templateFactory(__DEPS__) {
 		var __blocks__ = __SCOPE__.__blocks__;
 
 		__BLOCK_INIT(__blocks__, "Pseudo");
-		var __ROOT = __BLOCK_RENDER(__blocks__, "Pseudo", {value: (x)}, {children: function __SLOT_children(__super__) {
+		var __nctx__;
+		var __ROOT = __BLOCK_RENDER(__blocks__, __nctx__, "Pseudo", {value: (x)}, {children: function __SLOT_children(__super__) {
 			return __STDLIB_HTML_ENCODE(text) + ":" + __super__["children"]();
 			}});
 
