@@ -50,3 +50,11 @@ it('EACH(object)', () => {
 	core.EACH({x: 1, y: 2}, (val, key) => {result[val] = key;});
 	expect(result).toEqual({1: 'x', 2: 'y'});
 });
+
+it('NEXT_CONTEXT(foo, bar)', () => {
+	const result = core.NEXT_CONTEXT({foo: 1}, {bar: 2});
+
+	expect(result).toEqual({bar: 2});
+	expect(result.foo).toEqual(1);
+	expect(result.bar).toEqual(2);
+});

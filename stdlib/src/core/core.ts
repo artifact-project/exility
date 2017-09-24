@@ -97,6 +97,17 @@ export default {
 		return cloned;
 	},
 
+	NEXT_CONTEXT(parent: object, ctx: object) {
+		// todo: можно попробовать ещё __proto__ использовать для скорости
+		const next = (NOOP.prototype = parent, new NOOP);
+
+		for (const key in ctx) {
+			next[key] = ctx[key];
+		}
+
+		return next;
+	},
+
 	CSS_MODULE(classNames:{[index:string]: string}) {
 		function classNameGetter(name: string) {
 			if (classNames.hasOwnProperty(name)) {
