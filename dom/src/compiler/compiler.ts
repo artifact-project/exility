@@ -342,7 +342,7 @@ const compiler = createCompiler<IDOMCompilerOptions>((options: IDOMCompilerOptio
 					});
 				`;
 			} else if ('const' === name) {
-				// Импорт блоков
+				// Определение константы
 				return `var ${node.attrs.name} = ${node.attrs.expr};`;
 			} else if ('import' === name) {
 				// Импорт блоков
