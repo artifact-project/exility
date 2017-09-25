@@ -11,7 +11,9 @@ function templateFactory(__DEPS__) {
 	var __STDDOM_CMP_CREATE = __STDDOM.CMP_CREATE;
 	var __STDDOM_LIFECYCLE = __STDDOM.LIFECYCLE;
 	var __STDLIB = __DEPS__.stdlib;
+	var __STDLIB_NEXT_CONTEXT = __STDLIB.NEXT_CONTEXT;
 	var __STDLIB_CLONE_OBJECT = __STDLIB.CLONE_OBJECT;
+	var __STDLIB_CONTEXT_IS_CHANGED = __STDLIB.CONTEXT_IS_CHANGED;
 	__STDDOM_CMP_SET_COMPILER(__COMPILER__);
 
 	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
@@ -24,6 +26,7 @@ function templateFactory(__DEPS__) {
 		__STDDOM_CMP_INIT(__blocks__, ["Nested"]);
 
 		var __ctx = __STDDOM_CONTEXT();
+		var __nctxChanged__ = true, __nctx__ = __STDLIB_NEXT_CONTEXT(__this__);
 
 		var __frag = __STDDOM_FRAGMENT();
 		var __CMP_ATTRS = __STDLIB_CLONE_OBJECT((attrs));
@@ -32,6 +35,7 @@ function templateFactory(__DEPS__) {
 
 			__frag,
 			__this__,
+			__nctx__,
 			"Nested",
 			__CMP_ATTRS,
 			null,
@@ -53,9 +57,14 @@ function templateFactory(__DEPS__) {
 				attrs = __NEWSCOPE__.attrs;
 				val = __NEWSCOPE__.val;
 				__blocks__ = __NEWSCOPE__.__blocks__;
+
+				var __next_nctx__ = __STDLIB_NEXT_CONTEXT(__this__, __nctx__);
+				__nctxChanged__ = __STDLIB_CONTEXT_IS_CHANGED(__nctx__, __next_nctx__);
+				__nctx__ = __next_nctx__;
+
 				var __CMP_ATTRS = __STDLIB_CLONE_OBJECT((attrs));
 				__CMP_ATTRS["baz"] = (val);
-				__x1.update(__CMP_ATTRS);
+				__x1.update(__CMP_ATTRS, __nctxChanged__ ? __nctx__ : void 0);
 			}
 		}
 	}
@@ -72,6 +81,9 @@ function templateFactory(__DEPS__) {
 	var __STDDOM_FRAGMENT = __STDDOM.FRAGMENT;
 	var __STDDOM_CMP_CREATE = __STDDOM.CMP_CREATE;
 	var __STDDOM_LIFECYCLE = __STDDOM.LIFECYCLE;
+	var __STDLIB = __DEPS__.stdlib;
+	var __STDLIB_NEXT_CONTEXT = __STDLIB.NEXT_CONTEXT;
+	var __STDLIB_CONTEXT_IS_CHANGED = __STDLIB.CONTEXT_IS_CHANGED;
 	__STDDOM_CMP_SET_COMPILER(__COMPILER__);
 
 	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
@@ -83,6 +95,7 @@ function templateFactory(__DEPS__) {
 		__STDDOM_CMP_INIT(__blocks__, ["Btn"]);
 
 		var __ctx = __STDDOM_CONTEXT();
+		var __nctxChanged__ = true, __nctx__ = __STDLIB_NEXT_CONTEXT(__this__);
 
 		var __frag = __STDDOM_FRAGMENT();
 		var __CMP_ATTRS = {};
@@ -91,6 +104,7 @@ function templateFactory(__DEPS__) {
 
 			__frag,
 			__this__,
+			__nctx__,
 			"Btn",
 			__CMP_ATTRS,
 			null,
@@ -111,9 +125,14 @@ function templateFactory(__DEPS__) {
 				__SCOPE__ = __NEWSCOPE__;
 				val = __NEWSCOPE__.val;
 				__blocks__ = __NEWSCOPE__.__blocks__;
+
+				var __next_nctx__ = __STDLIB_NEXT_CONTEXT(__this__, __nctx__);
+				__nctxChanged__ = __STDLIB_CONTEXT_IS_CHANGED(__nctx__, __next_nctx__);
+				__nctx__ = __next_nctx__;
+
 				var __CMP_ATTRS = {};
 				__CMP_ATTRS["value"] = (val);
-				__x1.update(__CMP_ATTRS);
+				__x1.update(__CMP_ATTRS, __nctxChanged__ ? __nctx__ : void 0);
 			}
 		}
 	}
@@ -133,6 +152,7 @@ function compiledTemplate(__SCOPE__, __OPTIONS__) {
 		var __CLN = __STDLIB_CSS_MODULE(__classNames__);
 
 		var __ctx = __STDDOM_CONTEXT();
+		var __nctx__, __nctxChanged__;
 		var __super__ = {
 			"children": __SLOT_children
 		};
@@ -164,6 +184,7 @@ function compiledTemplate(__SCOPE__, __OPTIONS__) {
 				__blocks__ = __NEWSCOPE__.__blocks__;
 				__slots__ = __NEWSCOPE__.__slots__;
 				__classNames__ = __NEWSCOPE__.__classNames__;
+
 				__CLN.upd(__classNames__);
 				__STDDOM_D_PROP(__ctx[1], "className", __CLN("alert " + (attrs.x) + " is-" + (attrs.y)))
 			}
@@ -209,6 +230,7 @@ function templateFactory(__DEPS__) {
 		var __this__ = __SCOPE__;
 
 		var __ctx = __STDDOM_CONTEXT();
+		var __nctx__, __nctxChanged__;
 
 		var __frag = __STDDOM_FRAGMENT();
 		var __CMP_ATTRS = {};
@@ -217,6 +239,7 @@ function templateFactory(__DEPS__) {
 
 			__frag,
 			__this__,
+			__nctx__,
 			"Icon",
 			__CMP_ATTRS,
 			null,
@@ -236,9 +259,10 @@ function templateFactory(__DEPS__) {
 			update: function (__NEWSCOPE__) {
 				__SCOPE__ = __NEWSCOPE__;
 				x = __NEWSCOPE__.x;
+
 				var __CMP_ATTRS = {};
 				__CMP_ATTRS["name"] = (x);
-				__x1.update(__CMP_ATTRS);
+				__x1.update(__CMP_ATTRS,  void 0);
 			}
 		}
 	}
@@ -283,6 +307,7 @@ function templateFactory(__DEPS__) {
 		var __this__ = __SCOPE__;
 
 		var __ctx = __STDDOM_CONTEXT();
+		var __nctx__, __nctxChanged__;
 
 		var __frag = __STDDOM_FRAGMENT();
 		var __CMP_ATTRS = {};
@@ -291,6 +316,7 @@ function templateFactory(__DEPS__) {
 
 			__frag,
 			__this__,
+			__nctx__,
 			"Icon",
 			__CMP_ATTRS,
 			null,
@@ -310,9 +336,10 @@ function templateFactory(__DEPS__) {
 			update: function (__NEWSCOPE__) {
 				__SCOPE__ = __NEWSCOPE__;
 				x = __NEWSCOPE__.x;
+
 				var __CMP_ATTRS = {};
 				__CMP_ATTRS["name"] = (x);
-				__x1.update(__CMP_ATTRS);
+				__x1.update(__CMP_ATTRS,  void 0);
 			}
 		}
 	}
@@ -330,6 +357,7 @@ function compiledTemplate(__SCOPE__, __OPTIONS__) {
 		var __classNames__ = __SCOPE__.__classNames__;
 
 		var __ctx = __STDDOM_CONTEXT();
+		var __nctx__, __nctxChanged__;
 		var __super__ = {
 			"children": __SLOT_children
 		};

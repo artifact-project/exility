@@ -162,13 +162,13 @@ it('Context', () => {
 			return {value: this.attrs.x};
 		}
 	};
+
 	const __blocks__ = {Foo};
 	const template = fromString(
 		'Foo[x=${x}]',
 		['x', 'y'],
 		__blocks__,
 	);
-
 
 	expect(template({__blocks__, x: '123'})).toBe('<i>123!</i>');
 });

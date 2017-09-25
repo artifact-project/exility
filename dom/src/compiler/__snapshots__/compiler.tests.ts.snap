@@ -8,6 +8,8 @@ function templateFactory(__DEPS__) {
 	var __STDLIB = __DEPS__.stdlib;
 	var __STDLIB_NOOP = __STDLIB.NOOP;
 	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
+		var __nctx__, __nctxChanged__;
+
 		var __frag = __STDDOM_FRAGMENT();
 
 		return {
@@ -42,6 +44,7 @@ function templateFactory(__DEPS__) {
 		var x = __SCOPE__.x;
 
 		var __ctx = __STDDOM_CONTEXT();
+		var __nctx__, __nctxChanged__;
 
 		var __frag = __STDDOM_FRAGMENT();
 		__STDDOM_IF(__frag, __ctx, 1, [__IF_2]);
@@ -76,6 +79,7 @@ function templateFactory(__DEPS__) {
 			update: function (__NEWSCOPE__) {
 				__SCOPE__ = __NEWSCOPE__;
 				x = __NEWSCOPE__.x;
+
 				__STDDOM_UPD_IF(__ctx, 1);
 			}
 		}
@@ -98,6 +102,7 @@ function templateFactory(__DEPS__) {
 		var x = __SCOPE__.x;
 
 		var __ctx = __STDDOM_CONTEXT();
+		var __nctx__, __nctxChanged__;
 
 		var __frag = __STDDOM_FRAGMENT();
 		__STDDOM_TEXT(__frag, "foo-");
@@ -116,6 +121,7 @@ function templateFactory(__DEPS__) {
 			update: function (__NEWSCOPE__) {
 				__SCOPE__ = __NEWSCOPE__;
 				x = __NEWSCOPE__.x;
+
 				__STDDOM_UPD_VALUE(__ctx[1], x);
 			}
 		}

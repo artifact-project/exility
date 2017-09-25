@@ -205,36 +205,48 @@ export default class Block<A, C extends object> implements IEmitter<IBlock> {
 		} while (__parent__);
 	}
 
-	update(partialAttrs: Partial<A>) {
+	update(partialAttrs: Partial<A>, nextContext?: C) {
 		const previousAttrs = this.attrs;
-		const changed = [];
-		let changedLength = 0;
+		let attrsChanged;
+		let attrsChangedLength = 0;
 
-		for (const key in partialAttrs) {
-			if (partialAttrs.hasOwnProperty(key)) {
-				const oldValue = previousAttrs[key];
-				let newValue = partialAttrs[key];
+		if (partialAttrs !== void 0) {
+			attrsChanged = [];
 
-				if (newValue == null) {
-					newValue = null;
-				}
+			for (const key in partialAttrs) {
+				if (partialAttrs.hasOwnProperty(key)) {
+					const oldValue = previousAttrs[key];
+					let newValue = partialAttrs[key];
 
-				if (oldValue !== newValue) {
-					changed.push(key, oldValue, newValue);
-					changedLength += 3;
+					if (newValue == null) {
+						newValue = null;
+					}
 
-					this.attrs[key] = newValue;
+					if (oldValue !== newValue) {
+						attrsChanged.push(key, oldValue, newValue);
+						attrsChangedLength += 3;
+
+						this.attrs[key] = newValue;
+					}
 				}
 			}
 		}
 
+		if (nextContext !== void 0) {
+			this.context = this.__scope__.context = nextContext;
+
+			if (attrsChangedLength === 0) {
+				this.__view__.update(this.__scope__);
+			}
+		}
+
 		// Если есть изменения, обновляем объект
-		if (changedLength) {
+		if (attrsChangedLength) {
 			this.__scope__.__classNames__ = this.constructor['classNames'];
 			this.__view__.update(this.__scope__);
 
-			for (let idx = 0; idx < changedLength; idx += 3) {
-				this.attributeChangedCallback(changed[idx], changed[idx + 1], changed[idx + 2]);
+			for (let idx = 0; idx < attrsChangedLength; idx += 3) {
+				this.attributeChangedCallback(attrsChanged[idx], attrsChanged[idx + 1], attrsChanged[idx + 2]);
 			}
 		}
 	}

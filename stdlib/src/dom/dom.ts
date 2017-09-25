@@ -726,8 +726,8 @@ function CMP_INLINE(store, name, block) {
 	store[name] = block;
 }
 
-function CMP_CREATE_INLINE(store, parentFrag, parentThis, name, attrs, events) {
-	const node = store[name](attrs);
+function CMP_CREATE_INLINE(store, parentFrag, parentThis, ctx, name, attrs, events) {
+	const node = store[name](attrs, ctx);
 
 	node.__parent__ = parentThis;
 	node.__events__ = events;
@@ -765,15 +765,16 @@ function CMP_CREATE_DUMMY(name, attrs) {
 	return node;
 }
 
-function CMP_BLOCK_FACTORY(XBlock, attrs, parent, events, slots) {
+function CMP_BLOCK_FACTORY(XBlock, context, attrs, parent, events, slots) {
 	return new XBlock(attrs, {
+		context,
 		parent,
 		events,
 		slots,
 	})
 }
 
-function CMP_CREATE(ctx, blocks, parentFrag, parentThis, name, attrs, events, slots) {
+function CMP_CREATE(ctx, blocks, parentFrag, parentThis, context, name, attrs, events, slots) {
 	const ISO_FRAG = ISOMORPHIC_FRAG;
 	let isoParentNode;
 	let node;
@@ -794,6 +795,7 @@ function CMP_CREATE(ctx, blocks, parentFrag, parentThis, name, attrs, events, sl
 			.then((XBlock) => {
 				const cmpNode = CMP_BLOCK_FACTORY(
 					XBlock,
+					context,
 					node.attrs,
 					parentThis,
 					events,
@@ -822,6 +824,7 @@ function CMP_CREATE(ctx, blocks, parentFrag, parentThis, name, attrs, events, sl
 	} else {
 		const cmpNode = CMP_BLOCK_FACTORY(
 			Block,
+			context,
 			attrs,
 			parentThis,
 			events,
@@ -830,7 +833,9 @@ function CMP_CREATE(ctx, blocks, parentFrag, parentThis, name, attrs, events, sl
 
 		node = {
 			frag: cmpNode['__view__'].frag,
-			update: (attrs) => cmpNode.update(attrs),
+			update(attrs, context) {
+				cmpNode.update(attrs, context);
+			},
 		};
 
 		ctx.blocks.push(cmpNode);

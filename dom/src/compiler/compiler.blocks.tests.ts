@@ -4,14 +4,14 @@ import {
 	dom as stddom,
 } from '@exility/stdlib';
 
-import compilter from './compiler';
+import compiler from './compiler';
 
-export function fromString(template, scope = {}, pure?: boolean, blocks?) {
+function fromString(template, scope = {}, pure?: boolean, blocks?) {
 	if (blocks) {
 		scope['__blocks__'] = blocks;
 	}
 
-	const compile = compilter({
+	const compile = compiler({
 		pure,
 		debug: true,
 		scope: Object.keys(scope),
@@ -34,7 +34,7 @@ export function fromString(template, scope = {}, pure?: boolean, blocks?) {
 	return view;
 }
 
-export async function pause(ms: number = 16) {
+async function pause(ms: number = 16) {
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
 
@@ -227,13 +227,13 @@ it('__attrs__', () => {
 
 it('Inner blocks', () => {
 	const log = [];
-	const Link = class extends Block<{}> {
+	const Link = class extends Block<{}, null> {
 		static template = 'a[href=${attrs.href}] > ::children';
 		connectedCallback() { log.push('Link:connected'); }
 		disconnectedCallback() { log.push('Link:disconnected'); }
 	};
 
-	const Alert = class extends Block<{}> {
+	const Alert = class extends Block<{}, null> {
 		static blocks = {Link};
 		static template = '.alert > ::children';
 		connectedCallback() { log.push('Alert:connected'); }
@@ -256,7 +256,7 @@ it('Inner blocks', () => {
 });
 
 it('CSS Module', () => {
-	class Foo extends Block<{}> {
+	class Foo extends Block<{}, null> {
 		static template = '.alert.${attrs.x}.is-${attrs.y} > ::children';
 		static classNames: object = {
 			'alert': '_$a',
@@ -288,4 +288,40 @@ it('CSS Module', () => {
 	Foo.classNames = {'alert': '__$alert$__'};
 	view.update({});
 	expect(view.container.innerHTML).toBe('<div class=\"__$alert$__ [warn: null] [warn: is-null]\"></div>');
+});
+
+it('Context', () => {
+	const Qux = class extends Block<{}, {value: string, postfix: string}> {
+		static template = 'i | ${context.value}${context.postfix}';
+	};
+
+	const Bar = class extends Block<{}, {value: string}> {
+		static blocks = {Qux};
+		static template = 'Qux';
+
+		getContextForNested() {
+			return {postfix: this.context.value === '123' ? '!' : '?'};
+		}
+	};
+
+	const Foo = class extends Block<{x: string}, null> {
+		static blocks = {Bar};
+		static template = 'Bar';
+
+		getContextForNested() {
+			return {value: this.attrs.x};
+		}
+	};
+
+	const view = fromString(
+		'Foo[x=${x}]',
+		{x: '123'},
+		null,
+		{Foo},
+	);
+
+	expect(view.container.innerHTML).toBe('<i>123!</i>');
+
+	view.update({x: '321'});
+	expect(view.container.innerHTML).toBe('<i>321?</i>');
 });

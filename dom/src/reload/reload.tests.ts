@@ -152,7 +152,7 @@ it('reload / for', () => {
 it('reload / blocks', () => {
 	const log = [];
 
-	class Foo extends Block<{val: string}> {
+	class Foo extends Block<{val: string}, null> {
 		static template = `i | OK`;
 
 		connectedCallback() {

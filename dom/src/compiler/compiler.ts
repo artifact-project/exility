@@ -501,13 +501,21 @@ const compiler = createCompiler<IDOMCompilerOptions>((options: IDOMCompilerOptio
 				code.push(`
 					${parentName},
 					__this__,
+					__nctx__,
 					${compiledName},
 					__CMP_ATTRS,
 					${cmpEvents.length ? `{${cmdEventsStr.join(', ')}}` : 'null'},
 					${compileSlots(parentName, node.slots, updaters, fragments)}
 				);`);
 
-				(cmpAttrsExp.length > 0) && updaters.push(`${cmpAttrsExp.join('\n')}\n${varName}.update(__CMP_ATTRS);`);
+				if (cmpAttrsExp.length > 0) {
+					updaters.push(
+						cmpAttrsExp.join('\n'),
+						`${varName}.update(__CMP_ATTRS, ${hasBlocks ? `__nctxChanged__ ? __nctx__ :` : ''} void 0);`
+					);
+				} else if (hasBlocks) {
+					updaters.push(`__nctxChanged__ && ${varName}.update(void 0, __nctx__);`);
+				}
 			} else {
 				if (node.hasComputedName || node.hasComputedAttrs) {
 					code.push(`var ${varName} = __STDDOM_LIVE_NODE(${parentName}, __ctx, ${tagId}, ${node.compiledName});`);
@@ -642,6 +650,7 @@ const compiler = createCompiler<IDOMCompilerOptions>((options: IDOMCompilerOptio
 
 		return `
 			${computed ? `var __ctx = __STDDOM_CONTEXT();` : ''}
+			${hasBlocks ? 'var __nctxChanged__ = true, __nctx__ = __STDLIB_NEXT_CONTEXT(__this__)' : 'var __nctx__, __nctxChanged__'};
 			${superSlots.length ? `var __super__ = {
 				${superSlots.map(([slot, fn]) => `${slot}: ${fn}`).join(',\n')}
 			};` : ''}
@@ -664,6 +673,11 @@ const compiler = createCompiler<IDOMCompilerOptions>((options: IDOMCompilerOptio
 						.map(name => `${name} = __NEWSCOPE__.${name};`)
 						.join('\n') : ''
 					}
+					${hasBlocks ? `
+						var __next_nctx__ = __STDLIB_NEXT_CONTEXT(__this__, __nctx__);
+						__nctxChanged__ = __STDLIB_CONTEXT_IS_CHANGED(__nctx__, __next_nctx__);
+						__nctx__ = __next_nctx__;
+					` : ''}
 					${compileUpdaters(updaters)}
 				}` : '__STDLIB_NOOP'}
 			}

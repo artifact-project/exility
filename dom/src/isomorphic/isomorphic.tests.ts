@@ -5,7 +5,10 @@ import {
 import {createCompiler as createStringCompiler} from '@exility/string';
 
 import createDOMCompiler from '../compiler/compiler';
-import {pause} from '../compiler/compiler.blocks.tests';
+
+async function pause(ms: number = 16) {
+	return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 const stringCompiler = createStringCompiler({
 	scope: ['x', 'y', 'z'],

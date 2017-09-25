@@ -52,10 +52,7 @@ it('EACH(object)', () => {
 });
 
 it('NEXT_CONTEXT', () => {
-	const result = core.NEXT_CONTEXT({
-		context: {foo: 1}
-	});
-
+	const result = core.NEXT_CONTEXT({context: {foo: 1}});
 	expect(result).toEqual({foo: 1});
 });
 

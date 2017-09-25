@@ -99,7 +99,7 @@ export default {
 
 	NEXT_CONTEXT(block) {
 		// todo: можно попробовать ещё __proto__ использовать для скорости
-		if (typeof block.getContextForNested === 'function') {
+		if (typeof block.getContextForNested === "function") {
 			const next = (NOOP.prototype = block.context, new NOOP);
 			const ctx = block.getContextForNested();
 
@@ -111,6 +111,20 @@ export default {
 		} else {
 			return block.context;
 		}
+	},
+
+	CONTEXT_IS_CHANGED(previousContext, nextContext) {
+		if (nextContext && previousContext) {
+			for (let key in nextContext) {
+				if (previousContext[key] !== nextContext[key]) {
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		return true;
 	},
 
 	CSS_MODULE(classNames:{[index:string]: string}) {
