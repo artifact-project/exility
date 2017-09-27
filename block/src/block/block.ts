@@ -254,4 +254,8 @@ export default class Block<A, C extends object> implements IEmitter<IBlock> {
 	forceUpdate() {
 		this.__view__.update(this.__scope__);
 	}
+
+	getRootNode(): HTMLElement {
+		return this.__view__.frag[0];
+	}
 }

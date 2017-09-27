@@ -6,39 +6,44 @@ Working with forms in all its glory.
 ### Usage
 
 ```ts
-import {Form, Element, validate, types, rules} from '@exility/form`;
+import {formify, Form, FormContext, Element, rules, mask} from '@exility/form`;
 
-@validate({
-	name: types.text(
-		rules.regexp(/^[a-z]/i, 'firstLetter', 'Первая символ может содержать только буквы'),
-		rules.minLength(3),
-		rules.maxLength(32),
-	),
-	email: types.email(rules.required()),
-	password: types.password(rules.required()),
+@formify({
+	masks: {
+		phone: mask.phone(),
+	},
+
+	validate: {
+		login: rules.minLength(3),
+		phone: rules.compose(
+			rules.required(),
+			rules.regexp(/^\+\d+$/, 'phone'),
+		),
+		email: rules.email(),
+		password: rules.password(),
+	},
+
+	'@submit'({data}) {
+		return fetch('/api/reg', {method: 'post', body: data});
+	}
 })
-export default class extends Block<{}> {
+export default class extends Block<{$form: FormContext}, null> {
 	static blocks = {
 		Form,
 		Element,
 	};
 
 	static template = `
-		Form[@submit]
-			Element[name="name" autoFocus]
-			Element[name="email"]
-			Element[name="password"]
+		const form = attrs.$form;
 
-		if (attrs.$form.name.touched && attrs.$form.name.invalid)
-			| ${attrs.$form.name.hasError('firstLetter')}
+		Form
+			Element[name="login" required minLength="3" maxLength="32"]
+			Element[name="phone" required mask="phone"]
+			Element[name="email" required]
+			Element[name="password" required]
+
+			hr + button[disabled=\${form.submitting}] | Submit
 	`;
-
-	'@submit'({detail}) {
-		this.context.$form.await(fetch('/api/reg', {
-			method: 'post',
-			body: detail,
-		}));
-	}
 }
 ```
 
