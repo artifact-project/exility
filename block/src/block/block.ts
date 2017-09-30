@@ -39,6 +39,8 @@ export const requiredScopeKeys = [
 	'__classNames__',
 ];
 
+let cid = 0;
+
 export default class Block<A, C extends object> implements IEmitter<IBlock> {
 	static classify<X>(ClassOrLike: string | IPlainBlock<X> | IBlock): typeof Block {
 		if (typeof ClassOrLike === 'string') {
@@ -67,6 +69,7 @@ export default class Block<A, C extends object> implements IEmitter<IBlock> {
 	ids: IBlockIds = {};
 	refs: IBlockRefs = {};
 
+	cid: number;
 	name: string;
 	attrs: A;
 	context: C;
@@ -100,6 +103,7 @@ export default class Block<A, C extends object> implements IEmitter<IBlock> {
 			options = {};
 		}
 
+		this.cid = ++cid;
 		this.attrs = attrs;
 		this.context = <C>options.context;
 
