@@ -23,7 +23,7 @@ import {formify, Form, FormContext, Element, rules, mask} from '@exility/form`;
 		password: rules.password(),
 	},
 
-	'@submit'({data}) {
+	'@submit'({detail: data}) {
 		return fetch('/api/reg', {method: 'post', body: data});
 	}
 })
@@ -38,9 +38,9 @@ export default class extends Block<{$form: FormContext}, null> {
 
 		Form
 			Element[name="login" required minLength="3" maxLength="32"]
-			Element[name="phone" required mask="phone"]
-			Element[name="email" required]
-			Element[name="password" required]
+			Element[name="phone" type="phone" required mask="phone"]
+			Element[name="email" type="email" required]
+			Element[name="password" type="password" required]
 
 			hr + button[disabled=\${form.submitting}] | Submit
 	`;

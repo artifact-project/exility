@@ -1,17 +1,8 @@
 import Block from '@exility/block';
 import css from '@exility/css';
+import {ElementAttrs, ElementContext} from '../interfaces';
 
-export interface ElementAttrs {
-	name: string;
-	required?: boolean;
-	readOnly?: boolean;
-	disabled?: boolean
-	autoFocus?: boolean
-	minLength?: number;
-	maxLength?: number;
-}
-
-export default class Input extends Block<ElementAttrs, null> {
+export default class Element extends Block<ElementAttrs, ElementContext> {
 	static classNames = css({
 		'input': {
 			width: '100%',
@@ -25,23 +16,30 @@ export default class Input extends Block<ElementAttrs, null> {
 		input.input[
 			@focus
 			@blur
+			class.disabled=\${inp.disabled}
+			class.readOnly=\${inp.readOnly}
 			class.submitting=\${inp.submitting}
 			name=\${inp.name}
 			type=\${inp.type}
 			value=\${inp.value}
 			checked=\${attrs.checked}
 			disabled=\${attrs.disabled}
-			readOnly=\${attrs.readOnly}
+			readOnly=\${attrs.readOnly || inp.submitting}
 			autoFocus=\${attrs.autoFocus}
 		]
 	`;
 
-	getContext() {
-		return this.context.$form;
+	constructor(attrs, options) {
+		super(attrs, options);
+		this.getContext().register(this);
 	}
 
-	connectedCallback() {
-		this.getContext().register(this);
+	getDefaults() {
+		return {type: 'text'};
+	}
+
+	getContext() {
+		return this.context.$form;
 	}
 
 	disconnectedCallback() {

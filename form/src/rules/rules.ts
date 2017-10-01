@@ -1,14 +1,14 @@
-export type ValueBox = {
+export interface ValueBox {
 	value?: string;
 	checked?: boolean;
 	selectedIndex?: number;
 }
 
-export type Validity = {
+export interface Validity {
 	id: string;
 	detail: object;
 	nested?: Validity;
-};
+}
 
 export type ValidateRule = (vbox: ValueBox) => Validity;
 
