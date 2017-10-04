@@ -1,6 +1,15 @@
 import {ValidateRule, Validity} from '../rules/rules';
 import Element from '../Element/Element';
 
+const RADIO_TYPE = 'radio';
+const CHECKBOX_TYPE = 'checkbox';
+const SELECT_TYPE = 'select';
+
+const FOCUS_EVENT_NAME = 'focus';
+const BLUR_EVENT_NAME = 'blur';
+const INPUT_EVENT_NAME = 'input';
+const CHANGE_EVENT_NAME = 'change';
+
 export interface FormConfig {
 	name?: string;
 	elements: FormElementsConfig;
@@ -36,7 +45,7 @@ export class FormElement {
 	}
 
 	get disabled(): boolean {
-		return this.block.attrs.readOnly;
+		return this.block.attrs.disabled;
 	}
 
 	get minLength(): number {
@@ -54,9 +63,9 @@ export class FormElement {
 	touched: boolean = false;
 
 	constructor(public form: Form, public block: Element) {
-		this.initialValue = <string>this.form.get('value');
-		this.initialChecked = <boolean>this.form.get('checked');
-		this.initialSelectedIndex = <number>this.form.get('selectedIndex');
+		// this.initialValue = <string>this.form.get('value');
+		// this.initialChecked = <boolean>this.form.get('checked');
+		// this.initialSelectedIndex = <number>this.form.get('selectedIndex');
 	}
 }
 
@@ -72,9 +81,9 @@ export class Form {
 	submitFailed: boolean = false;
 	submitSucceeded: boolean = false;
 
-	private state = {};
+	private initialState = {};
 	private elements = {};
-	private index = {};
+	private elementsIndex = {};
 	private validateLock: boolean = false;
 	private validateRules: any = {};
 
@@ -82,47 +91,73 @@ export class Form {
 		this.validate = this.validate.bind(this);
 	}
 
-	get(name: string): string | boolean | number {
-		return this.state[name];
-	}
-
 	register(block: Element) {
-		const name = block.attrs.name;
+		const {type, name, value} = block.attrs;
 		const element = new FormElement(this, block);
+		const elementList = (this.elements[name] || (this.elements[name] = []));
+		let values = this.initialState[name];
 
-		this.index[block.cid] = element;
-		(this.elements[name] || (this.elements[name] = [])).push(element);
+		if (!Array.isArray(values)) {
+			this.initialState[name] = values = [values];
+		}
+
+		if (type === CHECKBOX_TYPE || type === RADIO_TYPE) {
+			element.checked = values.indexOf(value) > -1;
+		} else if (type === SELECT_TYPE) {
+			element.selectedIndex = block.attrs.options.findIndex(opt => {
+				return (opt.value == null ? opt.text : opt.value) == value;
+			});
+		} else {
+			element.value = String(values.shift());
+		}
+
+		element.initialValue = element.value;
+		element.initialChecked = element.checked;
+		element.initialSelectedIndex = element.selectedIndex;
+
+		this.elementsIndex[block.cid] = element;
+		elementList.push(element);
+
 	}
 
 	unregister(block: Element) {
-		delete this.elements[block.attrs.name];
+		const element = this.elementsIndex[block.cid];
+		const elementList = this.elements[block.attrs.name];
+		const idx = elementList.indexOf(element);
+
+		if (idx >= 0) {
+			elementList.splice(idx, 1);
+			delete this.elementsIndex[block.cid];
+		} else {
+			throw new Error('Unregister for unknown block');
+		}
 	}
 
 	handleEvent(block: Element, evt: Event) {
 		const type = evt.type;
 		const target = evt.target as (HTMLInputElement & HTMLSelectElement);
-		const element = this.index[block.cid];
+		const element = this.elementsIndex[block.cid];
 		const elements = this.elements[block.attrs.name];
 
-		if (type === 'focus') {
+		if (type === FOCUS_EVENT_NAME) {
 			element.active = true;
-		} else if (type === 'blur') {
+		} else if (type === BLUR_EVENT_NAME) {
 			element.active = false;
 			element.touched = true;
 		}
 
-		if (type === 'input' || type === 'change') {
+		if (type === INPUT_EVENT_NAME || type === CHANGE_EVENT_NAME) {
 			switch (element.type) {
-				case 'select':
+				case SELECT_TYPE:
 					element.value = target.value;
 					element.selectedIndex = target.selectedIndex;
 					break;
 
-				case 'checkbox':
+				case CHECKBOX_TYPE:
 					element.checked = target.checked;
 					break;
 
-				case 'radio':
+				case RADIO_TYPE:
 					elements.forEach(el => {
 						el.checked = false;
 						el.changed = el.initialChecked !== el.changed;
@@ -150,8 +185,8 @@ export class Form {
 
 	validate() {
 		const names = [];
-		const values = Object.keys(this.index).reduce((values, key) => {
-			const element = this.index[key];
+		const values = Object.keys(this.elementsIndex).reduce((values, key) => {
+			const element = this.elementsIndex[key];
 			const {name, value, checked} = element;
 
 			if (values.hasOwnProperty(name)) {
@@ -179,9 +214,3 @@ export class Form {
 		this.validateLock = false;
 	}
 }
-
-
-// function formify(config: FormConfig): Form
-// function formify(name: string, config: FormConfig): Form
-// function formify(): Form {
-// }
