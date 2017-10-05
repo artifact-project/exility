@@ -11,31 +11,43 @@ export default class Element extends Block<ElementAttrs, ElementContext> {
 	});
 
 	static template = `
-		var inp = context.$form[attrs.name];
+		var elem = __this__.formElement;
 	
 		input.input[
 			@focus
 			@blur
-			class.disabled=\${inp.disabled}
-			class.readOnly=\${inp.readOnly}
-			class.submitting=\${inp.submitting}
-			name=\${inp.name}
-			type=\${inp.type}
-			value=\${inp.value}
-			checked=\${attrs.checked}
-			disabled=\${attrs.disabled}
-			readOnly=\${attrs.readOnly || inp.submitting}
-			autoFocus=\${attrs.autoFocus}
+			
+			class.active=\${elem.active}
+			class.readOnly=\${elem.readOnly}
+			class.disabled=\${elem.disabled}
+			class.changed=\${elem.changed}
+			class.touched=\${elem.touched}
+			class.invalid=\${elem.invalid}
+			class.submitting=\${elem.submitting}
+			
+			name=\${elem.name}
+			type=\${elem.type}
+			value=\${elem.value}
+			checked=\${elem.checked}
+			disabled=\${elem.disabled}
+			readOnly=\${elem.readOnly || inp.submitting}
+			autoFocus=\${elem.autoFocus}
+			maxLength=\${elem.maxLength}
+			tabIndex=\${elem.tabIndex}
 		]
 	`;
 
+	private formElement: any;
+
 	constructor(attrs, options) {
 		super(attrs, options);
-		this.getContext().register(this);
+		this.formElement = this.getContext().register(this);
 	}
 
 	getDefaults() {
-		return {type: 'text'};
+		return {
+			type: 'text',
+		};
 	}
 
 	getContext() {

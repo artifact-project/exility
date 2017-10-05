@@ -10,11 +10,6 @@ const BLUR_EVENT_NAME = 'blur';
 const INPUT_EVENT_NAME = 'input';
 const CHANGE_EVENT_NAME = 'change';
 
-export interface FormConfig {
-	name?: string;
-	elements: FormElementsConfig;
-}
-
 export interface FormElementsConfig {
 	[name: string]: (options: FormElementTypeOptions) => FormElement;
 }
@@ -59,13 +54,10 @@ export class FormElement {
 	active: boolean = false;
 	changed: boolean = false;
 	invalid: boolean = false;
-	validity: Validity = null;
 	touched: boolean = false;
+	validity: Validity = null;
 
 	constructor(public form: Form, public block: Element) {
-		// this.initialValue = <string>this.form.get('value');
-		// this.initialChecked = <boolean>this.form.get('checked');
-		// this.initialSelectedIndex = <number>this.form.get('selectedIndex');
 	}
 }
 
@@ -98,17 +90,19 @@ export class Form {
 		let values = this.initialState[name];
 
 		if (!Array.isArray(values)) {
-			this.initialState[name] = values = [values];
+			values = [values];
 		}
 
 		if (type === CHECKBOX_TYPE || type === RADIO_TYPE) {
-			element.checked = values.indexOf(value) > -1;
+			element.value = value;
+			element.checked = values.includes(value) ;
 		} else if (type === SELECT_TYPE) {
+			element.value = value;
 			element.selectedIndex = block.attrs.options.findIndex(opt => {
 				return (opt.value == null ? opt.text : opt.value) == value;
 			});
 		} else {
-			element.value = String(values.shift());
+			element.value = String(values[elementList.length - 1]);
 		}
 
 		element.initialValue = element.value;
@@ -118,6 +112,7 @@ export class Form {
 		this.elementsIndex[block.cid] = element;
 		elementList.push(element);
 
+		this.runValidate();
 	}
 
 	unregister(block: Element) {
@@ -131,6 +126,8 @@ export class Form {
 		} else {
 			throw new Error('Unregister for unknown block');
 		}
+
+		this.runValidate();
 	}
 
 	handleEvent(block: Element, evt: Event) {
@@ -177,17 +174,27 @@ export class Form {
 			);
 		}
 
+		this.runValidate();
+
+		return element;
+	}
+
+	private runValidate() {
 		if (!this.validateLock) {
 			this.validateLock = true;
 			requestAnimationFrame(this.validate);
 		}
 	}
 
-	validate() {
+	private validate() {
 		const names = [];
 		const values = Object.keys(this.elementsIndex).reduce((values, key) => {
 			const element = this.elementsIndex[key];
-			const {name, value, checked} = element;
+			const {type, name, value, checked} = element;
+
+			if ((type === RADIO_TYPE || type === CHECKBOX_TYPE) && !checked) {
+				return values;
+			}
 
 			if (values.hasOwnProperty(name)) {
 				values[name] = [].concat(values[name], value);
@@ -195,7 +202,6 @@ export class Form {
 				names.push(name);
 				values[name] = value;
 			}
-
 
 			return values;
 		}, {});

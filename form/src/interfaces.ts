@@ -8,6 +8,7 @@ export interface ElementAttrs {
 	autoFocus?: boolean
 	minLength?: number;
 	maxLength?: number;
+	tabIndex?: number;
 	options?: ElementOptionAttrs[];
 }
 

@@ -15,6 +15,8 @@ const ATTR_TO_PROPS = {
 	'autofocus': 'autoFocus',
 	'autoFocus': 'autoFocus',
 	'innerHTML': 'innerHTML',
+	'maxlength': 'maxLength',
+	'maxLength': 'maxLength',
 };
 
 const BOOL_ATTRS = {
