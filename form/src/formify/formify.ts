@@ -1,4 +1,5 @@
-import {ValidateRule, Validity} from '../rules/rules';
+import {ValidateRule, Validity, ValueBox} from '../interfaces';
+import {createComplexRule, minLength} from '../rules/rules';
 import Element from '../Element/Element';
 
 const RADIO_TYPE = 'radio';
@@ -57,7 +58,20 @@ export class FormElement {
 	touched: boolean = false;
 	validity: Validity = null;
 
+	private validateRule: ValidateRule;
+
 	constructor(public form: Form, public block: Element) {
+		const rules: ValidateRule[] = [];
+
+		if (this.minLength >= 0) {
+			rules.push(minLength(this.minLength));
+		}
+
+		this.validateRule = createComplexRule(this.name, {}, rules);
+	}
+
+	validate(vbox: ValueBox): Validity {
+		return this.validateRule(vbox);
 	}
 }
 
@@ -188,9 +202,21 @@ export class Form {
 
 	private validate() {
 		const names = [];
+		const targets = [];
 		const values = Object.keys(this.elementsIndex).reduce((values, key) => {
 			const element = this.elementsIndex[key];
 			const {type, name, value, checked} = element;
+
+			// if (!targets.hasOwnProperty(name)) {
+			// 	targets[name] = [];
+			// }
+
+			targets.push({
+				name,
+				value,
+				checked,
+				element,
+			});
 
 			if ((type === RADIO_TYPE || type === CHECKBOX_TYPE) && !checked) {
 				return values;
@@ -206,15 +232,23 @@ export class Form {
 			return values;
 		}, {});
 
-		names.forEach(name => {
-			const validate = this.validateRules[name];
-			const validity = validate ? validate({
-				name,
-				value: values[name],
-			}) : null;
+		this.invalid = false;
 
-			// element.invalid = validity !== null;
-			// element.validity = validity;
+		targets.forEach(({name, value, checked, element}) => {
+			const vbox = {
+				name,
+				value,
+				checked,
+				values,
+			};
+			const validity = element.validate(vbox);
+
+			element.invalid = false;
+
+			if (validity !== null) {
+				this.invalid = true;
+				element.invalid = true;
+			}
 		});
 
 		this.validateLock = false;

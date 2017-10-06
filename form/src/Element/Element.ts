@@ -1,17 +1,9 @@
 import Block from '@exility/block';
-import css from '@exility/css';
 import {ElementAttrs, ElementContext} from '../interfaces';
 
 export default class Element extends Block<ElementAttrs, ElementContext> {
-	static classNames = css({
-		'input': {
-			width: '100%',
-			border: '1px solid red',
-		},
-	});
-
 	static template = `
-		var elem = __this__.formElement;
+		const elem = __this__.formElement;
 	
 		input.input[
 			@focus

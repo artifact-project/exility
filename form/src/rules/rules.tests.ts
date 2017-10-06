@@ -1,4 +1,5 @@
-import {required, minLength, email, password, ValueBox, custom} from './rules';
+import {required, minLength, email, password, custom} from './rules';
+import {ValueBox} from '../interfaces';
 
 it('minLength', () => {
 	expect(minLength(2)({value: 'a'})).toEqual({

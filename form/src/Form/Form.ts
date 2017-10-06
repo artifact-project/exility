@@ -9,9 +9,11 @@ export interface FormContext {
 	handleEvent(event: KeyboardEvent);
 }
 
-export default class Form extends Block<FormAttrs, {[index:string]: FormContext}> {
+export default class Form extends Block<FormAttrs, {$form: FormContext}> {
 	static template = `
-		form[
+		const form = context.$form;
+	
+		form.form[
 			@submit="handleEvent"
 			@reset="handleEvent"
 			@focus="handleEvent"
@@ -24,25 +26,15 @@ export default class Form extends Block<FormAttrs, {[index:string]: FormContext}
 			@cut="handleEvent"
 			@copy="handleEvent"
 			@paste="handleEvent"
+			
+			class.submitting=\${form.submitting}
+			class.submitFailed=\${form.submitFailed}
+			class.submitSucceeded=\${form.submitSucceeded}
 		]
 			::children
 	`;
 
-	getContextForNested() {
-		return {
-			$form: this.getContext(),
-		};
-	}
-
 	'@handleEvent'({originalEvent}) {
-		this.getContext().handleEvent(originalEvent);
-	}
-
-	getContext() {
-		return (
-			this.attrs.context ||
-			this.context[`${this.attrs.name}`] ||
-			this.context.$form
-		);
+		this.context.$form.handleEvent(originalEvent);
 	}
 }

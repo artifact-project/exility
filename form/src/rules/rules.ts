@@ -1,18 +1,6 @@
-export interface ValueBox {
-	value?: string;
-	checked?: boolean;
-	selectedIndex?: number;
-}
+import {ValidateRule, ValueBox} from '../interfaces';
 
-export interface Validity {
-	id: string;
-	detail: object;
-	nested?: Validity;
-}
-
-export type ValidateRule = (vbox: ValueBox) => Validity;
-
-function compose(id: string, detail: object, rules: ValidateRule[]): ValidateRule {
+export function createComplexRule(id: string, detail: object, rules: ValidateRule[]): ValidateRule {
 	return (vbox) => {
 		for (let i = 0; i < rules.length; i++) {
 			const invalid = rules[i](vbox);
@@ -53,15 +41,15 @@ export function minLength(min: number): ValidateRule {
 }
 
 export function required(): ValidateRule {
-	return compose('required', {}, [minLength(1)]);
+	return createComplexRule('required', {}, [minLength(1)]);
 }
 
 export function email(): ValidateRule {
-	return compose('email', {}, [regexp(/^.@[^@]+\..+$/)]);
+	return createComplexRule('email', {}, [regexp(/^.@[^@]+\..+$/)]);
 }
 
 export function password(additionalRules: ValidateRule[] = []): ValidateRule {
-	return compose('password', {}, [
+	return createComplexRule('password', {}, [
 		required(),
 		minLength(6),
 	].concat(additionalRules));

@@ -43,6 +43,8 @@ export default class extends Block<{$form: FormContext}, null> {
 			Element[name="password" type="password" required]
 
 			hr + button[disabled=\${form.submitting}] | Submit
+
+		form.elem('login').invalid
 	`;
 }
 ```
