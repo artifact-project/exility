@@ -128,3 +128,353 @@ function templateFactory(__DEPS__) {
 	}
 }
 `;
+
+exports[`динамическая текстовая нода 1`] = `
+function templateFactory(__DEPS__) {
+	"use strict";
+	var __STDDOM = __DEPS__.stddom;
+	var __STDDOM_CONTEXT = __STDDOM.CONTEXT;
+	var __STDDOM_FRAGMENT = __STDDOM.FRAGMENT;
+	var __STDDOM_TEXT = __STDDOM.TEXT;
+	var __STDDOM_VALUE = __STDDOM.VALUE;
+	var __STDDOM_LIFECYCLE = __STDDOM.LIFECYCLE;
+	var __STDDOM_UPD_VALUE = __STDDOM.UPD_VALUE;
+	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var x = __SCOPE__.x;
+
+		var __ctx = __STDDOM_CONTEXT();
+		var __nctx__, __nctxChanged__;
+
+		var __frag = __STDDOM_FRAGMENT();
+		__STDDOM_TEXT(__frag, "Hi, ");
+		__STDDOM_VALUE(__frag, __ctx, 1, x);
+		__STDDOM_TEXT(__frag, "!");
+
+		return {
+			ctx: __ctx,
+			frag: __frag,
+			container: null,
+			mountTo: function (container) {
+				this.container = container;
+				__frag.mountTo(container);
+				__STDDOM_LIFECYCLE(__ctx, 'connectedCallback');
+				return this;
+			},
+			update: function (__NEWSCOPE__) {
+				__SCOPE__ = __NEWSCOPE__;
+				x = __NEWSCOPE__.x;
+
+				__STDDOM_UPD_VALUE(__ctx[1], x);
+			}
+		}
+	}
+}
+`;
+
+exports[`статичная текстовая нода 1`] = `
+function templateFactory() {
+	"use strict";
+	var __STDDOM = new (function () {
+		var FRAGMENT = function FRAGMENT(parentNode) {
+			return {
+				length: 0,
+				nodeType: 0,
+				parentNode: parentNode,
+				appendChild: APPEND_CHILD,
+				appendTo: APPEND_TO,
+				appendToBefore: APPEND_TO_BEFORE,
+				replaceChildFrag: REPLACE_CHILD_FRAG,
+				remove: REMOVE,
+				mountTo: MOUNT_TO,
+			};
+		};
+		var APPEND_CHILD = function APPEND_CHILD(child) {
+			this[this.length++] = child;
+		};
+		var APPEND_TO = function APPEND_TO(parent) {
+			this.parentNode = parent;
+			if (this.length === 1) {
+				parent.appendChild(this[0]);
+			}
+			else if (this.length > 1) {
+				for (var i = 0; i < this.length; i++) {
+					parent.appendChild(this[i]);
+				}
+			}
+		};
+		var APPEND_TO_BEFORE = function APPEND_TO_BEFORE(frag, before) {
+			var parentNode = GET_PARENT_NODE(frag);
+			var refNode = before.hasOwnProperty('frag') ? (before.frag[0] || before.anchor) : before;
+			this.parentNode = frag;
+			if (this.length === 1) {
+				parentNode.insertBefore(this[0], refNode);
+			}
+			else if (this.length > 1) {
+				for (var i = 0; i < this.length; i++) {
+					parentNode.insertBefore(this[i], refNode);
+				}
+			}
+		};
+		var GET_PARENT_NODE = function GET_PARENT_NODE(frag) {
+			return frag == null ? ISOMORPHIC_FRAG : (frag.click ? frag : GET_PARENT_NODE(frag.parentNode));
+		};
+		var ISOMORPHIC_FRAG = null;
+		var REPLACE_CHILD_FRAG = function REPLACE_CHILD_FRAG(oldFrag, newFrag) {
+			var domParent = GET_PARENT_NODE(this);
+			if (newFrag.length === 1) {
+				this[0] = newFrag[0];
+				domParent.insertBefore(newFrag[0], oldFrag[0]);
+				domParent.removeChild(oldFrag[0]);
+				for (var idx = 0; idx < this.parentNode.length; idx++) {
+					if (this.parentNode[idx] === oldFrag[0]) {
+						this.parentNode[idx] = newFrag[0];
+					}
+				}
+			}
+			else {
+			throw 'todo';
+		}
+	};
+	var REMOVE = function REMOVE() {
+		var parentNode = GET_PARENT_NODE(this);
+		if (this.length === 1) {
+			parentNode.removeChild(this[0]);
+		}
+		else if (this.length > 1) {
+			for (var i = 0; i < this.length; i++) {
+				parentNode.removeChild(this[i]);
+			}
+		}
+	};
+	var MOUNT_TO = function MOUNT_TO(container) {
+		this.parentNode = container;
+		if (ISOMORPHIC_FRAG === null) {
+			for (var i = 0; i < this.length; i++) {
+				APPEND(container, this[i]);
+			}
+		}
+	};
+	var APPEND = function APPEND(parent, el) {
+		parent.appendChild(el);
+		return el;
+	};
+	var TEXT = function TEXT(parent, value) {
+		var el;
+		if (ISOMORPHIC_FRAG) {
+			var parentNode = GET_PARENT_NODE(parent);
+			el = GET_ISOMORPHIC_NEXT(parentNode);
+			ISOMORPHIC_APPEND(parent, el);
+			var nodeValue = el.nodeValue;
+			if (nodeValue !== value) {
+				var length_1 = (el.__len || 0) + value.length;
+				if (nodeValue.length !== length_1) {
+					el.__len = length_1;
+					parentNode.__iso--;
+				}
+			}
+		}
+		else {
+		el = APPEND(parent, document.createTextNode(value == null ? '' : value));
+	}
+	return el;
+};
+var GET_ISOMORPHIC_NEXT = function GET_ISOMORPHIC_NEXT(parentNode) {
+	return parentNode.childNodes[parentNode.__iso++];
+};
+var ISOMORPHIC_APPEND = undefined;
+this.FRAGMENT = FRAGMENT;
+this.TEXT = TEXT;
+});
+
+var __STDDOM_FRAGMENT = __STDDOM.FRAGMENT;
+var __STDDOM_TEXT = __STDDOM.TEXT;
+var __STDLIB = new (function () {
+var NOOP = function NOOP() { };
+	this.NOOP = NOOP;
+});
+
+var __STDLIB_NOOP = __STDLIB.NOOP;
+return function compiledTemplate(__SCOPE__, __OPTIONS__) {
+	var __nctx__, __nctxChanged__;
+
+	var __frag = __STDDOM_FRAGMENT();
+	__STDDOM_TEXT(__frag, "foo");
+
+	return {
+		ctx: null,
+		frag: __frag,
+		container: null,
+		mountTo: function (container) {
+			this.container = container;
+			__frag.mountTo(container);
+
+			return this;
+		},
+		update: __STDLIB_NOOP
+	}
+
+}
+}
+`;
+
+exports[`тег + текст (статика) 1`] = `
+function templateFactory() {
+	"use strict";
+	var __STDDOM = new (function () {
+		var FRAGMENT = function FRAGMENT(parentNode) {
+			return {
+				length: 0,
+				nodeType: 0,
+				parentNode: parentNode,
+				appendChild: APPEND_CHILD,
+				appendTo: APPEND_TO,
+				appendToBefore: APPEND_TO_BEFORE,
+				replaceChildFrag: REPLACE_CHILD_FRAG,
+				remove: REMOVE,
+				mountTo: MOUNT_TO,
+			};
+		};
+		var APPEND_CHILD = function APPEND_CHILD(child) {
+			this[this.length++] = child;
+		};
+		var APPEND_TO = function APPEND_TO(parent) {
+			this.parentNode = parent;
+			if (this.length === 1) {
+				parent.appendChild(this[0]);
+			}
+			else if (this.length > 1) {
+				for (var i = 0; i < this.length; i++) {
+					parent.appendChild(this[i]);
+				}
+			}
+		};
+		var APPEND_TO_BEFORE = function APPEND_TO_BEFORE(frag, before) {
+			var parentNode = GET_PARENT_NODE(frag);
+			var refNode = before.hasOwnProperty('frag') ? (before.frag[0] || before.anchor) : before;
+			this.parentNode = frag;
+			if (this.length === 1) {
+				parentNode.insertBefore(this[0], refNode);
+			}
+			else if (this.length > 1) {
+				for (var i = 0; i < this.length; i++) {
+					parentNode.insertBefore(this[i], refNode);
+				}
+			}
+		};
+		var GET_PARENT_NODE = function GET_PARENT_NODE(frag) {
+			return frag == null ? ISOMORPHIC_FRAG : (frag.click ? frag : GET_PARENT_NODE(frag.parentNode));
+		};
+		var ISOMORPHIC_FRAG = null;
+		var REPLACE_CHILD_FRAG = function REPLACE_CHILD_FRAG(oldFrag, newFrag) {
+			var domParent = GET_PARENT_NODE(this);
+			if (newFrag.length === 1) {
+				this[0] = newFrag[0];
+				domParent.insertBefore(newFrag[0], oldFrag[0]);
+				domParent.removeChild(oldFrag[0]);
+				for (var idx = 0; idx < this.parentNode.length; idx++) {
+					if (this.parentNode[idx] === oldFrag[0]) {
+						this.parentNode[idx] = newFrag[0];
+					}
+				}
+			}
+			else {
+			throw 'todo';
+		}
+	};
+	var REMOVE = function REMOVE() {
+		var parentNode = GET_PARENT_NODE(this);
+		if (this.length === 1) {
+			parentNode.removeChild(this[0]);
+		}
+		else if (this.length > 1) {
+			for (var i = 0; i < this.length; i++) {
+				parentNode.removeChild(this[i]);
+			}
+		}
+	};
+	var MOUNT_TO = function MOUNT_TO(container) {
+		this.parentNode = container;
+		if (ISOMORPHIC_FRAG === null) {
+			for (var i = 0; i < this.length; i++) {
+				APPEND(container, this[i]);
+			}
+		}
+	};
+	var APPEND = function APPEND(parent, el) {
+		parent.appendChild(el);
+		return el;
+	};
+	var NODE = function NODE(parent, name) {
+		if (ISOMORPHIC_FRAG) {
+			var parentNode = GET_PARENT_NODE(parent);
+			var el = GET_ISOMORPHIC_NEXT(parentNode);
+			el.__iso = 0;
+			ISOMORPHIC_APPEND(parent, el);
+			return el;
+		}
+		else {
+		return APPEND(parent, document.createElement(name));
+	}
+};
+var GET_ISOMORPHIC_NEXT = function GET_ISOMORPHIC_NEXT(parentNode) {
+	return parentNode.childNodes[parentNode.__iso++];
+};
+var ISOMORPHIC_APPEND = undefined;
+var TEXT = function TEXT(parent, value) {
+	var el;
+	if (ISOMORPHIC_FRAG) {
+		var parentNode = GET_PARENT_NODE(parent);
+		el = GET_ISOMORPHIC_NEXT(parentNode);
+		ISOMORPHIC_APPEND(parent, el);
+		var nodeValue = el.nodeValue;
+		if (nodeValue !== value) {
+			var length_1 = (el.__len || 0) + value.length;
+			if (nodeValue.length !== length_1) {
+				el.__len = length_1;
+				parentNode.__iso--;
+			}
+		}
+	}
+	else {
+	el = APPEND(parent, document.createTextNode(value == null ? '' : value));
+}
+return el;
+};
+this.FRAGMENT = FRAGMENT;
+this.NODE = NODE;
+this.TEXT = TEXT;
+});
+
+var __STDDOM_FRAGMENT = __STDDOM.FRAGMENT;
+var __STDDOM_NODE = __STDDOM.NODE;
+var __STDDOM_TEXT = __STDDOM.TEXT;
+var __STDLIB = new (function () {
+var NOOP = function NOOP() { };
+this.NOOP = NOOP;
+});
+
+var __STDLIB_NOOP = __STDLIB.NOOP;
+return function compiledTemplate(__SCOPE__, __OPTIONS__) {
+var __nctx__, __nctxChanged__;
+
+var __frag = __STDDOM_FRAGMENT();
+var __x1 = __STDDOM_NODE(__frag, "h1");
+__STDDOM_TEXT(__x1, "Hi");
+
+return {
+	ctx: null,
+	frag: __frag,
+	container: null,
+	mountTo: function (container) {
+		this.container = container;
+		__frag.mountTo(container);
+
+		return this;
+	},
+	update: __STDLIB_NOOP
+}
+
+}
+}
+`;

@@ -67,8 +67,17 @@ it('text + interpolate', () => {
 });
 
 it('статичная текстовая нода', () => {
-	const view = fromString('|foo');
+	const view = fromString('|foo', {}, true);
+
 	expect(view.container.innerHTML).toBe('foo');
+	expect(view.templateFactory).toMatchSnapshot();
+});
+
+it('тег + текст (статика)', () => {
+	const view = fromString('h1 | Hi', {}, true);
+
+	expect(view.container.innerHTML).toBe('<h1>Hi</h1>');
+	expect(view.templateFactory).toMatchSnapshot();
 });
 
 it('динамическая текстовая нода', () => {
@@ -79,10 +88,12 @@ it('динамическая текстовая нода', () => {
 
 	view.update({x: 'bar'});
 	expect(view.container.innerHTML).toBe('Hi, bar!');
+
+	expect(view.templateFactory).toMatchSnapshot();
 });
 
 it('тег + текст', () => {
-	const view = fromString('h1 | ${x}', {x: 'foo'});
+	const view = fromString('h1 | ${x}', {x: 'foo'}, true);
 
 	expect(view.container.innerHTML).toBe('<h1>foo</h1>');
 
