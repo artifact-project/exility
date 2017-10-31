@@ -17,11 +17,16 @@ const ATTR_TO_PROPS = {
 	'innerHTML': 'innerHTML',
 	'maxlength': 'maxLength',
 	'maxLength': 'maxLength',
+	'selectedIndex': 'selectedIndex',
 };
 
 const BOOL_ATTRS = {
 	'checked': true,
+	'disabled': true,
+	'readonly': true,
+	'readOnly': true,
 	'autofocus': true,
+	'autoFocus': true,
 };
 
 let ISOMORPHIC_FRAG: any = null;
@@ -152,7 +157,12 @@ function D_PROP(node, name, value) {
 	value = value == null ? '' : value;
 
 	if (node.attrs[name] !== value) {
-		node.el[name] = value;
+		if (value === -1 && name === 'maxLength') {
+			node.el.removeAttribute('maxlength');
+		} else {
+			node.el[name] = value;
+		}
+
 		node.attrs[name] = value;
 	}
 }

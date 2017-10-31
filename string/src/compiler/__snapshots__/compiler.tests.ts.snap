@@ -275,7 +275,7 @@ function templateFactory(__DEPS__) {
 
 exports[`panel = [title] + default slot 2`] = `<h1>?!</h1><p></p><h1>Wow!</h1><p>Done</p>`;
 
-exports[`pure 1`] = `
+exports[`pure + expression 1`] = `
 function templateFactory() {
 	"use strict";
 	var __STDLIB = new (function () {
@@ -314,6 +314,15 @@ function templateFactory() {
 		var text = __SCOPE__.text;
 
 		return "<i class=\\"foo\\">" + __STDLIB_HTML_ENCODE(text) + "!</i>";
+	}
+}
+`;
+
+exports[`pure 1`] = `
+function templateFactory() {
+	"use strict";
+	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
+		return "<h1>Hi!</h1>";
 	}
 }
 `;

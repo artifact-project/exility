@@ -524,40 +524,45 @@ const compiler = createCompiler<IDOMCompilerOptions>((options: IDOMCompilerOptio
 					code.push(`var ${varName} = __STDDOM_NODE(${parentName}, ${compiledName});`);
 				}
 
-				code = code.concat(
-					node.compiledAttrs.map((attr: COMPILED_ATTR): string => {
-						let fn;
-						let expr = varName;
-						let [name, value, isExpr] = attr;
-						let extraStaticExpr = '';
+				const beforeChildren = [];
+				const afterChildren = [];
 
-						if (R_IS_EVENT_ATTR.test(name)) {
-							const compiledEvent = compileEvent(node, attr, name, value);
+				node.compiledAttrs.forEach((attr: COMPILED_ATTR) => {
+					let fn;
+					let expr = varName;
+					let [name, value, isExpr] = attr;
+					let extraStaticExpr = '';
 
-							fn = '__STDDOM_ON';
-							expr = `__ctx[${tagId}]`;
+					if (R_IS_EVENT_ATTR.test(name)) {
+						const compiledEvent = compileEvent(node, attr, name, value);
 
-							name = compiledEvent.name;
-							value = compiledEvent.value;
-							isExpr = compiledEvent.isExpr;
+						fn = '__STDDOM_ON';
+						expr = `__ctx[${tagId}]`;
 
-							if (compiledEvent.mods) {
-								extraStaticExpr += `\n${expr}.${compiledEvent.mods}`;
-							}
-						} else if (isExpr || node.hasComputedName) {
-							fn = ATTR_TO_PROPS.hasOwnProperty(name) ? '__STDDOM_D_PROP' : '__STDDOM_D_ATTR';
-							expr = `__ctx[${tagId}]`;
-						} else {
-							fn = ATTR_TO_PROPS.hasOwnProperty(name) ? '__STDDOM_PROP' : '__STDDOM_ATTR';
+						name = compiledEvent.name;
+						value = compiledEvent.value;
+						isExpr = compiledEvent.isExpr;
+
+						if (compiledEvent.mods) {
+							extraStaticExpr += `\n${expr}.${compiledEvent.mods}`;
 						}
+					} else if (isExpr || node.hasComputedName) {
+						fn = ATTR_TO_PROPS.hasOwnProperty(name) ? '__STDDOM_D_PROP' : '__STDDOM_D_ATTR';
+						expr = `__ctx[${tagId}]`;
+					} else {
+						fn = ATTR_TO_PROPS.hasOwnProperty(name) ? '__STDDOM_PROP' : '__STDDOM_ATTR';
+					}
 
-						expr = `${fn}(${expr}, ${JSON.stringify(ATTR_TO_PROPS[name] || name)}, ${value})`;
-						isExpr && updaters.push(expr);
+					expr = `${fn}(${expr}, ${JSON.stringify(ATTR_TO_PROPS[name] || name)}, ${value})`;
+					isExpr && updaters.push(expr);
 
-						return expr + (extraStaticExpr ? `\n${extraStaticExpr}` : '');
-					}),
+					(name === 'selectedIndex' ? afterChildren : beforeChildren).push(expr + (extraStaticExpr ? `\n${extraStaticExpr}` : ''));
+				});
 
-					compileChildren(varName, children, updaters, fragments)
+				code = code.concat(
+					beforeChildren,
+					compileChildren(varName, children, updaters, fragments),
+					afterChildren,
 				);
 			}
 

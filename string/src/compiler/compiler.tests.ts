@@ -171,6 +171,13 @@ it('panel = [title] + super', () => {
 });
 
 it('pure', () => {
+	const factory = fromString('h1 | Hi!', [], true);
+
+	expect(factory).toMatchSnapshot();
+	expect(factory({})()).toBe('<h1>Hi!</h1>');
+});
+
+it('pure + expression', () => {
 	const factory = fromString('i.foo | ${text}!', ['text'], true);
 
 	expect(factory).toMatchSnapshot();

@@ -9,8 +9,8 @@ import mountTo from './src/mountTo/mountTo';
 function runtimeBlockActivate(Block) {
 	if (!Block.prototype['__template__']) {
 		const compile = createCompiler({
-			blocks: Object.keys(Block.blocks),
-			scope: requiredScopeKeys
+			blocks: Block.blocks ? Object.keys(Block.blocks) : [],
+			scope: requiredScopeKeys,
 		});
 		const templateFactory = compile(Block.template);
 
