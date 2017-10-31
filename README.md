@@ -29,9 +29,11 @@ The project is in active development and it can be collected only in one way:
 ### Features
 
  - Ultimate isomorphic render
- - CSS Modules and Hot reloading out of the box
- - [Storybook](./storybook) for development ui-blocks (Wrapper over the original [storybook](https://storybook.js.org/))
- - Testing out of the box, see [jacket](./jacket)
+ - **Out of the box**
+   - CSS Modules and Hot reloading
+   - [Storybook](./storybook) for development ui-blocks (Wrapper over the original [storybook](https://storybook.js.org/))
+   - Very easy work with [forms](./form)(validation, masks and etc)
+   - Testing, see [jacket](./jacket)
  - Ready to use UI libraries:
    - [ui-bootstrap](./ui-bootstrap)
  - Flexible and easy syntax :]
