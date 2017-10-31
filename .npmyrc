@@ -1,4 +1,5 @@
 {
+  "@artifact-project/i18n": "../i18n",
   "@exility/block": "./block",
   "@exility/compile": "./compile",
   "@exility/css": "./css",
