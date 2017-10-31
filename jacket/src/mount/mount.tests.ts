@@ -7,7 +7,7 @@ interface BtnAttrs {
 	disabled?: boolean;
 }
 
-class Btn extends Block<BtnAttrs> {
+class Btn extends Block<BtnAttrs, null> {
 	static template = `
 		button.btn[
 			@click

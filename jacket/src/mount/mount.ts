@@ -1,8 +1,14 @@
-import Block from '@exility/block';
-import {mountTo} from '@exility/dom';
+import Block, {BlockClass} from '@exility/block';
+import {mountTo, runtimeBlockActivate} from '@exility/dom';
 
 export class DOMWrapper {
-	constructor(public target: Block<any>, private el: Element) {
+	isDOMWrapper: boolean = true;
+
+	constructor(public target: Block<any, any>, private el: Element) {
+	}
+
+	get classList() {
+		return this.el.className.trim().split(/\s+/);
 	}
 
 	on<E extends Event>(name: string, fn: (evt: E) => void) {
@@ -24,11 +30,36 @@ export class DOMWrapper {
 		return this.el.textContent;
 	}
 
-	attr(name: string) {
-		if (name in this.el) {
-			return this.el[name];
+	val(): string;
+	val(value: string): this;
+	val() {
+		if (arguments.length) {
+			return this.attr('value', arguments[0]);
 		} else {
-			return this.el.getAttribute(name);
+			return this.attr('value');
+		}
+	}
+
+	attr(name: string): any;
+	attr(name: string, value: boolean): this;
+	attr(name: string, value: number): this;
+	attr(name: string, value: string): this;
+	attr() {
+		const name = arguments[0];
+		const {el} = this;
+
+		if (arguments.length == 2) {
+			const value = arguments[1];
+
+			if (name in el) {
+				el[name] = value;
+			} else {
+				el.setAttribute(name, value);
+			}
+
+			return this;
+		} else {
+			return (name in el) ? el[name] : el.getAttribute(name);
 		}
 	}
 
@@ -39,8 +70,13 @@ export class DOMWrapper {
 		}, {});
 	}
 
-	simulate(eventName: string) {
-		const event = new CustomEvent(eventName);
+	simulate(eventName: string, detail?: object) {
+		const event = new CustomEvent(eventName, {
+			bubbles: true,
+			cancelable: true,
+			detail,
+		});
+
 		!this.el['disabled'] && this.el.dispatchEvent(event);
 	}
 
@@ -53,10 +89,16 @@ export class DOMWrapper {
 	}
 }
 
-export default function mount(block: Block<any>, events?) {
+export function create<A, C extends object>(UI: BlockClass<A, C>, attrs: A, context: C, events?) {
+	runtimeBlockActivate(UI);
+
+	return mount(new UI(attrs, {context}), events);
+}
+
+export default function mount(block: Block<any, any>, events: object = {}): DOMWrapper {
 	const container = document.createElement('div');
 
-	block['__events__'] = Object.keys(events || {}).reduce((obj, name) => {
+	block['__events__'] = Object.keys(events).reduce((obj, name) => {
 		obj[name] = {
 			ctx: {
 				[`@${name}`]: events[name],
