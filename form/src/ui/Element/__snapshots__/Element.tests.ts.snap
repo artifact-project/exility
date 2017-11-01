@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ui / Element checkbox empty 1`] = `
+<input class="is-checkbox"
+       name="empty"
+       type="checkbox"
+       value="on"
+>
+`;
+
+exports[`ui / Element checkbox with checked: bar 1`] = `
+<input class="is-checkbox"
+       name="array"
+       type="checkbox"
+       value="bar"
+>
+`;
+
+exports[`ui / Element checkbox with checked: foo 1`] = `
+<input class="is-checkbox"
+       name="array"
+       type="checkbox"
+       value="foo"
+>
+`;
+
+exports[`ui / Element radio empty 1`] = `
+<input class="is-radio"
+       name="empty"
+       type="radio"
+       value="on"
+>
+`;
+
+exports[`ui / Element select with value 1`] = `
+<select class="is-select"
+        name="color"
+        type="select"
+        value="blue"
+>
+  <option value="red">
+    Red
+  </option>
+  <option value="green">
+    Green
+  </option>
+  <option value="blue">
+    Blue
+  </option>
+</select>
+`;
+
+exports[`ui / Element text empty 1`] = `
+<input class="is-text"
+       name="empty"
+       type="text"
+       value
+>
+`;
+
+exports[`ui / Element text with initial value 1`] = `
+<input class="is-text"
+       name="empty"
+       type="text"
+       value="Foo"
+>
+`;
+
+exports[`ui / Element text with value 1`] = `
+<input class="is-text"
+       name="inline"
+       type="text"
+       value="Wow!"
+>
+`;
+
+exports[`ui / Element textarea with initial value 1`] = `
+<textarea class="is-textarea"
+          name="empty"
+          type="textarea"
+          value="Foo"
+>
+</textarea>
+`;

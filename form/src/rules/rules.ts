@@ -1,5 +1,19 @@
 import {ValidateRule, ValueBox} from '../interfaces';
 
+export function createSomeOf(rules: ValidateRule[]): ValidateRule {
+	return (vbox) => {
+		for (let i = 0; i < rules.length; i++) {
+			const validity = rules[i](vbox);
+
+			if (validity) {
+				return validity;
+			}
+		}
+
+		return null;
+	};
+}
+
 export function createComplexRule(id: string, detail: object, rules: ValidateRule[]): ValidateRule {
 	return (vbox) => {
 		for (let i = 0; i < rules.length; i++) {
@@ -36,7 +50,9 @@ export function custom(validate: (vbox: ValueBox) => boolean, id?: string): Vali
 export function minLength(min: number): ValidateRule {
 	return ({value}) => value.length >= min ? null : {
 		id: 'minLength',
-		detail: {min},
+		detail: {
+			min,
+		},
 	};
 }
 

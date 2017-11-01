@@ -1,0 +1,80 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ui / Error err / checked 1`] = `
+<form class>
+  <input class="checked is-checkbox"
+         name="array"
+         type="checkbox"
+         value="foo"
+  >
+  <input class="is-checkbox"
+         name="array"
+         type="checkbox"
+         value="bar"
+  >
+  <input class="is-checkbox"
+         name="array"
+         type="checkbox"
+         value="qux"
+  >
+</form>
+`;
+
+exports[`ui / Error err / checked 2`] = `
+<form class="changed invalid">
+  <input class="is-checkbox"
+         name="array"
+         type="checkbox"
+         value="foo"
+  >
+  <input class="is-checkbox"
+         name="array"
+         type="checkbox"
+         value="bar"
+  >
+  <input class="is-checkbox"
+         name="array"
+         type="checkbox"
+         value="qux"
+  >
+</form>
+`;
+
+exports[`ui / Error err / text 1`] = `
+<form class="invalid">
+  <input class="invalid is-text"
+         name="empty"
+         type="text"
+         value
+  >
+  <div class="error required">
+    No empty
+  </div>
+</form>
+`;
+
+exports[`ui / Error err / text 2`] = `
+<form class="invalid">
+  <input class="invalid is-text"
+         name="empty"
+         type="text"
+         value
+  >
+  <div class="error required">
+    No empty
+  </div>
+</form>
+`;
+
+exports[`ui / Error err / text 3`] = `
+<form class="invalid">
+  <input class="invalid is-text"
+         name="empty"
+         type="text"
+         value
+  >
+  <div class="error required">
+    No empty
+  </div>
+</form>
+`;

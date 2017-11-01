@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ui / Element changed / empty 1`] = `
+<form class>
+  <input class="is-text"
+         name="empty"
+         type="text"
+         value
+  >
+</form>
+`;
+
+exports[`ui / Element changed / empty 2`] = `
+<form class="changed">
+  <input class="changed is-text"
+         name="empty"
+         type="text"
+         value="123098"
+  >
+</form>
+`;
+
+exports[`ui / Element changed / inline 1`] = `
+<form class="invalid">
+  <input class="invalid is-text"
+         name="inline"
+         type="text"
+         value="Wow!"
+  >
+</form>
+`;
+
+exports[`ui / Element changed / inline 2`] = `
+<form class="changed">
+  <input class="changed is-text"
+         name="inline"
+         type="text"
+         value="Exility/Value"
+  >
+</form>
+`;
+
+exports[`ui / Form changed / empty 1`] = `
+<form class>
+  <input class="is-text"
+         name="empty"
+         type="text"
+         value
+  >
+</form>
+`;
+
+exports[`ui / Form changed / empty 2`] = `
+<form class>
+  <input class="is-text"
+         name="empty"
+         type="text"
+         value
+  >
+</form>
+`;
