@@ -6,7 +6,7 @@ import {FormContext} from '../../Context/Context';
 import {requestFrame} from '@perf-tools/balancer';
 import {UIFormContext} from '../../interfaces';
 
-describe('ui / Element', () => {
+describe('ui / Form', () => {
 	let context;
 
 	async function frame() {
@@ -23,7 +23,7 @@ describe('ui / Element', () => {
 				switcher: 'bar',
 				color: 'blue',
 			}, {
-				validation: {
+				rules: {
 					// Only English alphabet
 					username: ({value}) => /^[a-z]*$/i.test(value) ? null : {
 						id: 'onlyEng',
@@ -52,11 +52,13 @@ describe('ui / Element', () => {
 
 		await frame();
 		expect(hi).toMatchSnapshot();
+		expect(hi.classList).toEqual([]);
 
 		hi.find('input').val('123098').simulate('input');
 
 		await frame();
 		expect(hi).toMatchSnapshot();
+		expect(hi.classList).toEqual(['changed']);
 	});
 
 	test('changed / inline', async () => {
@@ -64,10 +66,12 @@ describe('ui / Element', () => {
 
 		await frame();
 		expect(hi).toMatchSnapshot();
+		expect(hi.classList).toEqual(['invalid']);
 
 		hi.find('input').val('Exility/Value').simulate('input');
 
 		await frame();
 		expect(hi).toMatchSnapshot();
+		expect(hi.classList).toEqual(['changed']);
 	});
 });

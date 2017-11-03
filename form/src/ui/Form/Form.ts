@@ -37,7 +37,6 @@ export default class UIForm extends Block<UIFormAttrs, UIFormContext> {
 	}
 
 	'@input'({target, originalEvent}) {
-		console.log(arguments[0]);
 		this.context.$form.handleEvent(target, originalEvent);
 	}
 }

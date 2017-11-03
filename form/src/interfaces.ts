@@ -5,6 +5,7 @@ export interface ValueBox {
 	value?: string;
 	checked?: boolean;
 	selectedIndex?: number;
+	values?: any;
 }
 
 export interface Validity {
@@ -58,6 +59,10 @@ export interface IFormContext {
 }
 
 export type FormContextConfig = {
+	rules?: {
+		[name: string]: ValidateRule;
+	};
+
 	validation?: {
 		[name: string]: ValidateRule;
 	};

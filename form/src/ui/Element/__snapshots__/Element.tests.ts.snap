@@ -17,7 +17,7 @@ exports[`ui / Element checkbox with checked: bar 1`] = `
 `;
 
 exports[`ui / Element checkbox with checked: foo 1`] = `
-<input class="is-checkbox"
+<input class="checked is-checkbox"
        name="array"
        type="checkbox"
        value="foo"

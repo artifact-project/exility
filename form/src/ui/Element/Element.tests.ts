@@ -28,7 +28,7 @@ describe('ui / Element', () => {
 				switcher: 'bar',
 				color: 'blue',
 			}, {
-				validation: {
+				rules: {
 					// Only English alphabet
 					username: ({value}) => /^[a-z]*$/i.test(value) ? null : {
 						id: 'onlyEng',

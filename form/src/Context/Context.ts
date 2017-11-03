@@ -91,9 +91,14 @@ export class Element implements IFormElement {
 
 export class ElementsGroup {
 	private list: Element[] = [];
+	private extraValidaty: Validity = null;
 
 	get validaty() {
-		return this.length ? this.list[0].validity : null;
+		return this.extraValidaty || (this.length ? this.list[0].validity : null);
+	}
+
+	set validaty(value) {
+		this.extraValidaty = value;
 	}
 
 	get active() {
@@ -125,6 +130,10 @@ export class ElementsGroup {
 
 	hasFlag(name: string): boolean {
 		let idx = this.length;
+
+		if (name === 'invalid' && this.extraValidaty) {
+			return true;
+		}
 
 		if (idx) {
 			if (idx === 1) {
@@ -162,7 +171,7 @@ export class ElementsGroup {
 
 	getErrorText(i18nDict?: SimpleDict) {
 		if (this.length) {
-			const validity = this.list[0].validity;
+			const validity = this.validaty;
 			return T(validity, i18nDict);
 		}
 	}
@@ -208,8 +217,8 @@ export class FormContext {
 	}
 
 	getValidateRule(name: string) {
-		const {validation = {}} = this.config;
-		return validation.hasOwnProperty(name) ? [validation[name]] : [];
+		const {rules = {}} = this.config;
+		return rules.hasOwnProperty(name) ? [rules[name]] : [];
 	}
 
 	getElementsGroup(name) {
@@ -304,22 +313,6 @@ export class FormContext {
 		}
 
 		this.validate();
-	}
-
-	// todo: Этого метода не должно быть
-	// возможно стоит сделать переменную `Block.activeBlock`, которую отслеживать по `focus`
-	getBlockByDOMEvent(evt: Event) {
-		const el = evt.target as HTMLInputElement;
-		const elementsGroup = this.elementsGroups[el.name];
-		const length = elementsGroup !== void 0 ? elementsGroup.length : 0;
-
-		if (length === 0) {
-			throw new Error('FAILED');
-		} else if (length === 1) {
-			return elementsGroup.eq(0).block;
-		} else {
-			return elementsGroup.eq(0).block;
-		}
 	}
 
 	handleEvent(block: UIElement, evt: Event) {
@@ -417,6 +410,7 @@ export class FormContext {
 		this.invalid = false;
 
 		// Валидируем все цели
+		// todo: только те цели, для которых валидация в прицнипе нужна
 		targets.forEach((element) => {
 			const curInvalidState = element.invalid;
 
@@ -440,6 +434,20 @@ export class FormContext {
 			} else {
 				setValidation(this, element, validity, curInvalidState);
 			}
+		});
+
+		this.config.validation && Object.keys(this.config.validation).forEach(name => {
+			const vbox = {
+				name,
+				value: null,
+				checked: null,
+				values,
+			};
+			const group = this.getElementsGroup(name);
+			const validaty = this.config.validation[name](vbox);
+
+			group.validaty = validaty;
+			validaty && (this.invalid = true);
 		});
 
 		this.values = values;

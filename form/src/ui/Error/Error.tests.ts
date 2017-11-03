@@ -11,6 +11,7 @@ import {UIFormContext} from '../../interfaces';
 defaultLocale.set({
 	required: 'No empty',
 	minLength: ({detail: {min}}) => `Min ${min}`,
+	checkers: ({detail: {foo, min}}) => foo ? `Min ${min}` : 'Foo require',
 });
 
 describe('ui / Error', () => {
@@ -31,10 +32,15 @@ describe('ui / Error', () => {
 				color: 'blue',
 			}, {
 				validation: {
-					array: ({value}) => value.includes('foo') || value.length > 2 ? null : {
-						id: 'checkers',
-						detail: null,
-					},
+					array: ({values}) => {
+						return !values.array || values.array.includes('foo') && values.array.length >= 2 ? null : {
+							id: 'checkers',
+							detail: {
+								min: 2,
+								foo: values.array.includes('foo'),
+							},
+						};
+					}
 				},
 			}),
 		};
@@ -57,11 +63,13 @@ describe('ui / Error', () => {
 
 		box.find('input').val('x').simulate('input');
 		await frame();
-		expect(box).toMatchSnapshot();
+		expect(box.classList).toEqual(['changed', 'invalid']);
+		expect(box.find('input').classList).toEqual(['is-text', 'changed', 'invalid']);
 
 		box.find('input').val('xyz').simulate('input');
 		await frame();
-		expect(box).toMatchSnapshot();
+		expect(box.classList).toEqual(['changed']);
+		expect(box.find('input').classList).toEqual(['is-text', 'changed']);
 	});
 
 	test('err / checked', async () => {
@@ -78,11 +86,22 @@ describe('ui / Error', () => {
 
 		const box = create(MyForm, {}, context);
 
+		// foo checked
 		await frame();
 		expect(box).toMatchSnapshot();
+		expect(box.classList).toEqual(['invalid']);
 
-		box.find('input:first-child').attr('checked', false).simulate('change');
+		// no one checked
+		box.find('[value="foo"]').attr('checked', false).simulate('change');
 		await frame();
 		expect(box).toMatchSnapshot();
+		expect(box.classList).toEqual(['changed', 'invalid']);
+
+		// foo + qux
+		box.find('[value="foo"]').attr('checked', true).simulate('change');
+		box.find('[value="qux"]').attr('checked', true).simulate('change');
+		await frame();
+		expect(box).toMatchSnapshot();
+		expect(box.classList).toEqual(['changed']);
 	});
 });
