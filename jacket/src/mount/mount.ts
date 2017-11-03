@@ -8,7 +8,8 @@ export class DOMWrapper {
 	}
 
 	get classList() {
-		return this.el.className.trim().split(/\s+/);
+		const className = this.el.className.trim();
+		return className === '' ? [] : className.split(/\s+/);
 	}
 
 	on<E extends Event>(name: string, fn: (evt: E) => void) {
@@ -78,6 +79,7 @@ export class DOMWrapper {
 		});
 
 		!this.el['disabled'] && this.el.dispatchEvent(event);
+		return this;
 	}
 
 	find(selector: string): DOMWrapper {
