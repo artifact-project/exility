@@ -18,9 +18,6 @@ function fromString(template, scope = {}, pure?: boolean, blocks?) {
 		blocks: Object.keys(blocks || {}),
 	});
 	const templateFactory = compile(template);
-
-	// console.log(templateFactory.toString());
-
 	const view = templateFactory(pure ? null : {stddom, stdlib})(scope);
 
 	view.templateFactory = templateFactory;
@@ -321,7 +318,35 @@ it('Context', () => {
 	);
 
 	expect(view.container.innerHTML).toBe('<i>123!</i>');
+	expect(Foo.prototype['__template__'].toString()).toMatchSnapshot();
 
 	view.update({x: '321'});
 	expect(view.container.innerHTML).toBe('<i>321?</i>');
+});
+
+
+it('Parent vs slots', () => {
+	const log = [];
+	const view = fromString(`Foo[d="1"] > Bar[d="2"] > Qux`, {}, null, {
+		'Foo': {
+			template: 'i > ::children',
+		},
+		'Bar': {
+			template: 'b > ::children',
+		},
+		'Qux': {
+			template: 'u > ::children',
+			connectedCallback() {
+				log.push('3');
+
+				if (this.__parent__.attrs) {
+					log.push(this.__parent__.attrs.d);
+					this.__parent__ && this.__parent__.__parent__ && log.push(this.__parent__.__parent__.attrs.d);
+				}
+			}
+		},
+	});
+
+	expect(log).toEqual(['3', '2', '1']);
+	expect(view.templateFactory).toMatchSnapshot();
 });

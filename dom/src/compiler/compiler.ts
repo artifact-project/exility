@@ -312,7 +312,7 @@ const compiler = createCompiler<IDOMCompilerOptions>((options: IDOMCompilerOptio
 		if (slots && slots.length) {
 			return `{
 				${slots.map(node => `
-					${node.compiledName}: function (__super__, ${parentName}) {
+					${node.compiledName}: function (__this__, __super__, ${parentName}) {
 						${compileChildren(parentName, node.children, updaters, fragments)}
 					}
 				`).join(',\n')}
@@ -435,8 +435,8 @@ const compiler = createCompiler<IDOMCompilerOptions>((options: IDOMCompilerOptio
 						${compileChildren(parentName, node.children, slotUpdaters, fragments)}
 					}
 					${hasScopeSlots
-						? `__STDLIB_SLOT(__slots__, __super__, ${compiledName}, ${slotName}, ${parentName});`
-						: `${slotName}();`
+						? `__STDLIB_SLOT(__this__, __slots__, __super__, ${compiledName}, ${slotName}, ${parentName});`
+						: `${slotName}(__this__);`
 					}
 				`;
 
@@ -477,6 +477,7 @@ const compiler = createCompiler<IDOMCompilerOptions>((options: IDOMCompilerOptio
 				});
 
 				const cmdEventsStr = [];
+				let resetCMP_ATTRS = false;
 
 				cmpEvents.forEach(({name, value, isExpr}) => {
 					const eventName = JSON.stringify(name);
@@ -487,7 +488,7 @@ const compiler = createCompiler<IDOMCompilerOptions>((options: IDOMCompilerOptio
 
 				if (!/^var\s/.test(cmpAttrs)) {
 					cmpAttrs = `var __CMP_ATTRS = {};\n${cmpAttrs}`;
-					cmpAttrsExp.unshift('var __CMP_ATTRS = {};');
+					resetCMP_ATTRS = true;
 				}
 
 				code.push(cmpAttrs);
@@ -509,6 +510,7 @@ const compiler = createCompiler<IDOMCompilerOptions>((options: IDOMCompilerOptio
 				);`);
 
 				if (cmpAttrsExp.length > 0) {
+					resetCMP_ATTRS && updaters.push('var __CMP_ATTRS = {};');
 					updaters.push(
 						cmpAttrsExp.join('\n'),
 						`${varName}.update(__CMP_ATTRS, ${hasBlocks ? `__nctxChanged__ ? __nctx__ :` : ''} void 0);`

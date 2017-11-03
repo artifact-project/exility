@@ -164,7 +164,7 @@ function compiledTemplate(__SCOPE__, __OPTIONS__) {
 		function __SLOT_children() {
 			__SLOT_children_used = true;
 		}
-		__STDLIB_SLOT(__slots__, __super__, "children", __SLOT_children, __x1);
+		__STDLIB_SLOT(__this__, __slots__, __super__, "children", __SLOT_children, __x1);
 
 		return {
 			ctx: __ctx,
@@ -187,6 +187,64 @@ function compiledTemplate(__SCOPE__, __OPTIONS__) {
 
 				__CLN.upd(__classNames__);
 				__STDDOM_D_PROP(__ctx[1], "className", __CLN("alert " + (attrs.x) + " is-" + (attrs.y)))
+			}
+		}
+	}
+`;
+
+exports[`Context 1`] = `
+function compiledTemplate(__SCOPE__, __OPTIONS__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var attrs = __SCOPE__.attrs;
+		var context = __SCOPE__.context;
+		var __this__ = __SCOPE__.__this__;
+		var __blocks__ = __SCOPE__.__blocks__;
+		var __slots__ = __SCOPE__.__slots__;
+		var __classNames__ = __SCOPE__.__classNames__;
+
+		__STDDOM_CMP_INIT(__blocks__, ["Bar"]);
+
+		var __ctx = __STDDOM_CONTEXT();
+		var __nctxChanged__ = true, __nctx__ = __STDLIB_NEXT_CONTEXT(__this__);
+
+		var __frag = __STDDOM_FRAGMENT();
+		var __CMP_ATTRS = {};
+
+		var __x1 = __STDDOM_CMP_CREATE(__ctx, __blocks__,
+
+			__frag,
+			__this__,
+			__nctx__,
+			"Bar",
+			__CMP_ATTRS,
+			null,
+			null
+		);
+
+		return {
+			ctx: __ctx,
+			frag: __frag,
+			container: null,
+			mountTo: function (container) {
+				this.container = container;
+				__frag.mountTo(container);
+				__STDDOM_LIFECYCLE(__ctx, 'connectedCallback');
+				return this;
+			},
+			update: function (__NEWSCOPE__) {
+				__SCOPE__ = __NEWSCOPE__;
+				attrs = __NEWSCOPE__.attrs;
+				context = __NEWSCOPE__.context;
+				__this__ = __NEWSCOPE__.__this__;
+				__blocks__ = __NEWSCOPE__.__blocks__;
+				__slots__ = __NEWSCOPE__.__slots__;
+				__classNames__ = __NEWSCOPE__.__classNames__;
+
+				var __next_nctx__ = __STDLIB_NEXT_CONTEXT(__this__, __nctx__);
+				__nctxChanged__ = __STDLIB_CONTEXT_IS_CHANGED(__nctx__, __next_nctx__);
+				__nctx__ = __next_nctx__;
+
+				__nctxChanged__ && __x1.update(void 0, __nctx__);
 			}
 		}
 	}
@@ -346,6 +404,103 @@ function templateFactory(__DEPS__) {
 }
 `;
 
+exports[`Parent vs slots 1`] = `
+function templateFactory(__DEPS__) {
+	"use strict";
+	var __STDDOM = __DEPS__.stddom;
+	var __STDDOM_CMP_SET_COMPILER = __STDDOM.CMP_SET_COMPILER;
+	var __STDDOM_CMP_INIT = __STDDOM.CMP_INIT;
+	var __STDDOM_CONTEXT = __STDDOM.CONTEXT;
+	var __STDDOM_FRAGMENT = __STDDOM.FRAGMENT;
+	var __STDDOM_CMP_CREATE = __STDDOM.CMP_CREATE;
+	var __STDDOM_LIFECYCLE = __STDDOM.LIFECYCLE;
+	var __STDLIB = __DEPS__.stdlib;
+	var __STDLIB_NEXT_CONTEXT = __STDLIB.NEXT_CONTEXT;
+	var __STDLIB_CONTEXT_IS_CHANGED = __STDLIB.CONTEXT_IS_CHANGED;
+	__STDDOM_CMP_SET_COMPILER(__COMPILER__);
+
+	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var __blocks__ = __SCOPE__.__blocks__;
+		var __this__ = __SCOPE__;
+
+		__STDDOM_CMP_INIT(__blocks__, ["Foo","Bar","Qux"]);
+
+		var __ctx = __STDDOM_CONTEXT();
+		var __nctxChanged__ = true, __nctx__ = __STDLIB_NEXT_CONTEXT(__this__);
+
+		var __frag = __STDDOM_FRAGMENT();
+		var __CMP_ATTRS = {};
+		__CMP_ATTRS["d"] = "1";
+		var __x1 = __STDDOM_CMP_CREATE(__ctx, __blocks__,
+
+			__frag,
+			__this__,
+			__nctx__,
+			"Foo",
+			__CMP_ATTRS,
+			null,
+			{
+			"children": function (__this__, __super__, __frag) {
+				var __CMP_ATTRS = {};
+				__CMP_ATTRS["d"] = "2";
+				var __x2 = __STDDOM_CMP_CREATE(__ctx, __blocks__,
+
+					__frag,
+					__this__,
+					__nctx__,
+					"Bar",
+					__CMP_ATTRS,
+					null,
+					{
+					"children": function (__this__, __super__, __frag) {
+						var __CMP_ATTRS = {};
+
+						var __x3 = __STDDOM_CMP_CREATE(__ctx, __blocks__,
+
+							__frag,
+							__this__,
+							__nctx__,
+							"Qux",
+							__CMP_ATTRS,
+							null,
+							null
+						);
+					}
+				}
+			);
+		}
+	}
+);
+
+return {
+	ctx: __ctx,
+	frag: __frag,
+	container: null,
+	mountTo: function (container) {
+		this.container = container;
+		__frag.mountTo(container);
+		__STDDOM_LIFECYCLE(__ctx, 'connectedCallback');
+		return this;
+	},
+	update: function (__NEWSCOPE__) {
+		__SCOPE__ = __NEWSCOPE__;
+		__blocks__ = __NEWSCOPE__.__blocks__;
+
+		var __next_nctx__ = __STDLIB_NEXT_CONTEXT(__this__, __nctx__);
+		__nctxChanged__ = __STDLIB_CONTEXT_IS_CHANGED(__nctx__, __next_nctx__);
+		__nctx__ = __next_nctx__;
+
+		__nctxChanged__ && __x3.update(void 0, __nctx__);
+		__nctxChanged__ && __x2.update(void 0, __nctx__);
+		__nctxChanged__ && __x1.update(void 0, __nctx__);
+	}
+}
+
+}
+}
+`;
+
 exports[`Pseudo Elements: super 1`] = `
 function compiledTemplate(__SCOPE__, __OPTIONS__) {
 		__SCOPE__ = __SCOPE__ || {};
@@ -370,7 +525,7 @@ function compiledTemplate(__SCOPE__, __OPTIONS__) {
 			__STDDOM_TEXT(__x1, "Original:");
 			__STDDOM_VALUE(__x1, __ctx, 2, attrs.value);
 		}
-		__STDLIB_SLOT(__slots__, __super__, "children", __SLOT_children, __x1);
+		__STDLIB_SLOT(__this__, __slots__, __super__, "children", __SLOT_children, __x1);
 
 		return {
 			ctx: __ctx,
