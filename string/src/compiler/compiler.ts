@@ -290,7 +290,7 @@ const compiler = createCompiler<StringModeOptions>((options) => (node: XNode) =>
 				}
 			} else if (PSEUDO_ELEMENT_TYPE === type) {
 				const slotName = `__SLOT_${name.replace(/[^0-9a-z]/ig, '_')}`;
-				const slotCode = `function ${slotName}(__super__) {
+				const slotCode = `function ${slotName}(__this__, __super__) {
 					var __ROOT = "";
 					${content}
 					return __ROOT;
@@ -306,7 +306,7 @@ const compiler = createCompiler<StringModeOptions>((options) => (node: XNode) =>
 						__super__["${raw.name}"] = ${slotName};
 					`);
 
-					code = `__ROOT += __STDLIB_SLOT(__slots__, __super__, "${raw.name}", ${slotName});`;
+					code = `__ROOT += __STDLIB_SLOT(__this__, __slots__, __super__, "${raw.name}", ${slotName});`;
 				}
 			} else {
 				const attrsList = [];
