@@ -783,7 +783,7 @@ function CMP_BLOCK_FACTORY(XBlock, context, attrs, parent, events, slots) {
 		parent,
 		events,
 		slots,
-	})
+	});
 }
 
 function CMP_CREATE(ctx, blocks, parentFrag, parentThis, context, name, attrs, events, slots) {
