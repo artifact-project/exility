@@ -197,8 +197,8 @@ export default class Block<A, C extends object> implements IEmitter<IBlock> {
 				if (nextEvent.propagationStopped) {
 					break;
 				}
-			} else if (__parent__ !== this && __parent__[atName]) {
-				__parent__[atName] && __parent__[atName](event);
+			} else if (__parent__ !== this && __parent__[atName] !== void 0) {
+				__parent__[atName](event);
 
 				if (event.propagationStopped) {
 					break;
