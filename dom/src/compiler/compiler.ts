@@ -535,7 +535,17 @@ const compiler = createCompiler<IDOMCompilerOptions>((options: IDOMCompilerOptio
 					let [name, value, isExpr] = attr;
 					let extraStaticExpr = '';
 
-					if (R_IS_EVENT_ATTR.test(name)) {
+					if (name === 'ref') {
+						afterChildren.push(`
+							__this__.registerRef(${value}, ${varName});
+						`);
+
+						if (isExpr) {
+							throw new Error('todo');
+						}
+
+						return;
+					} else if (R_IS_EVENT_ATTR.test(name)) {
 						const compiledEvent = compileEvent(node, attr, name, value);
 
 						fn = '__STDDOM_ON';

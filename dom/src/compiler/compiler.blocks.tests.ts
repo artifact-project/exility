@@ -222,8 +222,9 @@ it('__attrs__', () => {
 	expect(view.container.innerHTML).toBe('<div>X + Y + ?</div>');
 });
 
-it('Inner blocks', () => {
+it('Inner blocks + [ref]', () => {
 	const log = [];
+	const refs = [];
 	const Link = class extends Block<{}, null> {
 		static template = 'a[href=${attrs.href}] > ::children';
 		connectedCallback() { log.push('Link:connected'); }
@@ -232,9 +233,12 @@ it('Inner blocks', () => {
 
 	const Alert = class extends Block<{}, null> {
 		static blocks = {Link};
-		static template = '.alert > ::children';
+		static template = '.alert[ref="alert"] > ::children';
 		connectedCallback() { log.push('Alert:connected'); }
 		disconnectedCallback() { log.push('Alert:disconnected'); }
+		registerRef(name: string, ref: HTMLElement) {
+			refs.push(`${name}->${ref.tagName}.${ref.className}`);
+		}
 	};
 
 	const view = fromString(
@@ -245,6 +249,7 @@ it('Inner blocks', () => {
 	);
 
 	expect(view.container.innerHTML).toBe('<div class=\"alert\">Wow, <a href=\"#\">click me!</a></div>');
+	expect(refs).toEqual(['alert->DIV.alert']);
 
 	view.update({});
 
