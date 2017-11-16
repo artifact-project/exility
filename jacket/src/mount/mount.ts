@@ -9,7 +9,7 @@ export class DOMWrapper {
 
 	get classList() {
 		const className = this.el.className.trim();
-		return className === '' ? [] : className.split(/\s+/);
+		return className === '' ? [] : className.split(/\s+/).sort();
 	}
 
 	on<E extends Event>(name: string, fn: (evt: E) => void) {

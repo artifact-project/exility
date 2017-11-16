@@ -144,6 +144,9 @@ export default class Block<A, C extends object> implements IEmitter<IBlock> {
 		return this.context;
 	}
 
+	protected registerRef(name: string, el: HTMLElement): void {
+	}
+
 	protected connectedCallback(): void {
 	}
 

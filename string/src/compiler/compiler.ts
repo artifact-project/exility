@@ -314,7 +314,10 @@ const compiler = createCompiler<StringModeOptions>((options) => (node: XNode) =>
 				Object.keys(raw.attrs || {}).forEach(name => {
 					const value = raw.attrs[name];
 
-					if (name === 'innerHTML') {
+					if (name === 'ref') {
+						// todo: test-case
+						return;
+					} else if (name === 'innerHTML') {
 						content = push(stringifyAttributeValue(name, value, TO_STR).value, true);
 					} else if (!R_IS_EVENT.test(name)) {
 						attrsList.push(push(` ${name}=`) + pushAttr(name, value, node));
