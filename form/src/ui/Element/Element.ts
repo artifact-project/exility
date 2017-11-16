@@ -9,6 +9,8 @@ export default class UIElement extends Block<UIElementAttrs, UIElementContext> {
 		const tag = (elem.type === 'textarea' || elem.type === 'select') ? elem.type : 'input';
 	
 		\${tag}.is-\${elem.type}[
+			ref="input"
+		
 			@blur
 			@focus
 			
@@ -23,6 +25,9 @@ export default class UIElement extends Block<UIElementAttrs, UIElementContext> {
 			@copy="input"
 			@paste="input"
 						
+			class.shape_\${elem.shape}=\${elem.shape}
+			class.size_\${elem.size}=\${elem.size}
+			
 			class.active=\${elem.active}
 			class.checked=\${elem.checked}
 			class.readOnly=\${elem.readOnly}
@@ -47,7 +52,12 @@ export default class UIElement extends Block<UIElementAttrs, UIElementContext> {
 				option[value=\${opt.value}] | \${opt.text}
 	`;
 
+	private input: HTMLInputElement;
 	private formElement: IFormElement;
+
+	registerRef(name: 'input', el) {
+		this[name] = el;
+	}
 
 	getFormElement() {
 		if (this.formElement == null) {
@@ -64,7 +74,18 @@ export default class UIElement extends Block<UIElementAttrs, UIElementContext> {
 	}
 
 	disconnectedCallback() {
-		this.formElement = null;
 		this.context.$form.disconnectElement(this);
+		this.input = null;
+		this.formElement = null;
+	}
+
+	focus() {
+		setTimeout(() => {
+			try {
+				this.input.focus();
+			} catch (err) {
+				console.warn('[@exility/form] ui/Element', err);
+			}
+		});
 	}
 }

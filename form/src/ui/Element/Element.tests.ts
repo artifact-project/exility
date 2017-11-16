@@ -2,6 +2,7 @@ import {create} from '@exility/jacket';
 import UIElement from './Element';
 import {FormContext} from '../../Context/Context';
 import {requestFrame} from '@perf-tools/balancer';
+import {UIElementAttrs, UIElementContext} from '../../interfaces';
 
 describe('ui / Element', () => {
 	let context;
@@ -41,13 +42,14 @@ describe('ui / Element', () => {
 
 	describe('text', () => {
 		it('empty', async () => {
-			const text = create(
+			const text = create<UIElementAttrs, UIElementContext>(
 				UIElement,
 				{name: 'empty'},
 				context,
 			);
 
 			expect(text).toMatchSnapshot();
+			expect(text.target.input instanceof HTMLInputElement).toBe(true);
 			expect(context.$form.values).toEqual({empty: ''});
 
 			text.attr('value', 'ok');
@@ -67,7 +69,7 @@ describe('ui / Element', () => {
 		});
 
 		it('with value', async () => {
-			expect(create(
+			expect(create<UIElementAttrs, UIElementContext>(
 				UIElement,
 				{name: 'inline'},
 				context,
@@ -218,21 +220,21 @@ describe('ui / Element', () => {
 	});
 
 	it('focus/blur', async () => {
-		const text = create(
+		const text = create<UIElementAttrs, UIElementContext>(
 			UIElement,
 			{name: 'empty'},
 			context,
 		);
 
 		await simulateEvent(text, 'focus');
-		expect(text.classList).toEqual(['is-text', 'active']);
+		expect(text.classList).toEqual(['active', 'is-text']);
 
 		await simulateEvent(text, 'blur');
 		expect(text.classList).toEqual(['is-text', 'touched']);
 	});
 
 	it('changed', async () => {
-		const text = create(
+		const text = create<UIElementAttrs, UIElementContext>(
 			UIElement,
 			{name: 'empty'},
 			context,
@@ -242,10 +244,10 @@ describe('ui / Element', () => {
 		text.attr('value', 'wow');
 		await simulateEvent(text);
 
-		expect(text.classList).toEqual(['is-text', 'active', 'changed']);
+		expect(text.classList).toEqual(['active', 'changed', 'is-text']);
 
 		await simulateEvent(text, 'blur');
-		expect(text.classList).toEqual(['is-text', 'changed', 'touched']);
+		expect(text.classList).toEqual(['changed', 'is-text', 'touched']);
 
 		text.attr('value', '');
 		await simulateEvent(text);
@@ -262,11 +264,11 @@ describe('ui / Element', () => {
 
 		await frame();
 		expect(!!textFormElem.errors).toBe(true);
-		expect(text.classList).toEqual(['is-text', 'invalid']);
+		expect(text.classList).toEqual(['invalid', 'is-text']);
 
 		text.attr('value', 'X');
 		await simulateEvent(text);
-		expect(text.classList).toEqual(['is-text', 'changed']);
+		expect(text.classList).toEqual(['changed', 'is-text']);
 		expect(textFormElem.errors).toEqual({});
 	});
 
@@ -282,22 +284,22 @@ describe('ui / Element', () => {
 		await simulateEvent(text);
 
 		expect(!!textFormElem.errors.minLength).toBe(true);
-		expect(text.classList).toEqual(['is-text', 'changed', 'invalid']);
+		expect(text.classList).toEqual(['changed', 'invalid', 'is-text']);
 
 		text.attr('value', 'Xy!');
 		await simulateEvent(text);
 		expect(!!textFormElem.errors.minLength).toBe(false);
 		expect(!!textFormElem.errors.onlyEng).toBe(true);
-		expect(text.classList).toEqual(['is-text', 'changed', 'invalid']);
+		expect(text.classList).toEqual(['changed', 'invalid', 'is-text']);
 
 		text.attr('value', 'Xyz');
 		await simulateEvent(text);
-		expect(text.classList).toEqual(['is-text', 'changed']);
+		expect(text.classList).toEqual(['changed', 'is-text']);
 		expect(textFormElem.errors).toEqual({});
 	});
 
 	it('readOnly/LockedForm', async () => {
-		const text = create(
+		const text = create<UIElementAttrs, UIElementContext>(
 			UIElement,
 			{name: 'empty'},
 			context,

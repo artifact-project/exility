@@ -29,6 +29,10 @@ export class Element implements IFormElement {
 	checked: boolean = false;
 	selectedIndex: number = 0;
 
+	get id(): string {
+		return this.block.attrs.id;
+	}
+
 	get type(): string {
 		return this.block.attrs.type;
 	}
@@ -191,6 +195,7 @@ export class FormContext {
 	private forms: UIForm[] = [];
 	private errors: UIError[] = [];
 
+	private elements: Element[] = [];
 	private elementsGroups: {[name:string]: ElementsGroup} = {};
 	private elementsIndex: {[cid:string]: Element} = {};
 
@@ -219,6 +224,16 @@ export class FormContext {
 	getValidateRule(name: string) {
 		const {rules = {}} = this.config;
 		return rules.hasOwnProperty(name) ? [rules[name]] : [];
+	}
+
+	getElementByLabel(name): UIElement {
+		let element = this.elements.find(el => el.id === name);
+
+		if (!element) {
+			element = this.getElementsGroup(name).eq(0);
+		}
+
+		return element.block;
 	}
 
 	getElementsGroup(name) {
@@ -296,6 +311,7 @@ export class FormContext {
 			this.values[name] = value;
 		}
 
+		this.elements.push(element);
 		this.elementsIndex[block.cid] = element;
 		this.validate();
 
@@ -305,6 +321,9 @@ export class FormContext {
 	disconnectElement(block: UIElement) {
 		const element = this.elementsIndex[block.cid];
 		const elementsGroup = this.elementsGroups[block.attrs.name];
+		const idx = this.elements.indexOf(element);
+
+		(idx > -1) && this.elements.splice(idx, 1);
 
 		if (elementsGroup && elementsGroup.remove(element)) {
 			delete this.elementsIndex[block.cid];
@@ -423,6 +442,8 @@ export class FormContext {
 				checked: element.checked,
 				values,
 			};
+
+			// todo: Поддержка промиса
 			const validity = element.validate(vbox);
 
 			if (isThenable(validity)) {
@@ -436,6 +457,7 @@ export class FormContext {
 			}
 		});
 
+		// todo: Нужно не забыть, как быть, когда нет UIError для `validation`, т.е. нужен варнинг какой-то в консоль
 		this.config.validation && Object.keys(this.config.validation).forEach(name => {
 			const vbox = {
 				name,
@@ -485,6 +507,6 @@ function setValidation(form: FormContext, element: Element, validity: Validity, 
 }
 
 
-function isThenable(validity: {then?: Function}): validity is Promise<Validity> {
-	return !!(validity && validity.then);
+function isThenable(validity: any): validity is Promise<Validity> {
+	return !!(validity && typeof validity['then'] === 'function');
 }

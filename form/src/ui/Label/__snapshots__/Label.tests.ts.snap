@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ui / Label label / click 1`] = `
+<form class>
+  <label>
+    Empty
+  </label>
+  <input class="is-text"
+         name="empty"
+         type="text"
+         value
+  >
+</form>
+`;

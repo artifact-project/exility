@@ -64,12 +64,12 @@ describe('ui / Error', () => {
 		box.find('input').val('x').simulate('input');
 		await frame();
 		expect(box.classList).toEqual(['changed', 'invalid']);
-		expect(box.find('input').classList).toEqual(['is-text', 'changed', 'invalid']);
+		expect(box.find('input').classList).toEqual(['changed', 'invalid', 'is-text']);
 
 		box.find('input').val('xyz').simulate('input');
 		await frame();
 		expect(box.classList).toEqual(['changed']);
-		expect(box.find('input').classList).toEqual(['is-text', 'changed']);
+		expect(box.find('input').classList).toEqual(['changed', 'is-text']);
 	});
 
 	test('err / checked', async () => {

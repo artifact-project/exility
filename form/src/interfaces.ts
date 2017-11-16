@@ -16,13 +16,17 @@ export interface Validity {
 
 export type ValidateRule = (vbox: ValueBox) => Validity;
 
-export interface UIErrorAttrs {
-	for: string;
-}
-
 export interface UIFormAttrs {
 	name?: string;
 	context?: IFormContext;
+}
+
+export interface UILabelAttrs {
+	for: string;
+}
+
+export interface UIErrorAttrs {
+	for: string;
 }
 
 export interface UIFormContext {
@@ -31,6 +35,10 @@ export interface UIFormContext {
 
 export interface IUIElement {
 	attrs: UIElementAttrs;
+}
+
+export interface IUILabel {
+	attrs: UILabelAttrs;
 }
 
 export interface IFormElement {
@@ -46,7 +54,7 @@ export interface IFormElement {
 export interface IFormContext {
 	id: string;
 	handleEvent(block: IUIElement, event: Event);
-	getBlockByDOMEvent(originalEvent: Event): typeof Block;
+	getElementByLabel(name: string): IUIElement;
 
 	connectForm(ui: Block<any, any>): void;
 	disconnectForm(ui: Block<any, any>): void;
@@ -70,6 +78,8 @@ export type FormContextConfig = {
 
 export interface UIElementAttrs {
 	name: string;
+	shape?: string;
+	size?: 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl';
 	type?: string;
 	value?: string;
 	checked?: boolean;

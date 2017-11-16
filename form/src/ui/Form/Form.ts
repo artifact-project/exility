@@ -14,9 +14,6 @@ export default class UIForm extends Block<UIFormAttrs, UIFormContext> {
 			@submit="handleEvent"
 			@reset="handleEvent"
 			
-			@blur="input"
-			@focus="input"
-			
 			class.changed=\${form.changed}
 			class.invalid=\${form.invalid}
 			class.locked=\${form.locked}
@@ -34,6 +31,14 @@ export default class UIForm extends Block<UIFormAttrs, UIFormContext> {
 
 	disconnectedCallback() {
 		this.context.$form.disconnectForm(this);
+	}
+
+	'@focus'({target, originalEvent}) {
+		this.context.$form.handleEvent(target, originalEvent);
+	}
+
+	'@blur'({target, originalEvent}) {
+		this.context.$form.handleEvent(target, originalEvent);
 	}
 
 	'@input'({target, originalEvent}) {
