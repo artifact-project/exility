@@ -2,7 +2,6 @@ import XEvent, {DOMEvent, IEmitter} from '../event/event';
 
 export interface BlockClass<A = {}, C = {}> {
 	new (attrs: A, options?: {context?: C}): Block<A, C>;
-	blocks?: IBlocks;
 	template?: string;
 	classNames?: any;
 }
@@ -13,16 +12,12 @@ export interface IBlockIds {
 	[index: string]: IBlock;
 }
 
-export interface IBlocks {
-	[index: string]: BlockClass;
-}
-
 export interface IBlockRefs {
 	[index: string]: HTMLElement;
 }
 
-export interface IBlockOptions {
-	context?: object;
+export interface IBlockOptions<C> {
+	context?: C;
 	events?: object;
 	parent?: typeof Block;
 	slots?: object;
@@ -48,7 +43,7 @@ export const requiredScopeKeys = [
 
 let cid = 0;
 
-export default class Block<A, C extends object> implements IEmitter<IBlock> {
+export default class Block<A = {}, C = {}> implements IEmitter<IBlock> {
 	static classify<X>(ClassOrLike: string | IPlainBlock<X> | IBlock): typeof Block {
 		if (typeof ClassOrLike === 'string') {
 			ClassOrLike = <IPlainBlock<X>>{template: ClassOrLike};
@@ -88,13 +83,13 @@ export default class Block<A, C extends object> implements IEmitter<IBlock> {
 	private __template__;
 	private __parent__;
 	private __events__;
-	protected __options__: IBlockOptions;
+	protected __options__: IBlockOptions<C>;
 
 	// Базлвый шаблон
 	static template: string | ((attrs) => void) = null;
 	static blocks: object;
 
-	constructor(attrs: A, options?: IBlockOptions) {
+	constructor(attrs: A, options?: IBlockOptions<C>) {
 		const self = this.constructor;
 		const defaults = this.getDefaults();
 
@@ -147,7 +142,7 @@ export default class Block<A, C extends object> implements IEmitter<IBlock> {
 		return {};
 	}
 
-	protected getContextForNested(): object {
+	protected getContextForNested(): C {
 		return this.context;
 	}
 

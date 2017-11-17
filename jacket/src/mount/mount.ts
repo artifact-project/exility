@@ -12,6 +12,10 @@ export class DOMWrapper {
 		return className === '' ? [] : className.split(/\s+/).sort();
 	}
 
+	getRootNode() {
+		return this.el || this.target.getRootNode();
+	}
+
 	on<E extends Event>(name: string, fn: (evt: E) => void) {
 		this.target['__events__'][name] = {
 			ctx: {[`@${name}`]: fn},
