@@ -1,5 +1,12 @@
 import XEvent, {DOMEvent, IEmitter} from '../event/event';
 
+export interface BlockClass<A = {}, C = {}> {
+	new (attrs: A, options?: {context?: C}): Block<A, C>;
+	blocks?: IBlocks;
+	template?: string;
+	classNames?: any;
+}
+
 export type IBlock = typeof Block;
 
 export interface IBlockIds {
@@ -7,7 +14,7 @@ export interface IBlockIds {
 }
 
 export interface IBlocks {
-	[index: string]: Block<any, any>;
+	[index: string]: BlockClass;
 }
 
 export interface IBlockRefs {

@@ -7,22 +7,18 @@ Working with forms in all its glory.
 
 ```ts
 import {
+	ui,
 	formify,
-	Form,
-	Element,
-	Row,
-	Label,
-	Errors,
 	rules,
 	mask,
 } from '@exility/form`;
 
-export default formify({
+@formify({
 	masks: {
 		phone: mask.phone(),
 	},
 
-	validate: {
+	rules: {
 		phone: rules.compose(
 			rules.required(),
 			rules.regexp(/^\+\d+$/, 'phone'),
@@ -32,25 +28,15 @@ export default formify({
 	'@submit'({detail: values}) {
 		return fetch('/api/reg', {method: 'post', body: values});
 	},
-})(class extends Block<{$form: FormContext}, null> {
-	static blocks = {
-		Form,
-		Element,
-		Row,
-		Label,
-		Errors,
-	};
+})
+export default class extends Block<null, {$form: FormContext}> {
+	static blocks = {...ui};
 
 	static template = `
-		const form = attrs.$form;
+		const form = context.$form;
 
 		Form
-			Row[flex="1 3"]
-				div
-					Label[for="login"] | Login
-					Errors[for="login"]
-				Element[name="login" required minLength="3" maxLength="32"]
-
+			Element[placeholder="Login" name="login" required minLength="3" maxLength="32"]
 			Element[name="phone" type="phone" required mask="phone"]
 			Element[name="email" type="email" required]
 			Element[name="password" type="password" required]

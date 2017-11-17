@@ -66,6 +66,7 @@ export interface IFormContext {
 	disconnectError(ui: Block<any, any>): void;
 }
 
+// todo: add generic,
 export type FormContextConfig = {
 	rules?: {
 		[name: string]: ValidateRule;
@@ -74,9 +75,12 @@ export type FormContextConfig = {
 	validation?: {
 		[name: string]: ValidateRule;
 	};
+
+	submit: (values, context) => Promise<any>,
 }
 
 export interface UIElementAttrs {
+	id?: string;
 	name: string;
 	shape?: string;
 	size?: 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl';

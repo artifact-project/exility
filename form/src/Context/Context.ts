@@ -13,6 +13,9 @@ const RADIO_TYPE = 'radio';
 const CHECKBOX_TYPE = 'checkbox';
 const SELECT_TYPE = 'select';
 
+const SUBMIT_EVENT_NAME = 'submit';
+const RESET_EVENT_NAME = 'reset';
+
 const FOCUS_EVENT_NAME = 'focus';
 const BLUR_EVENT_NAME = 'blur';
 const INPUT_EVENT_NAME = 'input';
@@ -181,9 +184,9 @@ export class ElementsGroup {
 	}
 }
 
-export class FormContext {
+export class FormContext<V = {}> {
 	id: string;
-	values: {} = {};
+	values: V = {};
 	changed: boolean = false;
 	invalid: boolean = false;
 	locked: boolean = false;
@@ -191,6 +194,10 @@ export class FormContext {
 	submitting: boolean = false;
 	submitFailed: boolean = false;
 	submitSucceeded: boolean = false;
+	forceValidate: () => void;
+
+	private initialValues: V = {};
+	private config: FormContextConfig;
 
 	private forms: UIForm[] = [];
 	private errors: UIError[] = [];
@@ -202,13 +209,21 @@ export class FormContext {
 	private validateLock: boolean = false;
 	private validateRules: any = {};
 
-	constructor(private initialValues: object = {}, private config: FormContextConfig = {}) {
+	constructor(initialValues: V, config: FormContextConfig) {
+		this.initialValues = initialValues;
+		this.config = config;
+
+		this.forceValidate = this.validate;
 		this.validate = <() => void>debounce(
 			this.validate,
 			this,
 			[],
 			{flags: F_NO_ARGS & F_IMPORTANT},
 		);
+	}
+
+	setInitialValues(values: V) {
+		this.initialValues = values;
 	}
 
 	lock() {
@@ -345,7 +360,16 @@ export class FormContext {
 			return;
 		}
 
-		if (type === FOCUS_EVENT_NAME) {
+		if (type === SUBMIT_EVENT_NAME) {
+			evt.preventDefault();
+			this.forceValidate();
+
+			if (!this.invalid) {
+				this.submit(true);
+			}
+		} else if (type === RESET_EVENT_NAME) {
+			throw new Error('todo: reset');
+		} else if (type === FOCUS_EVENT_NAME) {
 			element.active = true;
 		} else if (type === BLUR_EVENT_NAME) {
 			element.active = false;
@@ -472,7 +496,7 @@ export class FormContext {
 			validaty && (this.invalid = true);
 		});
 
-		this.values = values;
+		this.values = (values as V);
 		this.validateLock = false;
 
 		forceUpdateAll(this.forms);
@@ -480,7 +504,32 @@ export class FormContext {
 	}
 
 	private forceUpdateAll() {
-		forceUpdateAll(Object.values(this.elementsIndex));
+		forceUpdateAll(this.forms);
+		forceUpdateAll(this.errors);
+		forceUpdateAll(this.elements);
+	}
+
+	private handleSubmitting(success) {
+		this.submitting = false;
+		this.submitSucceeded = success;
+		this.submitFailed = !success;
+		this.forceUpdateAll();
+	}
+
+	submit(withoutForceValidate = false) {
+		if (!this.submitting) {
+			!withoutForceValidate && this.forceValidate();
+
+			this.submitting = true;
+			this.forceUpdateAll();
+
+			new Promise<any>(resolve => {
+				resolve(this.config.submit(this.values, this));
+			})
+				.then(this.handleSubmitting.bind(this, true))
+				.catch(this.handleSubmitting.bind(this, false))
+			;
+		}
 	}
 }
 
@@ -505,7 +554,6 @@ function setValidation(form: FormContext, element: Element, validity: Validity, 
 
 	(curInvalidState !== element.invalid) && element.forceUpdate();
 }
-
 
 function isThenable(validity: any): validity is Promise<Validity> {
 	return !!(validity && typeof validity['then'] === 'function');
