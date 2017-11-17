@@ -36,6 +36,7 @@ describe('ui / Element', () => {
 						detail: null,
 					},
 				},
+				submit: () => Promise.resolve(true),
 			}),
 		};
 	});
@@ -49,7 +50,7 @@ describe('ui / Element', () => {
 			);
 
 			expect(text).toMatchSnapshot();
-			expect(text.target.input instanceof HTMLInputElement).toBe(true);
+			expect((text.target as any).input instanceof HTMLInputElement).toBe(true);
 			expect(context.$form.values).toEqual({empty: ''});
 
 			text.attr('value', 'ok');

@@ -18,7 +18,7 @@ describe('ui / Label', () => {
 
 	beforeEach(() => {
 		context = {
-			$form: new FormContext({}),
+			$form: new FormContext({}, {submit: () => Promise.resolve(true)}),
 		};
 	});
 
@@ -37,11 +37,11 @@ describe('ui / Label', () => {
 		await frame();
 		expect(box).toMatchSnapshot();
 		expect(box.find('input').classList).toEqual(['is-text']);
-		expect(document.activeElement).not.toBe(box.find('input').el);
+		expect(document.activeElement).not.toBe(box.find('input').getRootNode());
 
 		box.find('label').simulate('click');
 		await frame();
-		expect(document.activeElement).toBe(box.find('input').el);
+		expect(document.activeElement).toBe(box.find('input').getRootNode());
 		expect(box.find('input').classList).toEqual(['active', 'is-text']);
 	});
 });

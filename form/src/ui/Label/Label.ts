@@ -1,7 +1,7 @@
 import Block from '@exility/block';
-import {IUILabel, UIFormContext} from '../../interfaces';
+import {UILabelAttrs, UIFormContext} from '../../interfaces';
 
-export default class UIForm extends Block<IUILabel, UIFormContext> {
+export default class UIForm extends Block<UILabelAttrs, UIFormContext> {
 	static template = `
 		label[
 			@click

@@ -30,6 +30,7 @@ describe('ui / Form', () => {
 						detail: null,
 					},
 				},
+				submit: () => Promise.resolve(true),
 			}),
 		};
 	});

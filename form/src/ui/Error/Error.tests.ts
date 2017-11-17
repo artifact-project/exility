@@ -40,8 +40,9 @@ describe('ui / Error', () => {
 								foo: values.array.includes('foo'),
 							},
 						};
-					}
+					},
 				},
+				submit: () => Promise.resolve(true),
 			}),
 		};
 	});

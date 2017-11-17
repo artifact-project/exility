@@ -184,9 +184,9 @@ export class ElementsGroup {
 	}
 }
 
-export class FormContext<V = {}> {
+export class FormContext<V extends object = {}> implements IFormContext {
 	id: string;
-	values: V = {};
+	values = {} as V;
 	changed: boolean = false;
 	invalid: boolean = false;
 	locked: boolean = false;
@@ -196,8 +196,8 @@ export class FormContext<V = {}> {
 	submitSucceeded: boolean = false;
 	forceValidate: () => void;
 
-	private initialValues: V = {};
-	private config: FormContextConfig;
+	private initialValues = {} as V;
+	private config: FormContextConfig<V>;
 
 	private forms: UIForm[] = [];
 	private errors: UIError[] = [];
@@ -209,7 +209,7 @@ export class FormContext<V = {}> {
 	private validateLock: boolean = false;
 	private validateRules: any = {};
 
-	constructor(initialValues: V, config: FormContextConfig) {
+	constructor(initialValues: V, config: FormContextConfig<V>) {
 		this.initialValues = initialValues;
 		this.config = config;
 
@@ -347,6 +347,8 @@ export class FormContext<V = {}> {
 		}
 
 		this.validate();
+
+		return element;
 	}
 
 	handleEvent(block: UIElement, evt: Event) {

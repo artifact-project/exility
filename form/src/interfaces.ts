@@ -35,6 +35,7 @@ export interface UIFormContext {
 
 export interface IUIElement {
 	attrs: UIElementAttrs;
+	focus(): void;
 }
 
 export interface IUILabel {
@@ -67,7 +68,7 @@ export interface IFormContext {
 }
 
 // todo: add generic,
-export type FormContextConfig = {
+export type FormContextConfig<V> = {
 	rules?: {
 		[name: string]: ValidateRule;
 	};
@@ -76,7 +77,7 @@ export type FormContextConfig = {
 		[name: string]: ValidateRule;
 	};
 
-	submit: (values, context) => Promise<any>,
+	submit: (values: V, context: IFormContext) => Promise<any>,
 }
 
 export interface UIElementAttrs {

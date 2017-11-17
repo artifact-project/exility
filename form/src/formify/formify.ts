@@ -2,28 +2,33 @@ import Block, {BlockClass} from '@exility/block';
 import {FormContextConfig} from '../interfaces';
 import {FormContext} from '../Context/Context';
 
-export interface FormifyAttrs<V> {
+export type FormifyAttrs<A, V> = A & {
 	values: V;
 	initialValues: V;
-}
+};
 
-export default function formify<V = {}, A = {}>(config: FormContextConfig): (Target: BlockClass) => Block<FormifyAttrs<A, V>> {
-	return class Formify extends Block<FormifyAttrs<A, V>> {
-		private formContext: FormContext;
+export default function formify<V extends object = {}, A = {}>(config: FormContextConfig<V>) {
+	return (Target: BlockClass<A>): Block<FormifyAttrs<A, V>> => {
+		return <any>class extends Block<FormifyAttrs<A, V>> {
+			private formContext: FormContext<V>;
 
-		constructor(attrs: FormifyAttrs<A>, options) {
-			super(attrs, options);
-			this.formContext = new FormContext<V>(attrs.initialValues, config);
-		}
+			static blocks = {FormBlock: Target};
+			static template = `FormBlock[__attrs__=\${attrs}]`;
 
-		getContextForNested() {
-			return {$form: this.formContext};
-		}
-
-		attributeChangedCallback(name: string, newValue) {
-			if (name === 'initialValues') {
-				this.formContext.setInitialValues(newValue);
+			constructor(attrs: FormifyAttrs<A, V>, options) {
+				super(attrs, options);
+				this.formContext = new FormContext<V>(attrs.initialValues, config);
 			}
-		}
+
+			getContextForNested() {
+				return {$form: this.formContext};
+			}
+
+			attributeChangedCallback(name: string, newValue) {
+				if (name === 'initialValues') {
+					this.formContext.setInitialValues(newValue);
+				}
+			}
+		};
 	};
-}
+};
