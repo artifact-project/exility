@@ -12,8 +12,13 @@ export class DOMWrapper {
 		return className === '' ? [] : className.split(/\s+/).sort();
 	}
 
-	getRootNode() {
+	getRootNode(): HTMLElement {
 		return this.el || this.target.getRootNode();
+	}
+
+	click() {
+		this.getRootNode().click();
+		return this;
 	}
 
 	on<E extends Event>(name: string, fn: (evt: E) => void) {
@@ -95,7 +100,7 @@ export class DOMWrapper {
 	}
 }
 
-export function create<A, C extends object>(UI: BlockClass<A, C>, attrs: A, context: C, events?) {
+export function create<A, C extends object>(UI: BlockClass<A, C>, attrs: A = {}, context: C = {}, events?) {
 	runtimeBlockActivate(UI);
 
 	return mount(new UI(attrs, {context}), events);

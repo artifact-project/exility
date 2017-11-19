@@ -7,10 +7,11 @@ Working with forms in all its glory.
 
 ```ts
 import {
-	ui,
 	formify,
-	rules,
 	mask,
+	rules,
+	Form,
+	Element,
 } from '@exility/form`;
 
 @formify({
@@ -25,12 +26,12 @@ import {
 		),
 	},
 
-	'@submit'({detail: values}) {
+	submit(values) {
 		return fetch('/api/reg', {method: 'post', body: values});
 	},
 })
-export default class extends Block<null, {$form: FormContext}> {
-	static blocks = {...ui};
+export default class extends Block<{}> {
+	static blocks = {Form, Element};
 
 	static template = `
 		const form = context.$form;
@@ -43,7 +44,7 @@ export default class extends Block<null, {$form: FormContext}> {
 
 			hr + button[disabled=\${form.submitting}] | Submit
 	`;
-});
+}
 ```
 
 

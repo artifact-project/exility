@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`formify 1`] = `
+<form class="invalid">
+  <input class="invalid is-text"
+         name="email"
+         type="text"
+         value
+  >
+  <button type="submit">
+    Send
+  </button>
+</form>
+`;
+
+exports[`formify 2`] = `
+<form class="changed">
+  <input class="changed is-text"
+         name="email"
+         type="text"
+         value="ibn@rubaxa.org"
+  >
+  <button type="submit">
+    Send
+  </button>
+</form>
+`;

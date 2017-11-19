@@ -64,6 +64,10 @@ export class Element implements IFormElement {
 		return +this.block.attrs.maxLength || -1;
 	}
 
+	get submitting(): boolean {
+		return this.form.submitting;
+	}
+
 	errors: {[name: string]: Validity} = {};
 	active: boolean = false;
 	changed: boolean = false;
@@ -351,6 +355,20 @@ export class FormContext<V extends object = {}> implements IFormContext {
 		return element;
 	}
 
+	handleSubmit(evt: Event) {
+		evt.preventDefault();
+		this.forceValidate();
+
+		if (!this.invalid) {
+			this.submit(true);
+		}
+	}
+
+	handleReset(evt: Event) {
+		evt.preventDefault();
+		throw new Error('todo: reset')
+	}
+
 	handleEvent(block: UIElement, evt: Event) {
 		const type = evt.type;
 		const target = evt.target as (HTMLInputElement & HTMLSelectElement);
@@ -362,16 +380,7 @@ export class FormContext<V extends object = {}> implements IFormContext {
 			return;
 		}
 
-		if (type === SUBMIT_EVENT_NAME) {
-			evt.preventDefault();
-			this.forceValidate();
-
-			if (!this.invalid) {
-				this.submit(true);
-			}
-		} else if (type === RESET_EVENT_NAME) {
-			throw new Error('todo: reset');
-		} else if (type === FOCUS_EVENT_NAME) {
+		if (type === FOCUS_EVENT_NAME) {
 			element.active = true;
 		} else if (type === BLUR_EVENT_NAME) {
 			element.active = false;
@@ -515,6 +524,17 @@ export class FormContext<V extends object = {}> implements IFormContext {
 		this.submitting = false;
 		this.submitSucceeded = success;
 		this.submitFailed = !success;
+
+		if (success) {
+			this.changed = false;
+			this.elements.forEach(el => {
+				el.changed = false;
+				el.initialValue = el.value;
+				el.initialChecked = el.changed;
+				el.initialSelectedIndex = el.selectedIndex;
+			});
+		}
+
 		this.forceUpdateAll();
 	}
 

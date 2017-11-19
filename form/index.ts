@@ -1,7 +1,7 @@
 export * from './src/interfaces';
 
 // Decorators
-
+import formify from './src/formify/formify';
 
 // Rules
 import * as rules from './src/rules/rules';
@@ -20,5 +20,11 @@ export const ui = {
 };
 
 export {
+	formify,
 	rules,
+
+	Form,
+	Element,
+	Error,
+	Label,
 };

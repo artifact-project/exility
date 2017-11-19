@@ -11,8 +11,8 @@ export default class UIForm extends Block<UIFormAttrs, UIFormContext> {
 		const form = context.$form;
 	
 		form.\${form.id}[
-			@submit="handleEvent"
-			@reset="handleEvent"
+			@submit
+			@reset
 			
 			class.changed=\${form.changed}
 			class.invalid=\${form.invalid}
@@ -43,5 +43,13 @@ export default class UIForm extends Block<UIFormAttrs, UIFormContext> {
 
 	'@input'({target, originalEvent}) {
 		this.context.$form.handleEvent(target, originalEvent);
+	}
+
+	'@submit'({originalEvent}) {
+		this.context.$form.handleSubmit(originalEvent);
+	}
+
+	'@reset'({originalEvent}) {
+		this.context.$form.handleReset(originalEvent);
 	}
 }
