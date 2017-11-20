@@ -199,9 +199,10 @@ export default class Block<A = {}, C = {}> implements IEmitter<IBlock> {
 					ctx[`@${fn}`](nextEvent);
 				}
 
-				if (nextEvent.propagationStopped) {
-					break;
-				}
+				// Всегда выходим, иначе получаем дублирование событий.
+				// В целом выглядит логично, если у нас есть слушатель на блоке, то
+				// это банальный перехват под новым именем, ну или с тем же.
+				break;
 			} else if (__parent__ !== this && __parent__[atName] !== void 0) {
 				__parent__[atName](event);
 

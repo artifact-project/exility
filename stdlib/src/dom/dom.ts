@@ -82,6 +82,8 @@ function HANDLE_EVENT(evt) {
 			// todo: Переделать
 			if (name === 'prevent') {
 				evt.preventDefault();
+			} else if (name === 'stop') {
+				evt.stopPropagation();
 			}
 		});
 	}
