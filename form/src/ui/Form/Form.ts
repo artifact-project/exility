@@ -11,7 +11,7 @@ export default class UIForm extends Block<UIFormAttrs, UIFormContext> {
 		const form = context.$form;
 	
 		form.\${form.id}[
-			@submit
+			@submit="submit \${form.values}"
 			@reset
 			
 			class.changed=\${form.changed}

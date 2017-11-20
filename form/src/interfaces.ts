@@ -54,7 +54,11 @@ export interface IFormElement {
 
 export interface IFormContext {
 	id: string;
+
 	handleEvent(block: IUIElement, event: Event);
+	handleSubmit(event: Event);
+	handleReset(event: Event);
+
 	getElementByLabel(name: string): IUIElement;
 
 	connectForm(ui: Block<any, any>): void;

@@ -6,6 +6,7 @@ import {requestFrame} from '@perf-tools/balancer';
 import Form from '../ui/Form/Form';
 import Element from '../ui/Element/Element';
 import formify from './formify';
+import {UIFormContext} from '../interfaces';
 
 async function frame() {
 	return new Promise(resolve => {
@@ -13,22 +14,28 @@ async function frame() {
 	});
 }
 
-@formify<{login: string}, {}>({
+type Attrs = {log: string[]};
+
+const Login = formify<{login: string}, Attrs>({
 	submit: () => new Promise(resolve => {
-		setTimeout(resolve, 20);
+		setTimeout(resolve, 30);
 	}),
-})
-class Login extends Block<{}, UIFormContext> {
+})(class extends Block<Attrs> {
 	static blocks = {Form, Element};
 	static template = `
-		Form
+		Form[@submit="sended"]
 			Element[name="email" required]
 			button[type="submit"] | Send
 	`;
-}
+
+	'@sended'({detail}) {
+		this.attrs.log.push(detail);
+	}
+});
 
 it('formify', async () => {
-	const wrapper = create(Login);
+	const log = [];
+	const wrapper = create(Login, {log});
 
 	await frame();
 	expect(wrapper).toMatchSnapshot();
@@ -39,6 +46,7 @@ it('formify', async () => {
 
 	wrapper.find('button').click();
 	await frame();
+	expect(log).toEqual([{values: {email: 'ibn@rubaxa.org'}}]);
 	expect(wrapper.classList).toEqual(['changed', 'submitting']);
 	expect(wrapper.find('input').classList).toEqual(['changed', 'is-text', 'submitting']);
 	expect(wrapper.find('input').attr('readOnly')).toBe(true);
