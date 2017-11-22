@@ -183,3 +183,18 @@ it('hrm', async () => {
 	expect(__css__.sheet['cssRules'][0].selectorText).toBe('.nnolt3,.foo-nnolt3,.bar-nnolt3');
 	expect(__css__.sheet['cssRules'][1].selectorText).toBe('.g8rsf,.qux-g8rsf,.foo-g8rsf');
 });
+
+it(':host', () => {
+	process.env.RUN_AT = 'server';
+
+	const cx = css({
+		':host': {color: 'red'},
+		'item': {color: 'red'},
+	});
+
+	expect(cx[':host']).toBe('_rs');
+	expect(getUsedCSS()).toEqual({
+		names: ['nnolt3'],
+		cssText: '._rs,._rt{color:red;}\n',
+	});
+});

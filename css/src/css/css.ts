@@ -33,7 +33,7 @@ export interface IUsedCSS {
 
 const R_UPPER = /[A-Z]/;
 const R_SELECTOR_GLUE = /\s*,\s*/;
-const R_SELECTOR = /(?:^|\.)([a-z][a-z\d_-]+)/ig;
+const R_SELECTOR = /(?:^|\.)([a-z][a-z\d_-]+|:host)/ig;
 const R_HAS_REF = /&/;
 const R_REFS = /&/g;
 
