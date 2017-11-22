@@ -254,9 +254,12 @@ export function fx(keyframes: {[frame:string]: IRuleEntries}) {
 export interface ICSSFactory {
 	(rules: IRuleDefinitions): {[name: string]: string};
 	fx: (keyframes: {[frame:string]: IRuleEntries}) => (detail: string) => IFx;
+	scheme: (name: string, list: string[]) => {[name: string]: string};
 }
 
-function css(rules: IRuleDefinitions): {[name: string]: string} {
+export type CSSMap = {[name: string]: string};
+
+function css(rules: IRuleDefinitions): CSSMap {
 	const exports = {};
 	const linkedRules = {};
 
@@ -299,7 +302,34 @@ function css(rules: IRuleDefinitions): {[name: string]: string} {
 	return exports;
 }
 
+export function scheme(id: string, list: string[]) {
+	if (!/^[a-z][a-z0-9-]+$/.test(id)) {
+		throw new Error('[@exility/css] scheme name must be includes only a-z, 0-9 and -');
+	}
+
+	return list.reduce((rules: IRuleDefinitions, name) => {
+		Object.defineProperty(rules, name, {
+			writable: false,
+			configurable: false,
+			get() {
+				return {};
+			},
+		});
+
+		return rules;
+	}, {});
+}
+
 css['fx'] = fx;
+css['scheme'] = scheme;
+
+export function addPrefix(prefix: string, list: string[]) {
+	return list.map(val => prefix + val);
+}
+
+export function addPostfix(postfix: string, list: string[]) {
+	return list.map(val => val + postfix);
+}
 
 export default <ICSSFactory>css;
 
