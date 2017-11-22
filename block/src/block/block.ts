@@ -1,6 +1,6 @@
 import XEvent, {DOMEvent, IEmitter} from '../event/event';
 
-export interface BlockClass<A = {}, C = {}> {
+export interface BlockClass<A = {}, C extends object = {}> {
 	new (attrs: A, options?: {context?: C}): Block<A, C>;
 	template?: string;
 	classNames?: any;
@@ -41,9 +41,10 @@ export const requiredScopeKeys = [
 	'__classNames__',
 ];
 
+const EMPTY_CONTEXT = {};
 let cid = 0;
 
-export default class Block<A = {}, C = {}> implements IEmitter<IBlock> {
+export default class Block<A = {}, C extends object = {}> implements IEmitter<IBlock> {
 	static classify<X>(ClassOrLike: string | IPlainBlock<X> | IBlock): typeof Block {
 		if (typeof ClassOrLike === 'string') {
 			ClassOrLike = <IPlainBlock<X>>{template: ClassOrLike};
@@ -107,17 +108,30 @@ export default class Block<A = {}, C = {}> implements IEmitter<IBlock> {
 
 		this.cid = ++cid;
 		this.attrs = attrs;
-		this.context = <C>options.context;
+		this.context = (options.context || EMPTY_CONTEXT) as C;
 
 		this.__events__ = options.events;
 		this.__parent__ = options.parent;
 		this.__options__ = options;
 
+		let classNames = self['classNames'];
+
+		if (classNames === true) {
+			const {$css} = this.context as any;
+
+			if ($css === void 0) {
+				classNames = {};
+				// console.warn(`[@exility/block] Не найден css-провайдер для ${(self as any).name}`);
+			} else {
+				classNames = $css(self);
+			}
+		}
+
 		this.__scope__ = {
 			attrs: this.attrs,
 			context: this.context,
 			__blocks__: self['blocks'],
-			__classNames__: self['classNames'],
+			__classNames__: classNames,
 			__this__: this,
 			__slots__: options.slots,
 		};
@@ -142,7 +156,7 @@ export default class Block<A = {}, C = {}> implements IEmitter<IBlock> {
 		return {};
 	}
 
-	protected getContextForNested(): C {
+	protected getContextForNested(): any {
 		return this.context;
 	}
 
