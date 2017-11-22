@@ -13,12 +13,12 @@ function compiledTemplate(__SCOPE__, __OPTIONS__) {
 		var __CLN = __STDLIB_CSS_MODULE(__classNames__);
 		var __super__ = {};
 
-		function __SLOT_children(__super__) {
+		function __SLOT_children(__this__, __super__) {
 			return "";
 		}
 		__super__["children"] = __SLOT_children;
 
-		return "<div class=\\"" + __CLN("alert " + __STDLIB_HTML_ENCODE(attrs.x) + " is-" + __STDLIB_HTML_ENCODE(attrs.y)) + "\\">" + __STDLIB_SLOT(__slots__, __super__, "children", __SLOT_children) + "</div>";
+		return "<div class=\\"" + __CLN("alert " + __STDLIB_HTML_ENCODE(attrs.x) + " is-" + __STDLIB_HTML_ENCODE(attrs.y) + " " + __STDLIB_HTML_ENCODE(__classNames__.hasOwnProperty(":host") ? ":host" : "")) + "\\">" + __STDLIB_SLOT(__this__, __slots__, __super__, "children", __SLOT_children) + "</div>";
 	}
 `;
 
@@ -129,10 +129,11 @@ function templateFactory() {
 	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
 		__SCOPE__ = __SCOPE__ || {};
 		var __blocks__ = __SCOPE__.__blocks__;
+		var __this__ = __SCOPE__;
 
 		__BLOCK_INIT(__blocks__, "Pseudo");
 		var __nctx__;
-		var __ROOT = __BLOCK_RENDER(__blocks__, __nctx__, "Pseudo", {}, {slotik: function __SLOT_slotik(__super__) {
+		var __ROOT = __BLOCK_RENDER(__blocks__, __nctx__, "Pseudo", {}, {slotik: function __SLOT_slotik(__this__, __super__) {
 			return "OK";
 			}});
 
@@ -169,10 +170,11 @@ function templateFactory() {
 	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
 		__SCOPE__ = __SCOPE__ || {};
 		var __blocks__ = __SCOPE__.__blocks__;
+		var __this__ = __SCOPE__;
 
 		__BLOCK_INIT(__blocks__, "Pseudo");
 		var __nctx__;
-		var __ROOT = __BLOCK_RENDER(__blocks__, __nctx__, "Pseudo", {}, {children: function __SLOT_children(__super__) {
+		var __ROOT = __BLOCK_RENDER(__blocks__, __nctx__, "Pseudo", {}, {children: function __SLOT_children(__this__, __super__) {
 			return "OK";
 			}});
 
@@ -213,10 +215,11 @@ function templateFactory(__DEPS__) {
 		var x = __SCOPE__.x;
 		var text = __SCOPE__.text;
 		var __blocks__ = __SCOPE__.__blocks__;
+		var __this__ = __SCOPE__;
 
 		__BLOCK_INIT(__blocks__, "Pseudo");
 		var __nctx__;
-		var __ROOT = __BLOCK_RENDER(__blocks__, __nctx__, "Pseudo", {value: (x)}, {children: function __SLOT_children(__super__) {
+		var __ROOT = __BLOCK_RENDER(__blocks__, __nctx__, "Pseudo", {value: (x)}, {children: function __SLOT_children(__this__, __super__) {
 			return __STDLIB_HTML_ENCODE(text) + ":" + __super__["children"]();
 			}});
 

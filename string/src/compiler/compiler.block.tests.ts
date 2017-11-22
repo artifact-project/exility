@@ -140,6 +140,28 @@ it('CSS Module', () => {
 	expect(Foo.prototype['__template__']).toMatchSnapshot();
 });
 
+it('CSS Module + :host', () => {
+	const Foo = class extends Block<{}, null> {
+		static template = `
+			i > em
+			if (attrs.x) > b.end
+		`;
+		static classNames: object = {
+			':host': 'wow',
+			end: 'last',
+		};
+	};
+	const __blocks__ = {Foo};
+	const template = fromString(
+		'Foo[x=${x}]',
+		['x'],
+		__blocks__,
+	);
+
+	expect(template({__blocks__})).toBe('<i class="wow"><em></em></i>');
+	expect(template({__blocks__, x: 1})).toBe('<i class="wow"><em></em></i><b class="last wow"></b>');
+});
+
 it('Context', () => {
 	const Qux = class extends Block<{}, {value: string, postfix: string}> {
 		static template = 'i | ${context.value}${context.postfix}';

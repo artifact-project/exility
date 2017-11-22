@@ -11,11 +11,13 @@ import {
 import {core as stdlib} from '@exility/stdlib';
 import {XNode, IXNode, XNodeConstructor, utils} from '@exility/parser';
 
+
 const R_IS_EVENT = /^(on-|@)/;
 
 const {
 	ROOT_TYPE,
 	DTD_TYPE,
+	TAG_TYPE,
 	COMMENT_TYPE,
 	TEXT_TYPE,
 	KEYWORD_TYPE,
@@ -24,6 +26,7 @@ const {
 	PSEUDO_ELEMENT_TYPE,
 	CALL_TYPE,
 	QUOTE_CODE,
+	EXPRESSION_TYPE,
 } = utils;
 
 let mcid = 0;
@@ -92,6 +95,7 @@ const compiler = createCompiler<StringModeOptions>((options) => (node: XNode) =>
 	const HTML_TEXT_ENCODE = metaComments ? `${HTML_ENCODE}_MC` : HTML_ENCODE;
 	const slotsCode = [];
 	const useCSSModule = cssModule && scopeVars.includes('__classNames__');
+	let domDepth = 0;
 
 	mcid = 0;
 
@@ -182,11 +186,19 @@ const compiler = createCompiler<StringModeOptions>((options) => (node: XNode) =>
 		if (DTD_TYPE === type) {
 			code = push(`<!DOCTYPE ${raw.value == 5 ? 'html' : raw.value}>${NL}`);
 		} else {
+			if (type === TAG_TYPE) {
+				domDepth++;
+			}
+
 			let hasText = false;
 			let content = node.nodes.map((child) => {
 				hasText = child.type === 'text' || hasText;
 				return compile(child, type == '#root' ? '' : pad + '  ', innerCallList, innerDefaultSlotsList);
 			}).join('');
+
+			if (type === TAG_TYPE) {
+				domDepth--;
+			}
 
 			if (hasText) {
 				content = content.trim();
@@ -310,6 +322,14 @@ const compiler = createCompiler<StringModeOptions>((options) => (node: XNode) =>
 				}
 			} else {
 				const attrsList = [];
+
+				if (domDepth === 0 && useCSSModule) {
+					raw.attrs.class = raw.attrs.class || [];
+					raw.attrs.class.push([{
+						type: EXPRESSION_TYPE,
+						raw: '__classNames__.hasOwnProperty(":host") ? ":host" : ""',
+					}]);
+				}
 
 				Object.keys(raw.attrs || {}).forEach(name => {
 					const value = raw.attrs[name];
