@@ -292,6 +292,29 @@ it('CSS Module', () => {
 	expect(view.container.innerHTML).toBe('<div class=\"__$alert$__ [warn: null] [warn: is-null]\"></div>');
 });
 
+it('CSS Module + :host', () => {
+	const Foo = class extends Block<{}, null> {
+		static template = `
+			i > em
+			if (attrs.x) > b.end
+		`;
+		static classNames: object = {
+			':host': 'wow',
+			end: 'last',
+		};
+	};
+	const view = fromString(
+		'Foo[x=${x}]',
+		{x: 0},
+		null,
+		{Foo}
+	);
+
+	expect(view.container.innerHTML).toBe('<i class="wow"><em></em></i>');
+	view.update({x: 1});
+	expect(view.container.innerHTML).toBe('<i class="wow"><em></em></i><b class="last wow"></b>');
+});
+
 it('Context', () => {
 	const Qux = class extends Block<{}, {value: string, postfix: string}> {
 		static template = 'i | ${context.value}${context.postfix}';

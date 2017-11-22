@@ -80,6 +80,7 @@ const compiler = createCompiler<IDOMCompilerOptions>((options: IDOMCompilerOptio
 	let gid = 0;
 	let varMax = 0;
 	let hasBlocks = false;
+	let domDepth = 0;
 
 	if (options.blocks) {
 		options.blocks.forEach(name => {
@@ -154,6 +155,18 @@ const compiler = createCompiler<IDOMCompilerOptions>((options: IDOMCompilerOptio
 		// 		external: true,
 		// 	};
 		// }
+
+		if (type === TAG_TYPE) {
+			domDepth++;
+
+			if (domDepth === 1 && useCSSModule) {
+				raw.attrs.class = raw.attrs.class || [];
+				raw.attrs.class.push([{
+					type: EXPRESSION_TYPE,
+					raw: '__classNames__.hasOwnProperty(":host") ? ":host" : ""',
+				}]);
+			}
+		}
 
 		let compiledAttrs: Array<COMPILED_ATTR> = Object.keys(attrs).map((name: string): COMPILED_ATTR => {
 			const useCLN = name === 'class' && useCSSModule;
@@ -253,6 +266,10 @@ const compiler = createCompiler<IDOMCompilerOptions>((options: IDOMCompilerOptio
 			}), null, usedSlots);
 			__default.children = defaultSlot;
 			overridenSlots.push(__default);
+		}
+
+		if (type === TAG_TYPE) {
+			domDepth--;
 		}
 
 		return {

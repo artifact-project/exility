@@ -158,7 +158,7 @@ function compiledTemplate(__SCOPE__, __OPTIONS__) {
 		};
 		var __frag = __STDDOM_FRAGMENT();
 		var __x1 = __STDDOM_LIVE_NODE(__frag, __ctx, 1, "div");
-		__STDDOM_D_PROP(__ctx[1], "className", __CLN("alert " + (attrs.x) + " is-" + (attrs.y)))
+		__STDDOM_D_PROP(__ctx[1], "className", __CLN("alert " + (attrs.x) + " is-" + (attrs.y) + " " + (__classNames__.hasOwnProperty(":host") ? ":host" : "")))
 
 		var __SLOT_children_used = false;
 		function __SLOT_children() {
@@ -186,7 +186,7 @@ function compiledTemplate(__SCOPE__, __OPTIONS__) {
 				__classNames__ = __NEWSCOPE__.__classNames__;
 
 				__CLN.upd(__classNames__);
-				__STDDOM_D_PROP(__ctx[1], "className", __CLN("alert " + (attrs.x) + " is-" + (attrs.y)))
+				__STDDOM_D_PROP(__ctx[1], "className", __CLN("alert " + (attrs.x) + " is-" + (attrs.y) + " " + (__classNames__.hasOwnProperty(":host") ? ":host" : "")))
 			}
 		}
 	}
