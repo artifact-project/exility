@@ -16,14 +16,10 @@ function factory<
 	FormBlock: BlockClass<A>,
 ): BlockClass<R> {
 	class Formify extends Block<R> {
-		private formContext: FormContext<V>;
-
 		static blocks = {FormBlock};
 		static template = `FormBlock[__attrs__=\${attrs}]`;
 
-		constructor(attrs: R, options) {
-			super(attrs, options);
-		}
+		private formContext: FormContext<V>;
 
 		getDefaults() {
 			return {
@@ -36,7 +32,10 @@ function factory<
 				this.formContext = new FormContext<V>(this.attrs.initialValues, config);
 			}
 
-			return {$form: this.formContext};
+			return {
+				$css: config.theme || (this.context as any).$css,
+				$form: this.formContext,
+			};
 		}
 
 		attributeChangedCallback(name: string, newValue) {

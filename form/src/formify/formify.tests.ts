@@ -23,14 +23,19 @@ const Login = formify<{login: string}, Attrs>({
 })(class extends Block<Attrs> {
 	static blocks = {Form, Element};
 	static template = `
-		Form[@submit="sended"]
+		Form[@submit]
 			Element[name="email" required]
 			button[type="submit"] | Send
 	`;
 
-	'@sended'({detail}) {
+	'@submit'({detail}) {
 		this.attrs.log.push(detail);
 	}
+});
+
+beforeEach(() => {
+	Form.classNames = false;
+	Element.classNames = false;
 });
 
 it('formify', async () => {

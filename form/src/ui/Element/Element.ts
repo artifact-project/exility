@@ -1,9 +1,8 @@
 import Block from '@exility/block';
 import {IFormElement, UIElementAttrs, UIElementContext} from '../../interfaces';
 
-// todo: `class.shape-${x}`, `class.size-${y}`, maybe `class.${name}`?
-
 export default class UIElement extends Block<UIElementAttrs, UIElementContext> {
+	static classNames = true;
 	static template = `
 		const elem = __this__.getFormElement();
 		const tag = (elem.type === 'textarea' || elem.type === 'select') ? elem.type : 'input';
@@ -25,8 +24,8 @@ export default class UIElement extends Block<UIElementAttrs, UIElementContext> {
 			@copy="input"
 			@paste="input"
 						
-			class.shape_\${elem.shape}=\${elem.shape}
-			class.size_\${elem.size}=\${elem.size}
+			class.shape-\${elem.shape}=\${elem.shape}
+			class.size-\${elem.size}=\${elem.size}
 			
 			class.active=\${elem.active}
 			class.checked=\${elem.checked}

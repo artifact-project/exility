@@ -1,4 +1,5 @@
 import Block from '@exility/block';
+import {ThemeProvider} from '@exility/css';
 
 export interface ValueBox {
 	name?: string;
@@ -55,6 +56,10 @@ export interface IFormElement {
 export interface IFormContext {
 	id: string;
 
+	submitting: boolean;
+	submitFailed: boolean;
+	submitSucceeded: boolean;
+
 	handleEvent(block: IUIElement, event: Event);
 	handleSubmit(event: Event);
 	handleReset(event: Event);
@@ -73,6 +78,8 @@ export interface IFormContext {
 
 // todo: add generic,
 export type FormContextConfig<V> = {
+	theme?: ThemeProvider;
+
 	rules?: {
 		[name: string]: ValidateRule;
 	};
@@ -82,6 +89,8 @@ export type FormContextConfig<V> = {
 	};
 
 	submit: (values: V, context: IFormContext) => Promise<any>,
+	submitFailed: (error: any, values: V, context: IFormContext) => void,
+	submitSucceeded: (results: any, values: V, context: IFormContext) => void,
 }
 
 export interface UIElementAttrs {

@@ -6,6 +6,9 @@ import {FormContext} from '../../Context/Context';
 import {requestFrame} from '@perf-tools/balancer';
 import {UIFormContext} from '../../interfaces';
 
+Form.classNames = false;
+Element.classNames = false;
+
 describe('ui / Form', () => {
 	let context;
 

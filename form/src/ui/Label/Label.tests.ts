@@ -7,6 +7,10 @@ import {FormContext} from '../../Context/Context';
 import {requestFrame} from '@perf-tools/balancer';
 import {UIFormContext} from '../../interfaces';
 
+Form.classNames = false;
+Label.classNames = false;
+Element.classNames = false;
+
 describe('ui / Label', () => {
 	let context;
 

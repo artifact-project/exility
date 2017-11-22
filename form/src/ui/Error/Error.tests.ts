@@ -8,6 +8,10 @@ import {FormContext} from '../../Context/Context';
 import {requestFrame} from '@perf-tools/balancer';
 import {UIFormContext} from '../../interfaces';
 
+Form.classNames = false;
+Error.classNames = false;
+Element.classNames = false;
+
 defaultLocale.set({
 	required: 'No empty',
 	minLength: ({detail: {min}}) => `Min ${min}`,

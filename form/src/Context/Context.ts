@@ -520,7 +520,7 @@ export class FormContext<V extends object = {}> implements IFormContext {
 		forceUpdateAll(this.elements);
 	}
 
-	private handleSubmitting(success) {
+	private handleSubmitting(success, results) {
 		this.submitting = false;
 		this.submitSucceeded = success;
 		this.submitFailed = !success;
@@ -533,6 +533,9 @@ export class FormContext<V extends object = {}> implements IFormContext {
 				el.initialChecked = el.changed;
 				el.initialSelectedIndex = el.selectedIndex;
 			});
+			this.config.submitSucceeded && this.config.submitSucceeded(results, this.values, this);
+		} else {
+			this.config.submitFailed && this.config.submitFailed(results, this.values, this);
 		}
 
 		this.forceUpdateAll();

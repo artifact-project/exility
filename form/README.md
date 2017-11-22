@@ -14,7 +14,7 @@ import {
 	Element,
 } from '@exility/form`;
 
-@formify({
+export default formify({
 	masks: {
 		phone: mask.phone(),
 	},
@@ -29,8 +29,7 @@ import {
 	submit(values) {
 		return fetch('/api/reg', {method: 'post', body: values});
 	},
-})
-export default class extends Block<{}> {
+})(class extends Block<{}> {
 	static blocks = {Form, Element};
 
 	static template = `
@@ -44,8 +43,37 @@ export default class extends Block<{}> {
 
 			hr + button[disabled=\${form.submitting}] | Submit
 	`;
-}
+});
 ```
+
+---
+
+#### Theming
+
+```ts
+import {theme} from '@exility/css`;
+import {Form, Element} from '@exility/form`;
+
+const myTheme = theme.create(
+	css.for(Form, {
+		// ...
+	}),
+
+	css.for(Element, {
+		'is-text': {
+			border: '1px solid red',
+		},
+		// ...
+	}),
+);
+
+formify({
+	theme: myTheme,
+	...
+})(class ...);
+```
+
+---
 
 
 ### Development

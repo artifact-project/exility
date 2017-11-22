@@ -4,6 +4,8 @@ import {FormContext} from '../../Context/Context';
 import {requestFrame} from '@perf-tools/balancer';
 import {UIElementAttrs, UIElementContext} from '../../interfaces';
 
+UIElement.classNames = false;
+
 describe('ui / Element', () => {
 	let context;
 
