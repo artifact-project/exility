@@ -68,3 +68,10 @@ it('NEXT_CONTEXT: getContextForNested', () => {
 	expect(result.foo).toEqual(1);
 	expect(result.bar).toEqual(2);
 });
+
+it('CSS_MODULE: {}', () => {
+	const cx = core.CSS_MODULE({});
+
+	expect(cx('foo')).toBe('[warn: foo]');
+	expect(cx('foo bar')).toBe('[warn: foo] [warn: bar]');
+});
