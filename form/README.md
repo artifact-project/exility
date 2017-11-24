@@ -56,13 +56,18 @@ import {Form, Element} from '@exility/form`;
 
 const myTheme = theme.create(
 	css.for(Form, {
-		// ...
+		':host': {
+			borderRadius: 3,
+			boxShadow: '0 1px 3px rgba(0,0,0,.3)',
+			padding: 10,
+		},
 	}),
 
 	css.for(Element, {
+		':host': { /*...*/ },
 		'is-text': {
-			border: '1px solid red',
-		},
+			border: '1px solid #ccc',
+		}
 		// ...
 	}),
 );

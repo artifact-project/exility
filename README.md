@@ -33,6 +33,7 @@ The project is in active development and it can be collected only in one way:
    - CSS Modules and Hot reloading
    - [Storybook](./storybook) for development ui-blocks (Wrapper over the original [storybook](https://storybook.js.org/))
    - Very easy work with [forms](./form)(validation, masks and etc)
+   - Localization
    - Testing, see [jacket](./jacket)
  - Ready to use UI libraries:
    - [ui-bootstrap](./ui-bootstrap)
@@ -43,6 +44,9 @@ The project is in active development and it can be collected only in one way:
  - NativeDOM (no slow VirtualDOM)
  - The single ecosystem on TypeScript.
  - etc.
+
+
+---
 
 
 ### Modules
@@ -57,6 +61,9 @@ The project is in active development and it can be collected only in one way:
  - [storybook](./storybook) — A special wrapper over the original [storybook](storybook.js.org).
  - [string](./string) — String Renderer
  - [ts-transformer](./ts-transformer) — TypeScript transformer for template precompilation
+
+
+---
 
 
 ### Syntax

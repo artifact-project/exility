@@ -1,8 +1,8 @@
 {
-  "name": "",
+  "name": "@exility/form",
   "version": "0.1.0",
-  "description": "Scaffold for Artifact project",
-  "author": "",
+  "description": "Working with forms in all its glory.",
+  "author": "RubaXa <ibnRubaXa@gmail.com>",
   "license": "MIT",
   "main": "index.js",
   "scripts": {
