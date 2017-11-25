@@ -4,7 +4,9 @@ exports[`arrow function 1`] = `
 "import _exility_stdlib_src_core_core from \\"@exility/stdlib/src/core/core\\";
 import _exility_stdlib_src_dom_dom from \\"@exility/stdlib/src/dom/dom\\";
 class ArrowFunction extends Block<null> {
-    static prototype.__template__ = (function templateFactory(__DEPS__) {
+    static template: null;
+}
+ArrowFunction.prototype.__template__ = (function templateFactory(__DEPS__) {
 	\\"use strict\\";
 	var __STDDOM = __DEPS__.stddom;
 	var __STDDOM_CONTEXT = __STDDOM.CONTEXT;
@@ -17,11 +19,13 @@ class ArrowFunction extends Block<null> {
 	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
 		__SCOPE__ = __SCOPE__ || {};
 		var attrs = __SCOPE__.attrs;
+		var context = __SCOPE__.context;
 		var __blocks__ = __SCOPE__.__blocks__;
 		var __this__ = __SCOPE__.__this__;
 		var __slots__ = __SCOPE__.__slots__;
 
 		var __ctx = __STDDOM_CONTEXT();
+		var __nctx__, __nctxChanged__;
 
 		var __frag = __STDDOM_FRAGMENT();
 		var __x1 = __STDDOM_NODE(__frag, \\"h1\\");
@@ -41,15 +45,16 @@ class ArrowFunction extends Block<null> {
 			update: function (__NEWSCOPE__) {
 				__SCOPE__ = __NEWSCOPE__;
 				attrs = __NEWSCOPE__.attrs;
+				context = __NEWSCOPE__.context;
 				__blocks__ = __NEWSCOPE__.__blocks__;
 				__this__ = __NEWSCOPE__.__this__;
 				__slots__ = __NEWSCOPE__.__slots__;
+
 				__STDDOM_UPD_VALUE(__ctx[2], attrs.text);
 			}
 		}
 	}
 })({ stdlib: core_1.default, stddom: dom_1.default });
-}
 "
 `;
 
@@ -57,7 +62,9 @@ exports[`arrow function: for (item in items) 1`] = `
 "import _exility_stdlib_src_core_core from \\"@exility/stdlib/src/core/core\\";
 import _exility_stdlib_src_dom_dom from \\"@exility/stdlib/src/dom/dom\\";
 class ArrowFor extends Block<null> {
-    static prototype.__template__ = (function templateFactory(__DEPS__) {
+    static template: null;
+}
+ArrowFor.prototype.__template__ = (function templateFactory(__DEPS__) {
 	\\"use strict\\";
 	var __STDDOM = __DEPS__.stddom;
 	var __STDDOM_CONTEXT = __STDDOM.CONTEXT;
@@ -71,11 +78,13 @@ class ArrowFor extends Block<null> {
 	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
 		__SCOPE__ = __SCOPE__ || {};
 		var attrs = __SCOPE__.attrs;
+		var context = __SCOPE__.context;
 		var __blocks__ = __SCOPE__.__blocks__;
 		var __this__ = __SCOPE__.__this__;
 		var __slots__ = __SCOPE__.__slots__;
 
 		var __ctx = __STDDOM_CONTEXT();
+		var __nctx__, __nctxChanged__;
 
 		var __frag = __STDDOM_FRAGMENT();
 		__STDDOM_FOR(__frag, __ctx, 2, attrs.items, undefined, __FOR_ITERATOR_1);
@@ -112,15 +121,16 @@ class ArrowFor extends Block<null> {
 			update: function (__NEWSCOPE__) {
 				__SCOPE__ = __NEWSCOPE__;
 				attrs = __NEWSCOPE__.attrs;
+				context = __NEWSCOPE__.context;
 				__blocks__ = __NEWSCOPE__.__blocks__;
 				__this__ = __NEWSCOPE__.__this__;
 				__slots__ = __NEWSCOPE__.__slots__;
+
 				__STDDOM_UPD_FOR(__ctx, 2, attrs.items, undefined, __FOR_ITERATOR_1);
 			}
 		}
 	}
 })({ stdlib: core_1.default, stddom: dom_1.default });
-}
 "
 `;
 
@@ -128,7 +138,9 @@ exports[`arrow function: if 1`] = `
 "import _exility_stdlib_src_core_core from \\"@exility/stdlib/src/core/core\\";
 import _exility_stdlib_src_dom_dom from \\"@exility/stdlib/src/dom/dom\\";
 class ArrowIf extends Block<null> {
-    static prototype.__template__ = (function templateFactory(__DEPS__) {
+    static template: null;
+}
+ArrowIf.prototype.__template__ = (function templateFactory(__DEPS__) {
 	\\"use strict\\";
 	var __STDDOM = __DEPS__.stddom;
 	var __STDDOM_CONTEXT = __STDDOM.CONTEXT;
@@ -140,11 +152,13 @@ class ArrowIf extends Block<null> {
 	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
 		__SCOPE__ = __SCOPE__ || {};
 		var attrs = __SCOPE__.attrs;
+		var context = __SCOPE__.context;
 		var __blocks__ = __SCOPE__.__blocks__;
 		var __this__ = __SCOPE__.__this__;
 		var __slots__ = __SCOPE__.__slots__;
 
 		var __ctx = __STDDOM_CONTEXT();
+		var __nctx__, __nctxChanged__;
 
 		var __frag = __STDDOM_FRAGMENT();
 		__STDDOM_IF(__frag, __ctx, 1, [__IF_2]);
@@ -179,15 +193,16 @@ class ArrowIf extends Block<null> {
 			update: function (__NEWSCOPE__) {
 				__SCOPE__ = __NEWSCOPE__;
 				attrs = __NEWSCOPE__.attrs;
+				context = __NEWSCOPE__.context;
 				__blocks__ = __NEWSCOPE__.__blocks__;
 				__this__ = __NEWSCOPE__.__this__;
 				__slots__ = __NEWSCOPE__.__slots__;
+
 				__STDDOM_UPD_IF(__ctx, 1);
 			}
 		}
 	}
 })({ stdlib: core_1.default, stddom: dom_1.default });
-}
 "
 `;
 
@@ -198,7 +213,9 @@ class App extends Block<{
         username: string;
     }> {
     static blocks = { Button };
-    static prototype.__template__ = (function templateFactory(__DEPS__) {
+    static template: null;
+}
+App.prototype.__template__ = (function templateFactory(__DEPS__) {
 	\\"use strict\\";
 	var __STDDOM = __DEPS__.stddom;
 	var __STDDOM_CMP_SET_COMPILER = __STDDOM.CMP_SET_COMPILER;
@@ -207,10 +224,14 @@ class App extends Block<{
 	var __STDDOM_FRAGMENT = __STDDOM.FRAGMENT;
 	var __STDDOM_CMP_CREATE = __STDDOM.CMP_CREATE;
 	var __STDDOM_LIFECYCLE = __STDDOM.LIFECYCLE;
+	var __STDLIB = __DEPS__.stdlib;
+	var __STDLIB_NEXT_CONTEXT = __STDLIB.NEXT_CONTEXT;
+	var __STDLIB_CONTEXT_IS_CHANGED = __STDLIB.CONTEXT_IS_CHANGED;
 	
 	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
 		__SCOPE__ = __SCOPE__ || {};
 		var attrs = __SCOPE__.attrs;
+		var context = __SCOPE__.context;
 		var __blocks__ = __SCOPE__.__blocks__;
 		var __this__ = __SCOPE__.__this__;
 		var __slots__ = __SCOPE__.__slots__;
@@ -218,6 +239,7 @@ class App extends Block<{
 		__STDDOM_CMP_INIT(__blocks__, [\\"Button\\"]);
 
 		var __ctx = __STDDOM_CONTEXT();
+		var __nctxChanged__ = true, __nctx__ = __STDLIB_NEXT_CONTEXT(__this__);
 
 		var __frag = __STDDOM_FRAGMENT();
 		var __CMP_ATTRS = {};
@@ -226,6 +248,7 @@ class App extends Block<{
 
 			__frag,
 			__this__,
+			__nctx__,
 			\\"Button\\",
 			__CMP_ATTRS,
 			null,
@@ -245,16 +268,20 @@ class App extends Block<{
 			update: function (__NEWSCOPE__) {
 				__SCOPE__ = __NEWSCOPE__;
 				attrs = __NEWSCOPE__.attrs;
+				context = __NEWSCOPE__.context;
 				__blocks__ = __NEWSCOPE__.__blocks__;
 				__this__ = __NEWSCOPE__.__this__;
 				__slots__ = __NEWSCOPE__.__slots__;
-				var __CMP_ATTRS = {};
-				__x1.update(__CMP_ATTRS);
+
+				var __next_nctx__ = __STDLIB_NEXT_CONTEXT(__this__, __nctx__);
+				__nctxChanged__ = __STDLIB_CONTEXT_IS_CHANGED(__nctx__, __next_nctx__);
+				__nctx__ = __next_nctx__;
+
+				__nctxChanged__ && __x1.update(void 0, __nctx__);
 			}
 		}
 	}
 })({ stdlib: core_1.default, stddom: dom_1.default });
-}
 "
 `;
 
@@ -265,7 +292,9 @@ class App extends Block<{
         username: string;
     }> {
     static classNames = css;
-    static prototype.__template__ = (function templateFactory(__DEPS__) {
+    static template: null;
+}
+App.prototype.__template__ = (function templateFactory(__DEPS__) {
 	\\"use strict\\";
 	var __STDDOM = __DEPS__.stddom;
 	var __STDDOM_CONTEXT = __STDDOM.CONTEXT;
@@ -279,6 +308,7 @@ class App extends Block<{
 	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
 		__SCOPE__ = __SCOPE__ || {};
 		var attrs = __SCOPE__.attrs;
+		var context = __SCOPE__.context;
 		var __blocks__ = __SCOPE__.__blocks__;
 		var __this__ = __SCOPE__.__this__;
 		var __slots__ = __SCOPE__.__slots__;
@@ -287,10 +317,11 @@ class App extends Block<{
 		var __CLN = __STDLIB_CSS_MODULE(__classNames__);
 
 		var __ctx = __STDDOM_CONTEXT();
+		var __nctx__, __nctxChanged__;
 
 		var __frag = __STDDOM_FRAGMENT();
 		var __x1 = __STDDOM_LIVE_NODE(__frag, __ctx, 1, \\"div\\");
-		__STDDOM_D_PROP(__ctx[1], \\"className\\", __CLN(\\"foo\\"))
+		__STDDOM_D_PROP(__ctx[1], \\"className\\", __CLN(\\"foo \\" + (__classNames__.hasOwnProperty(\\":host\\") ? \\":host\\" : \\"\\")))
 		__STDDOM_TEXT(__x1, \\"bar\\");
 
 		return {
@@ -306,25 +337,29 @@ class App extends Block<{
 			update: function (__NEWSCOPE__) {
 				__SCOPE__ = __NEWSCOPE__;
 				attrs = __NEWSCOPE__.attrs;
+				context = __NEWSCOPE__.context;
 				__blocks__ = __NEWSCOPE__.__blocks__;
 				__this__ = __NEWSCOPE__.__this__;
 				__slots__ = __NEWSCOPE__.__slots__;
 				__classNames__ = __NEWSCOPE__.__classNames__;
+
 				__CLN.upd(__classNames__);
-				__STDDOM_D_PROP(__ctx[1], \\"className\\", __CLN(\\"foo\\"))
+				__STDDOM_D_PROP(__ctx[1], \\"className\\", __CLN(\\"foo \\" + (__classNames__.hasOwnProperty(\\":host\\") ? \\":host\\" : \\"\\")))
 			}
 		}
 	}
 })({ stdlib: core_1.default, stddom: dom_1.default });
-}
 "
 `;
 
 exports[`string 1`] = `
 "import _exility_stdlib_src_core_core from \\"@exility/stdlib/src/core/core\\";
 import _exility_stdlib_src_dom_dom from \\"@exility/stdlib/src/dom/dom\\";
-class Str extends Block {
-    static prototype.__template__ = (function templateFactory(__DEPS__) {
+function () {
+    class Str extends Block {
+        static template: null;
+    }
+    Str.prototype.__template__ = (function templateFactory(__DEPS__) {
 	\\"use strict\\";
 	var __STDDOM = __DEPS__.stddom;
 	var __STDDOM_CONTEXT = __STDDOM.CONTEXT;
@@ -337,11 +372,13 @@ class Str extends Block {
 	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
 		__SCOPE__ = __SCOPE__ || {};
 		var attrs = __SCOPE__.attrs;
+		var context = __SCOPE__.context;
 		var __blocks__ = __SCOPE__.__blocks__;
 		var __this__ = __SCOPE__.__this__;
 		var __slots__ = __SCOPE__.__slots__;
 
 		var __ctx = __STDDOM_CONTEXT();
+		var __nctx__, __nctxChanged__;
 
 		var __frag = __STDDOM_FRAGMENT();
 		var __x1 = __STDDOM_NODE(__frag, \\"h1\\");
@@ -361,9 +398,11 @@ class Str extends Block {
 			update: function (__NEWSCOPE__) {
 				__SCOPE__ = __NEWSCOPE__;
 				attrs = __NEWSCOPE__.attrs;
+				context = __NEWSCOPE__.context;
 				__blocks__ = __NEWSCOPE__.__blocks__;
 				__this__ = __NEWSCOPE__.__this__;
 				__slots__ = __NEWSCOPE__.__slots__;
+
 				__STDDOM_UPD_VALUE(__ctx[2], attrs.text);
 			}
 		}

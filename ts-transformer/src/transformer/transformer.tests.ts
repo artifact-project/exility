@@ -21,8 +21,10 @@ function transform(source: string): string {
 
 it('string', () => {
 	expect(transform(`
-		class Str extends Block {
-			static template = 'h1 | \${attrs.text}!';
+		function () {
+			class Str extends Block {
+				static template = 'h1 | \${attrs.text}!';
+			}
 		}
 	`)).toMatchSnapshot();
 });

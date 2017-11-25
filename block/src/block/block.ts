@@ -137,7 +137,7 @@ export default class Block<A = {}, C extends object = {}> implements IEmitter<IB
 		};
 
 		if (this.__template__ === void 0) {
-			console.warn(`[@exility/block] Not compiled`);
+			console.warn(`[@exility/block] Not compiled: ${this.constructor.name}`);
 		} else {
 			this.__view__ = Block.createView(
 				this,

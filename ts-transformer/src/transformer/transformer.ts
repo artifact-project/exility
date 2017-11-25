@@ -18,7 +18,13 @@ function addImport(imports: object, path) {
 	const name = path.replace(/[^a-z0-9]/g, '_');
 
 	if (!imports.hasOwnProperty(name)) {
-		imports[name] = createImport(name, path);
+		// imports[name] = createImport(name, path);
+		// TypeError: Cannot set property text of #<IdentifierObject> which has only a getter
+
+		Object.defineProperty(imports, name, {
+			enumerable: true,
+			value: createImport(name, path),
+		});
 	}
 
 	return imports[name];
@@ -93,7 +99,7 @@ function glueTemplateExpression(node: ts.TemplateExpression): string {
 	return chunks.join('');
 }
 
-function visitNode(node, imports, options: TXOptions) {
+function visitNode(node, imports, compiled, options: TXOptions) {
 	if (!isTemplate(node)) {
 		return node;
 	}
@@ -126,31 +132,39 @@ function visitNode(node, imports, options: TXOptions) {
 	const code = templateFactory
 					.toString()
 					.replace(/__STDDOM_CMP_SET_COMPILER\(.*?\);\n/, '');
+	const __template__ = ts.createCall(
+		ts.createParen(ts.createIdentifier(code)),
+		undefined,
+		[
+			generateDepsObject(imports, {
+				'stdlib': '@exility/stdlib/src/core/core',
+				'stddom': '@exility/stdlib/src/dom/dom',
+			}),
+		],
+	);
+
+	compiled.push(ts.createStatement(ts.createBinary(
+		ts.createIdentifier(`${node.parent.name.escapedText}.prototype.__template__`),
+		ts.SyntaxKind.EqualsToken,
+		__template__,
+	)));
 
 	return ts.updateProperty(
 		node,
 		undefined,
 		node.modifiers,
-		ts.createIdentifier('prototype.__template__'),
+		ts.createIdentifier(node.name.text),
 		node.type,
-		ts.createCall(
-			ts.createParen(ts.createIdentifier(code)),
-			undefined,
-			[
-				generateDepsObject(imports, {
-					'stdlib': '@exility/stdlib/src/core/core',
-					'stddom': '@exility/stdlib/src/dom/dom',
-				}),
-			],
-		),
+		ts.createIdentifier('null'),
 	);
 }
 
-function visitNodeAndChildren(node, context, imports, options: TXOptions) {
+function visitNodeAndChildren(node, context, imports, compiled, options: TXOptions) {
 	// Ходим только по классам, методам, функциям и свойствам
 	if (
-		node == null || !(
+		(node == null) || !(
 			node.kind === ts.SyntaxKind.SourceFile ||
+			node.kind === ts.SyntaxKind.Block ||
 			node.kind === ts.SyntaxKind.PropertyDeclaration ||
 			node.kind === ts.SyntaxKind.ClassDeclaration ||
 			node.kind === ts.SyntaxKind.ClassExpression ||
@@ -159,18 +173,34 @@ function visitNodeAndChildren(node, context, imports, options: TXOptions) {
 			node.kind === ts.SyntaxKind.FunctionExpression
 		)
 	) {
-		return node;
+		return node; // exit
 	}
 
-	return ts.visitEachChild(
-		visitNode(node, imports, options),
-		(childNode) => visitNodeAndChildren(childNode, context, imports, options),
+	const isBlock = node.kind === ts.SyntaxKind.Block;
+
+	if (isBlock) {
+		compiled = [];
+	}
+
+	const visitedNode = ts.visitEachChild(
+		visitNode(node, imports, compiled, options),
+		(childNode) => visitNodeAndChildren(childNode, context, imports, compiled, options),
 		context
 	);
+
+	if (isBlock && compiled.length) {
+		return ts.updateBlock(visitedNode, visitedNode.statements.concat(compiled));
+	}
+
+	return visitedNode;
 }
 
 function getMeta(node) {
-	const meta = {blocks: [], cssModule: false};
+	const meta = {
+		// name: node.name.escapedText,
+		blocks: [],
+		cssModule: false,
+	};
 
 	function visitNode(node) {
 		if (isBlocks(node)) {
@@ -192,13 +222,14 @@ function exilityTransformerFactoryConfigurate(options: TXOptions = {}) {
 	return function exilityTransformerFactory(context) {
 		return function (file) {
 			const imports = {};
-			const result = visitNodeAndChildren(file, context, imports, options);
+			const compiled = [];
+			const result = visitNodeAndChildren(file, context, imports, compiled, options);
 
 			return ts.updateSourceFileNode(
 				result,
 				Object.keys(imports)
 					.map(name => imports[name])
-					.concat(result.statements)
+					.concat(result.statements, compiled)
 			);
 		};
 	}
