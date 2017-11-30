@@ -162,10 +162,14 @@ export function resetCSS(newSeed) {
 	__cssQueue__.length = 0;
 }
 
+function preparePublicName(name: string): string {
+	return name === ':host' ? '--host' : name;
+}
+
 function getPublicName(exports, name, computedName) {
 	if (!exports.hasOwnProperty(name)) {
 		if (process.env.NODE_ENV !== 'production') {
-			exports[name] = `${name}-${computedName}`;
+			exports[name] = `${preparePublicName(name)}-${computedName}`;
 		} else {
 			exports[name] = getNextName();
 		}
