@@ -99,6 +99,20 @@ function glueTemplateExpression(node: ts.TemplateExpression): string {
 	return chunks.join('');
 }
 
+function addCompiled(statements, compiled) {
+	compiled.forEach(([refNode, node]) => {
+		let idx = statements.length;
+
+		while (idx--) {
+			if (statements[idx].pos === refNode.pos && statements[idx].end === refNode.end) {
+				statements.splice(idx + 1, 0, node);
+			}
+		}
+	});
+
+	return statements;
+}
+
 function visitNode(node, imports, compiled, options: TXOptions) {
 	if (!isTemplate(node)) {
 		return node;
@@ -143,11 +157,11 @@ function visitNode(node, imports, compiled, options: TXOptions) {
 		],
 	);
 
-	compiled.push(ts.createStatement(ts.createBinary(
+	compiled.push([node.parent, ts.createStatement(ts.createBinary(
 		ts.createIdentifier(`${node.parent.name.escapedText}.prototype.__template__`),
 		ts.SyntaxKind.EqualsToken,
 		__template__,
-	)));
+	))]);
 
 	return ts.updateProperty(
 		node,
@@ -189,7 +203,10 @@ function visitNodeAndChildren(node, context, imports, compiled, options: TXOptio
 	);
 
 	if (isBlock && compiled.length) {
-		return ts.updateBlock(visitedNode, visitedNode.statements.concat(compiled));
+		return ts.updateBlock(
+			visitedNode,
+			addCompiled(visitedNode.statements, compiled),
+		);
 	}
 
 	return visitedNode;
@@ -229,7 +246,7 @@ function exilityTransformerFactoryConfigurate(options: TXOptions = {}) {
 				result,
 				Object.keys(imports)
 					.map(name => imports[name])
-					.concat(result.statements, compiled)
+					.concat(addCompiled(result.statements, compiled))
 			);
 		};
 	}

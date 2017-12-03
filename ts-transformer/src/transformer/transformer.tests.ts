@@ -74,3 +74,15 @@ it('classNames', () => {
 		}
 	`)).toMatchSnapshot();
 });
+
+it('factory', () => {
+	expect(transform(`
+		function factory<R>(): any {
+			class Formify extends Block<R> {
+				static template = 'h1 | Wow';
+			}
+			
+			return Formify;
+		}
+	`)).toMatchSnapshot();
+});
