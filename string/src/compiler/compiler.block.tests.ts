@@ -160,6 +160,7 @@ it('CSS Module + :host', () => {
 
 	expect(template({__blocks__})).toBe('<i class="wow"><em></em></i>');
 	expect(template({__blocks__, x: 1})).toBe('<i class="wow"><em></em></i><b class="last wow"></b>');
+	expect(Foo.prototype['__template__']).toMatchSnapshot();
 });
 
 it('Context', () => {

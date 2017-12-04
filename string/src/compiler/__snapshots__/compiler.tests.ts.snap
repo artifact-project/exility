@@ -23,11 +23,18 @@ function templateFactory(__DEPS__) {
 	"use strict";
 	var __STDLIB = __DEPS__.stdlib;
 	var __STDLIB_HTML_ENCODE = __STDLIB.HTML_ENCODE;
-	function btn(attrs, __slots) {
+	var __STDLIB_TO_STRING = __STDLIB.TO_STRING;
+	var __xav;function btn(attrs, __slots) {
 		var __super = {attrs: attrs},
 		text = attrs.text,
 		url = attrs.url
-		return "<" + __STDLIB_HTML_ENCODE(url ? "a" : "button") + " class=\\"btn\\" href=\\"" + __STDLIB_HTML_ENCODE(url) + "\\">" + __STDLIB_HTML_ENCODE(text) + "</" + __STDLIB_HTML_ENCODE(url ? "a" : "button") + ">";
+		var __ROOT = "<" + __STDLIB_HTML_ENCODE(url ? "a" : "button") + " class=\\"btn\\"";
+
+		if (__xav = __STDLIB_TO_STRING(url)) {
+			__ROOT += " href=\\"" + __xav + "\\"";
+		}
+		__ROOT += ">" + __STDLIB_HTML_ENCODE(text) + "</" + __STDLIB_HTML_ENCODE(url ? "a" : "button") + ">";
+		return __ROOT
 	}
 
 	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
@@ -204,6 +211,33 @@ function templateFactory(__DEPS__) {
 		var text = __SCOPE__.text;
 
 		return "<div class=\\"foo\\">" + __STDLIB_TO_STRING(text) + "</div>";
+	}
+}
+`;
+
+exports[`input 1`] = `
+function templateFactory(__DEPS__) {
+	"use strict";
+	var __STDLIB = __DEPS__.stdlib;
+	var __STDLIB_TO_STRING = __STDLIB.TO_STRING;
+	var __xav;
+
+	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var elem = __SCOPE__.elem;
+
+		var __ROOT = "<input";
+
+		if (__xav = (elem.checked)) {
+			__ROOT += " checked";
+		}
+
+		if (__xav = __STDLIB_TO_STRING(elem.placeholder)) {
+			__ROOT += " placeholder=\\"" + __xav + "\\"";
+		}
+		__ROOT += "/>";
+
+		return __ROOT
 	}
 }
 `;

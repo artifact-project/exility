@@ -198,6 +198,21 @@ it('innerHTML / var', () => {
 	expect(factory({stdlib})({text: '<i>raw</i>'})).toBe('<div class="foo"><i>raw</i></div>');
 });
 
+it('input', () => {
+	const factory = fromString(`
+		input[
+			checked=\${elem.checked}
+			placeholder=\${elem.placeholder}
+		]
+	`, ['elem']);
+
+	expect(factory({stdlib})({elem: {}})).toBe('<input/>');
+	expect(factory).toMatchSnapshot();
+
+	expect(factory({stdlib})({elem: {checked: true}})).toBe('<input checked/>');
+	expect(factory({stdlib})({elem: {placeholder: 123}})).toBe('<input placeholder="123"/>');
+});
+
 describe('COMMON_TEST', () => {
 	COMMON_TEST.forEach(({title, template, data, results, snapshot}) => {
 		results = [].concat(results);

@@ -1,5 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`CSS Module + :host 1`] = `
+function compiledTemplate(__SCOPE__, __OPTIONS__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var attrs = __SCOPE__.attrs;
+		var context = __SCOPE__.context;
+		var __this__ = __SCOPE__.__this__;
+		var __blocks__ = __SCOPE__.__blocks__;
+		var __slots__ = __SCOPE__.__slots__;
+		var __classNames__ = __SCOPE__.__classNames__;
+
+		var __CLN = __STDLIB_CSS_MODULE(__classNames__);
+		var __ROOT = "<i class=\\"" + __CLN(__STDLIB_HTML_ENCODE(__classNames__.hasOwnProperty(":host") ? ":host" : "")) + "\\"><em></em></i>";
+		if (attrs.x) {
+			__ROOT += "<b class=\\"" + __CLN("end " + __STDLIB_HTML_ENCODE(__classNames__.hasOwnProperty(":host") ? ":host" : "")) + "\\"></b>";
+		}
+
+		return __ROOT
+	}
+`;
+
 exports[`CSS Module 1`] = `
 function compiledTemplate(__SCOPE__, __OPTIONS__) {
 		__SCOPE__ = __SCOPE__ || {};

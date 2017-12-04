@@ -8,7 +8,7 @@ import {
 	stringifyParsedValue,
 	stringifyAttributeValue,
 } from '@exility/compile';
-import {core as stdlib} from '@exility/stdlib';
+import {core as stdlib, dom as stddom} from '@exility/stdlib';
 import {XNode, IXNode, XNodeConstructor, utils} from '@exility/parser';
 
 
@@ -340,7 +340,27 @@ const compiler = createCompiler<StringModeOptions>((options) => (node: XNode) =>
 					} else if (name === 'innerHTML') {
 						content = push(stringifyAttributeValue(name, value, TO_STR).value, true);
 					} else if (!R_IS_EVENT.test(name)) {
-						attrsList.push(push(` ${name}=`) + pushAttr(name, value, node));
+						if (name !== 'class') {
+							const encode = (stddom.BOOL_ATTRS[name] ? null : TO_STR);
+							const computed = stringifyAttributeValue(name, value, encode);
+
+							if (computed.computed) {
+								if (!globalFragments['__xav']) {
+									globalFragments['__xav'] = true;
+									globalFragments.push('var __xav;');
+								}
+
+								attrsList.push(`
+									if (__xav = ${computed.value}) {
+										${push(`" ${name}${stddom.BOOL_ATTRS[name] ? '"' : '=\\"" + __xav + "\\""'}`, true)}
+									}
+								`);
+							} else {
+								attrsList.push(push(` ${name}=`) + pushAttr(name, value, node));
+							}
+						} else {
+							attrsList.push(push(` ${name}=`) + pushAttr(name, value, node));
+						}
 					}
 				});
 
