@@ -3,6 +3,8 @@ import {UIFormAttrs, UIFormContext} from '../../interfaces';
 import UIElement from '../Element/Element';
 
 export default class UIForm extends Block<UIFormAttrs, UIFormContext> {
+	static classNames = true;
+
 	static blocks = {
 		Element: UIElement,
 	};
@@ -11,8 +13,8 @@ export default class UIForm extends Block<UIFormAttrs, UIFormContext> {
 		const form = context.$form;
 	
 		form.\${form.id}[
-			@submit="submit \${form.values}"
 			@reset
+			@submit="submit \${form.values}"
 			
 			class.changed=\${form.changed}
 			class.invalid=\${form.invalid}

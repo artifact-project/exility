@@ -76,7 +76,6 @@ export interface IFormContext {
 	disconnectError(ui: Block<any, any>): void;
 }
 
-// todo: add generic,
 export type FormContextConfig<V> = {
 	theme?: ThemeProvider;
 
@@ -89,8 +88,8 @@ export type FormContextConfig<V> = {
 	};
 
 	submit: (values: V, context: IFormContext) => Promise<any>,
-	submitFailed: (error: any, values: V, context: IFormContext) => void,
-	submitSucceeded: (results: any, values: V, context: IFormContext) => void,
+	submitFailed?: (error: any, values: V, context: IFormContext) => void,
+	submitSucceeded?: (results: any, values: V, context: IFormContext) => void,
 }
 
 export interface UIElementAttrs {
@@ -117,5 +116,9 @@ export interface ElementOptionAttrs {
 }
 
 export interface UIElementContext {
+	$form: IFormContext;
+}
+
+export interface WithFormContext {
 	$form: IFormContext;
 }

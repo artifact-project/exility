@@ -2,6 +2,8 @@ import Block from '@exility/block';
 import {UIErrorAttrs, UIFormContext} from '../../interfaces';
 
 export default class UIError extends Block<UIErrorAttrs, UIFormContext> {
+	static classNames = true;
+
 	static template = `
 		const group = context.$form.getElementsGroup(attrs.for);
 	

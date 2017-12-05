@@ -15,8 +15,12 @@
   "files": [
     "*.js",
     "*.d.ts",
+    "src/*.js",
+    "src/*.d.ts",
     "src/*/*.js",
-    "src/*/*.d.ts"
+    "src/*/*.d.ts",
+    "src/ui/*/*.js",
+    "src/ui/*/*.d.ts"
   ],
   "devDependencies": {
     "@exility/block": "*",

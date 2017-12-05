@@ -3,6 +3,7 @@ import {IFormElement, UIElementAttrs, UIElementContext} from '../../interfaces';
 
 export default class UIElement extends Block<UIElementAttrs, UIElementContext> {
 	static classNames = true;
+
 	static template = `
 		const elem = __this__.getFormElement();
 		const tag = (elem.type === 'textarea' || elem.type === 'select') ? elem.type : 'input';
