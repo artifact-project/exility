@@ -163,7 +163,7 @@ function visitNode(node, imports, compiled, options: TXOptions) {
 		__template__,
 	))]);
 
-	return ts.updateProperty(
+	return (ts.updateProperty as Function)(
 		node,
 		undefined,
 		node.modifiers,

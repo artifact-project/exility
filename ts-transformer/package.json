@@ -13,6 +13,7 @@
   "files": [
     "*.js",
     "*.d.ts",
+    "bin/*.js",
     "src/*/*.js",
     "src/*/*.d.ts"
   ],
