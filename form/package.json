@@ -26,6 +26,7 @@
     "@exility/block": "*",
     "@exility/css": "*",
     "@exility/jacket": "*",
+    "@exility/ts-transformer": "*",
     "@types/jest": "^19.2.3",
     "diffable-html": "^2.1.0",
     "jest": "^20.0.3",
