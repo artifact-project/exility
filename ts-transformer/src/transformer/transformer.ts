@@ -1,8 +1,9 @@
 import * as ts from 'typescript';
-import {createCompiler} from '@exility/dom';
+import {createCompiler as createDOMCompiler} from '@exility/dom';
+import {createCompiler as createStringCompiler} from '@exility/string';
 
 export interface TXOptions {
-	isomorphic?: boolean;
+	isomorphic?: boolean | 'env';
 }
 
 function createImport(name, path) {
@@ -137,15 +138,27 @@ function visitNode(node, imports, compiled, options: TXOptions) {
 
 	meta.cssModule && scope.push('__classNames__');
 
-	const compile = createCompiler({
+	const domCompile = createDOMCompiler({
 		...meta,
 		scope,
-		isomorphic: options.isomorphic,
+		isomorphic: !!options.isomorphic,
 	});
-	const templateFactory = compile(templateString);
-	const code = templateFactory
+	let code = domCompile(templateString)
 					.toString()
 					.replace(/__STDDOM_CMP_SET_COMPILER\(.*?\);\n/, '');
+
+	if (options.isomorphic === 'env') {
+		const stringCompile = createStringCompiler({
+			...meta,
+			scope,
+			metaComments: true,
+		});
+		code = `(process.env.RUN_AT === "server"
+			? ${stringCompile(templateString).toString()}
+			: ${code}
+		})`;
+	}
+
 	const __template__ = ts.createCall(
 		ts.createParen(ts.createIdentifier(code)),
 		undefined,
@@ -156,6 +169,7 @@ function visitNode(node, imports, compiled, options: TXOptions) {
 			}),
 		],
 	);
+
 
 	compiled.push([node.parent, ts.createStatement(ts.createBinary(
 		ts.createIdentifier(`${node.parent.name.escapedText}.prototype.__template__`),

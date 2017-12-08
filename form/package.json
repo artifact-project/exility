@@ -7,7 +7,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --coverage",
-    "ts-build": "tsc",
+    "ts-build": "exility-tsc",
     "git-clean": "git clean -f",
     "prepublish": "npm run test && npm run ts-build",
     "postpublish": "npm run git-clean"

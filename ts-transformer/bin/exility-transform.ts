@@ -1,5 +1,6 @@
 import {join} from 'path';
 import {existsSync, readFileSync, writeFileSync} from 'fs';
+import * as glob from 'glob';
 import * as ts from 'typescript';
 import transformer from '../src/transformer/transformer';
 
@@ -47,7 +48,9 @@ function compile(fileNames: string[], compilerOptions: ts.CompilerOptions): void
 		readFile: ts.sys.readFile,
 		readDirectory: ts.sys.readDirectory,
 		getCustomTransformers: () => ({
-			before: [transformer()],
+			before: [transformer({
+				isomorphic: 'env',
+			})],
 			after: [],
 		}),
 	};
@@ -58,9 +61,9 @@ function compile(fileNames: string[], compilerOptions: ts.CompilerOptions): void
         const output = service.getEmitOutput(fileName);
 
         if (!output.emitSkipped) {
-            console.log(`Emitting ${fileName}`);
+            console.log(` - ${fileName}`);
         } else {
-            console.log(`Emitting ${fileName} failed`);
+            console.error(` - ${fileName} failed`);
             logErrors(fileName);
         }
 
@@ -78,16 +81,33 @@ function compile(fileNames: string[], compilerOptions: ts.CompilerOptions): void
 
 				if (diagnostic.file) {
 					const {line, character} = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start!);
-					console.log(`  Error ${diagnostic.file.fileName}:${line + 1}:${character + 1})  -> ${message}`);
+					console.error(`  Error ${diagnostic.file.fileName}:${line + 1}:${character + 1})  -> ${message}`);
 				} else {
-					console.log(`  Error: ${message}`);
+					console.error(`  Error: ${message}`);
 				}
         	}
         );
     }
 }
 
-const tsconfigFileName = join(__dirname, 'tsconfig.json');
+// Main
+const files = process.argv.slice(2);
+const exec = (err: Error, files: string[]) => {
+	const tsconfigFileName = join(process.cwd(), 'tsconfig.json');
 
-console.log(`TS Config: ${tsconfigFileName}`);
-compile(process.argv.slice(2), require(tsconfigFileName));
+	if (err) {
+		console.error(err);
+	} else {
+		console.log(`[@exility/ts-transformer] tsconfig: ${tsconfigFileName}`);
+		compile(files, require(tsconfigFileName));
+	}
+};
+
+console.log(`[@exility/ts-transformer] Started`);
+
+if (files.length) {
+	exec(null, files);
+} else {
+	glob('**/*.ts', {}, exec);
+}
+

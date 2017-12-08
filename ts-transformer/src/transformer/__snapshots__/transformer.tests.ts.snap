@@ -352,6 +352,83 @@ App.prototype.__template__ = (function templateFactory(__DEPS__) {
 "
 `;
 
+exports[`env 1`] = `
+"import _exility_stdlib_src_core_core from \\"@exility/stdlib/src/core/core\\";
+import _exility_stdlib_src_dom_dom from \\"@exility/stdlib/src/dom/dom\\";
+class App extends Block<null> {
+    static template: null;
+}
+App.prototype.__template__ = ((process.env.RUN_AT === \\"server\\"
+			? function templateFactory() {
+	\\"use strict\\";
+	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var attrs = __SCOPE__.attrs;
+		var context = __SCOPE__.context;
+		var __blocks__ = __SCOPE__.__blocks__;
+		var __this__ = __SCOPE__.__this__;
+		var __slots__ = __SCOPE__.__slots__;
+
+		return \\"<h1>wow</h1>\\";
+	}
+}
+			: function templateFactory(__DEPS__) {
+	\\"use strict\\";
+	var __STDDOM = __DEPS__.stddom;
+	var __STDDOM_CONTEXT = __STDDOM.CONTEXT;
+	var __STDDOM_FRAGMENT = __STDDOM.FRAGMENT;
+	var __STDDOM_ISOMORPHIC = __STDDOM.ISOMORPHIC;
+	var __STDDOM_NODE = __STDDOM.NODE;
+	var __STDDOM_TEXT = __STDDOM.TEXT;
+	var __STDDOM_LIFECYCLE = __STDDOM.LIFECYCLE;
+	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var attrs = __SCOPE__.attrs;
+		var context = __SCOPE__.context;
+		var __blocks__ = __SCOPE__.__blocks__;
+		var __this__ = __SCOPE__.__this__;
+		var __slots__ = __SCOPE__.__slots__;
+
+		var __ctx = __STDDOM_CONTEXT();
+		var __nctx__, __nctxChanged__;
+
+		var __frag = __STDDOM_FRAGMENT();
+
+		var __IS_ISOMORPHIC = false;
+
+		if (__OPTIONS__.isomorphic) {
+			__IS_ISOMORPHIC = true;
+			__STDDOM_ISOMORPHIC(__OPTIONS__.isomorphic);
+		}
+		var __x1 = __STDDOM_NODE(__frag, \\"h1\\");
+		__STDDOM_TEXT(__x1, \\"wow\\");
+
+		return {
+			ctx: __ctx,
+			frag: __frag,
+			container: null,
+			mountTo: function (container) {
+				this.container = container;
+				__frag.mountTo(container);
+				__IS_ISOMORPHIC && __STDDOM_ISOMORPHIC(null);
+				__STDDOM_LIFECYCLE(__ctx, 'connectedCallback');
+				return this;
+			},
+			update: function (__NEWSCOPE__) {
+				__SCOPE__ = __NEWSCOPE__;
+				attrs = __NEWSCOPE__.attrs;
+				context = __NEWSCOPE__.context;
+				__blocks__ = __NEWSCOPE__.__blocks__;
+				__this__ = __NEWSCOPE__.__this__;
+				__slots__ = __NEWSCOPE__.__slots__;
+			}
+		}
+	}
+}
+		}))({ stdlib: core_1.default, stddom: dom_1.default });
+"
+`;
+
 exports[`factory 1`] = `
 "import _exility_stdlib_src_core_core from \\"@exility/stdlib/src/core/core\\";
 import _exility_stdlib_src_dom_dom from \\"@exility/stdlib/src/dom/dom\\";

@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "description": "TypeScript transformer for Exility",
   "main": "index.js",
+  "bin": {
+    "exility-tsc": "./bin/tsc.js"
+  },
   "scripts": {
     "test": "jest --coverage",
     "ts-build": "tsc",
@@ -20,14 +23,18 @@
   "author": "RubaXa <ibnRubaXa@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@exility/stdlib": "*"
+    "@exility/dom": "*",
+    "@exility/string": "*",
+    "@exility/stdlib": "*",
+    "glob": "^7.1.2"
+  },
+  "peerDependencies": {
+      "typescript": ">=2.6.1"
   },
   "devDependencies": {
-    "@exility/dom": "*",
     "@types/jest": "^19.2.3",
     "jest": "^20.0.3",
-    "ts-jest": "^20.0.4",
-    "typescript": "^2.6.1"
+    "ts-jest": "^20.0.4"
   },
   "jest": {
     "transform": {

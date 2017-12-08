@@ -1,5 +1,5 @@
 import * as ts from 'typescript';
-import transformer from './transformer';
+import transformer, {TXOptions} from './transformer';
 
 const compilerOptions = {
 	module: ts.ModuleKind.CommonJS,
@@ -11,9 +11,9 @@ const printer = ts.createPrinter({
 	removeComments: false,
 });
 
-function transform(source: string): string {
+function transform(source: string, options: TXOptions): string {
 	const sourceFile = ts.createSourceFile('source.ts', source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
-	const transformationResult = ts.transform(sourceFile, [transformer()], compilerOptions);
+	const transformationResult = ts.transform(sourceFile, [transformer(options)], compilerOptions);
 
 	return printer.printFile(transformationResult.transformed[0]);
 }
@@ -85,4 +85,12 @@ it('factory', () => {
 			return Formify;
 		}
 	`)).toMatchSnapshot();
+});
+
+it('env', () => {
+	expect(transform(`
+		class App extends Block<null> {
+			static template = \`h1 | wow\`;
+		}
+	`, {isomorphic: 'env'})).toMatchSnapshot();
 });
