@@ -110,6 +110,7 @@ function addCompiled(statements, compiled) {
 			}
 		}
 	});
+	compiled.length = 0;
 
 	return statements;
 }
@@ -153,10 +154,10 @@ function visitNode(node, imports, compiled, options: TXOptions) {
 			scope,
 			metaComments: true,
 		});
-		code = `(process.env.RUN_AT === "server"
-			? ${stringCompile(templateString).toString()}
-			: ${code}
-		})`;
+		code = `process.env.RUN_AT === "server"
+			? (${stringCompile(templateString).toString()})
+			: (${code})
+		`.replace(/\b__COMPILER__\b/g, 'process.env.__EXILITY_COMPILER__');
 	}
 
 	const __template__ = ts.createCall(
@@ -192,6 +193,8 @@ function visitNodeAndChildren(node, context, imports, compiled, options: TXOptio
 		(node == null) || !(
 			node.kind === ts.SyntaxKind.SourceFile ||
 			node.kind === ts.SyntaxKind.Block ||
+			node.kind === ts.SyntaxKind.CallExpression ||
+			node.kind === ts.SyntaxKind.ExpressionStatement ||
 			node.kind === ts.SyntaxKind.PropertyDeclaration ||
 			node.kind === ts.SyntaxKind.ClassDeclaration ||
 			node.kind === ts.SyntaxKind.ClassExpression ||

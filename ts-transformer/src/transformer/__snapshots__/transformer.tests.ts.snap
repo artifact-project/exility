@@ -356,11 +356,36 @@ exports[`env 1`] = `
 "import _exility_stdlib_src_core_core from \\"@exility/stdlib/src/core/core\\";
 import _exility_stdlib_src_dom_dom from \\"@exility/stdlib/src/dom/dom\\";
 class App extends Block<null> {
+    static blocks = { X: true };
     static template: null;
 }
-App.prototype.__template__ = ((process.env.RUN_AT === \\"server\\"
-			? function templateFactory() {
+App.prototype.__template__ = (process.env.RUN_AT === \\"server\\"
+			? (function templateFactory(__DEPS__) {
 	\\"use strict\\";
+	var __STDLIB = __DEPS__.stdlib;
+	var __STDLIB_NEXT_CONTEXT = __STDLIB.NEXT_CONTEXT;
+	function __BLOCK_INIT(blocks, name) {
+		var XBlock = blocks[name];
+
+		if (XBlock.template) {
+			blocks[name] = process.env.__EXILITY_COMPILER__.compileBlock(blocks[name]);
+		}
+	}
+
+	function __BLOCK_RENDER(blocks, nctx, name, attrs, slots) {
+		var XBlock = blocks[name];
+
+		if (XBlock && XBlock.prototype && XBlock.prototype.isBlock) {
+			var block = new XBlock(attrs, {
+				slots: slots,
+				context: nctx
+			});
+			return block.__view__;
+		} else {
+			return '<div data-block=\\"' + name + '\\" class=\\"block-dummy block-dummy-loading\\"></div>';
+		}
+	}
+
 	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
 		__SCOPE__ = __SCOPE__ || {};
 		var attrs = __SCOPE__.attrs;
@@ -369,18 +394,26 @@ App.prototype.__template__ = ((process.env.RUN_AT === \\"server\\"
 		var __this__ = __SCOPE__.__this__;
 		var __slots__ = __SCOPE__.__slots__;
 
+		__BLOCK_INIT(__blocks__, \\"X\\");
+		var __nctx__ = __STDLIB_NEXT_CONTEXT(__this__);
 		return \\"<h1>wow</h1>\\";
 	}
-}
-			: function templateFactory(__DEPS__) {
+})
+			: (function templateFactory(__DEPS__) {
 	\\"use strict\\";
 	var __STDDOM = __DEPS__.stddom;
+	var __STDDOM_CMP_SET_COMPILER = __STDDOM.CMP_SET_COMPILER;
+	var __STDDOM_CMP_INIT = __STDDOM.CMP_INIT;
 	var __STDDOM_CONTEXT = __STDDOM.CONTEXT;
 	var __STDDOM_FRAGMENT = __STDDOM.FRAGMENT;
 	var __STDDOM_ISOMORPHIC = __STDDOM.ISOMORPHIC;
 	var __STDDOM_NODE = __STDDOM.NODE;
 	var __STDDOM_TEXT = __STDDOM.TEXT;
 	var __STDDOM_LIFECYCLE = __STDDOM.LIFECYCLE;
+	var __STDLIB = __DEPS__.stdlib;
+	var __STDLIB_NEXT_CONTEXT = __STDLIB.NEXT_CONTEXT;
+	var __STDLIB_CONTEXT_IS_CHANGED = __STDLIB.CONTEXT_IS_CHANGED;
+	
 	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
 		__SCOPE__ = __SCOPE__ || {};
 		var attrs = __SCOPE__.attrs;
@@ -389,8 +422,10 @@ App.prototype.__template__ = ((process.env.RUN_AT === \\"server\\"
 		var __this__ = __SCOPE__.__this__;
 		var __slots__ = __SCOPE__.__slots__;
 
+		__STDDOM_CMP_INIT(__blocks__, [\\"X\\"]);
+
 		var __ctx = __STDDOM_CONTEXT();
-		var __nctx__, __nctxChanged__;
+		var __nctxChanged__ = true, __nctx__ = __STDLIB_NEXT_CONTEXT(__this__);
 
 		var __frag = __STDDOM_FRAGMENT();
 
@@ -421,11 +456,15 @@ App.prototype.__template__ = ((process.env.RUN_AT === \\"server\\"
 				__blocks__ = __NEWSCOPE__.__blocks__;
 				__this__ = __NEWSCOPE__.__this__;
 				__slots__ = __NEWSCOPE__.__slots__;
+
+				var __next_nctx__ = __STDLIB_NEXT_CONTEXT(__this__, __nctx__);
+				__nctxChanged__ = __STDLIB_CONTEXT_IS_CHANGED(__nctx__, __next_nctx__);
+				__nctx__ = __next_nctx__;
 			}
 		}
 	}
-}
-		}))({ stdlib: core_1.default, stddom: dom_1.default });
+})
+		)({ stdlib: core_1.default, stddom: dom_1.default });
 "
 `;
 

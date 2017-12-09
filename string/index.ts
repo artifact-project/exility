@@ -14,6 +14,8 @@ function runtimeBlockActivate(Block, options: Partial<StringModeOptions>) {
 
 		Block.prototype['name'] = Block.prototype['name'] || Block.name;
 		Block.prototype['__template__'] = templateFactory({stdlib});
+
+		return compile;
 	}
 }
 

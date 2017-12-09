@@ -17,7 +17,7 @@ function factory<
 ): BlockClass<R> {
 	class Formify extends Block<R> {
 		static blocks = {FormBlock};
-		static template = `FormBlock[__attrs__=\${attrs}]`;
+		static template = 'FormBlock[__attrs__=${attrs}]';
 
 		private formContext: FormContext<V>;
 

@@ -400,7 +400,7 @@ const compiler = createCompiler<StringModeOptions>((options) => (node: XNode) =>
 			function __BLOCK_RENDER(blocks, nctx, name, attrs, slots) {
 				var XBlock = blocks[name];
 				
-				if (XBlock.template) {
+				if (XBlock && XBlock.prototype && XBlock.prototype.isBlock) {
 					var block = new XBlock(attrs, {
 						slots: slots,
 						context: nctx

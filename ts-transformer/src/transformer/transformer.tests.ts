@@ -11,7 +11,7 @@ const printer = ts.createPrinter({
 	removeComments: false,
 });
 
-function transform(source: string, options: TXOptions): string {
+function transform(source: string, options: TXOptions = {}): string {
 	const sourceFile = ts.createSourceFile('source.ts', source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
 	const transformationResult = ts.transform(sourceFile, [transformer(options)], compilerOptions);
 
@@ -87,9 +87,18 @@ it('factory', () => {
 	`)).toMatchSnapshot();
 });
 
+// it('decorator', () => {
+// 	expect(transform(`
+// 		decorator()(class X extends Block<null> {
+// 			static template = '.ok';
+// 		});
+// 	`)).toMatchSnapshot();
+// });
+
 it('env', () => {
 	expect(transform(`
 		class App extends Block<null> {
+			static blocks = {X: true};
 			static template = \`h1 | wow\`;
 		}
 	`, {isomorphic: 'env'})).toMatchSnapshot();
