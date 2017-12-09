@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import {join} from 'path';
 import {existsSync, readFileSync, writeFileSync} from 'fs';
 import * as glob from 'glob';
@@ -90,6 +92,40 @@ function compile(fileNames: string[], compilerOptions: ts.CompilerOptions): void
     }
 }
 
+function converOptions(options): ts.CompilerOptions {
+	const target = {
+		es3: ts.ScriptTarget.ES3,
+		es5: ts.ScriptTarget.ES5,
+		es2015: ts.ScriptTarget.ES2015,
+		es2016: ts.ScriptTarget.ES2016,
+		es2017: ts.ScriptTarget.ES2017,
+		esnext: ts.ScriptTarget.ESNext,
+		latest: ts.ScriptTarget.Latest,
+	};
+	const module = {
+		none: ts.ModuleKind.None,
+		commonjs: ts.ModuleKind.CommonJS,
+		amd: ts.ModuleKind.AMD,
+		umd: ts.ModuleKind.UMD,
+		system: ts.ModuleKind.System,
+		es2015: ts.ModuleKind.ES2015,
+		es2017: ts.ModuleKind.ESNext,
+	};
+	const moduleResolution = {
+		classic: ts.ModuleResolutionKind.Classic,
+		node: ts.ModuleResolutionKind.NodeJs,
+	};
+
+	return {
+		...options,
+
+		lib: void 0,
+		target: target[options.target] || ts.ScriptTarget.ES2015,
+		module: module[options.module] || ts.ModuleKind.CommonJS,
+		moduleResolution: moduleResolution[options.moduleResolution] || ts.ModuleResolutionKind.NodeJs,
+	};
+}
+
 // Main
 const files = process.argv.slice(2);
 const exec = (err: Error, files: string[]) => {
@@ -99,7 +135,11 @@ const exec = (err: Error, files: string[]) => {
 		console.error(err);
 	} else {
 		console.log(`[@exility/ts-transformer] tsconfig: ${tsconfigFileName}`);
-		compile(files, require(tsconfigFileName));
+
+		compile(
+			files.filter(f => !/\.d\.ts$/.test(f)),
+			converOptions(require(tsconfigFileName).compilerOptions),
+		);
 	}
 };
 
@@ -108,6 +148,6 @@ console.log(`[@exility/ts-transformer] Started`);
 if (files.length) {
 	exec(null, files);
 } else {
-	glob('**/*.ts', {}, exec);
+	glob('**/*.ts', {ignore: ['node_modules']}, exec);
 }
 

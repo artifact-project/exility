@@ -19,7 +19,8 @@
   "author": "RubaXa <ibnRubaXa@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "skeletik": "^0.7.0"
+    "skeletik": "^0.7.0",
+    "tslib": ">=1.8.1"
   },
   "devDependencies": {
     "@types/jest": "^19.2.3",

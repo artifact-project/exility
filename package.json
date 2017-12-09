@@ -12,7 +12,7 @@
   "repository": "git@github.com:artifact-project/exility.git",
   "devDependencies": {
     "@types/node": "^7.0.23",
-    "npmy": "^0.6.0",
+    "npmy": "^0.6.1",
     "ts-node": "^3.0.4",
     "typescript": "^2.3.3"
   }

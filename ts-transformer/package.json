@@ -17,6 +17,7 @@
     "*.js",
     "*.d.ts",
     "bin/*.js",
+    "bin/*.d.ts",
     "src/*/*.js",
     "src/*/*.d.ts"
   ],

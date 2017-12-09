@@ -21,6 +21,9 @@
   ],
   "author": "RubaXa <ibnRubaXa@gmail.com>",
   "license": "MIT",
+  "dependencies": {
+    "tslib": ">=1.8.1"
+  },
   "devDependencies": {
     "@types/jest": "^19.2.3",
     "@types/node": "^7.0.28",

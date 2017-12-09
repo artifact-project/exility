@@ -18,6 +18,9 @@
     "src/*/*.js",
     "src/*/*.d.ts"
   ],
+  "dependencies": {
+    "tslib": ">=1.8.1"
+  },
   "devDependencies": {
     "@types/jest": "^19.2.3",
     "jest": "^20.0.3",

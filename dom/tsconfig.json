@@ -5,6 +5,8 @@
     "declaration": true,
     "moduleResolution": "node",
     "experimentalDecorators": true,
+    "importHelpers": true,
+    "noEmitHelpers": true,
     "lib": [
 		"dom",
 		"es5",
