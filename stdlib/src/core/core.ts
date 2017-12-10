@@ -128,11 +128,15 @@ export default {
 	},
 
 	CSS_MODULE(classNames:{[index:string]: string}) {
+		const R_WS = /\s+/, WS = ' ', EMPTY = '';
+
 		function classNameGetter(name: string) {
-			if (classNames.hasOwnProperty(name)) {
+			if (name === EMPTY) {
+				return EMPTY;
+			} else if (classNames.hasOwnProperty(name)) {
 				return classNames[name];
-			} else if (name.indexOf(' ') !== -1) {
-				return (classNames[name] = name.trim().split(/\s+/).map(classNameGetter).join(' '));
+			} else if (name.indexOf(WS) !== -1) {
+				return (classNames[name] = name.trim().split(R_WS).map(classNameGetter).join(WS));
 			} else {
 				return `[warn: ${name}]`;
 			}

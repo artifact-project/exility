@@ -157,7 +157,10 @@ function visitNode(node, imports, compiled, options: TXOptions) {
 		code = `process.env.RUN_AT === "server"
 			? (${stringCompile(templateString).toString()})
 			: (${code})
-		`.replace(/\b__COMPILER__\b/g, 'process.env.__EXILITY_COMPILER__');
+		`.replace(
+			/\b__COMPILER__[^\n]+;/g,
+			'require("@exility/string").runtimeBlockActivate(blocks[name], {metaComments: true})',
+		);
 	}
 
 	const __template__ = ts.createCall(
