@@ -1,12 +1,9 @@
 import {SimpleDict, T} from '@artifact-project/i18n';
-import Block from '@exility/block';
 
-
-import {FormContextConfig, IFormContext, IFormElement, ValidateRule, Validity, ValueBox} from '../interfaces';
+import {FormContextConfig, IFormContext, IFormElement, ValidateRule, Validity, ValueBox, LikeBlock} from '../interfaces';
 import {minLength, createSomeOf, required} from '../rules/rules';
 import UIElement from '../ui/Element/Element';
 import {debounce, F_IMPORTANT, F_NO_ARGS} from '@perf-tools/balancer';
-import UIForm from '../ui/Form/Form';
 import UIError from '../ui/Error/Error';
 
 const RADIO_TYPE = 'radio';
@@ -62,6 +59,10 @@ export class Element implements IFormElement {
 
 	get maxLength(): number {
 		return +this.block.attrs.maxLength || -1;
+	}
+
+	get placeholder(): string {
+		return this.block.attrs.placeholder;
 	}
 
 	get submitting(): boolean {
@@ -203,7 +204,7 @@ export class FormContext<V extends object = {}> implements IFormContext {
 	private initialValues = {} as V;
 	private config: FormContextConfig<V>;
 
-	private forms: UIForm[] = [];
+	private forms: LikeBlock[] = [];
 	private errors: UIError[] = [];
 
 	private elements: Element[] = [];
@@ -245,14 +246,19 @@ export class FormContext<V extends object = {}> implements IFormContext {
 		return rules.hasOwnProperty(name) ? [rules[name]] : [];
 	}
 
-	getElementByLabel(name): UIElement {
+	get(name): Element {
+		// todo: Оптимизировать, нужен быстры поиск по map
 		let element = this.elements.find(el => el.id === name);
 
 		if (!element) {
 			element = this.getElementsGroup(name).eq(0);
 		}
 
-		return element.block;
+		return element;
+	}
+
+	getElementByLabel(name): Element {
+		return this.get(name);
 	}
 
 	getElementsGroup(name) {
@@ -265,11 +271,11 @@ export class FormContext<V extends object = {}> implements IFormContext {
 		return group;
 	}
 
-	connectForm(form: UIForm) {
+	connectForm(form: LikeBlock) {
 		this.forms.push(form);
 	}
 
-	disconnectForm(form: UIForm) {
+	disconnectForm(form: LikeBlock) {
 		this.forms.splice(this.forms.indexOf(form), 1);
 	}
 
@@ -558,14 +564,17 @@ export class FormContext<V extends object = {}> implements IFormContext {
 	}
 }
 
-function forceUpdateAll(blocks: {forceUpdate(): void}[]) {
+function forceUpdateAll(blocks: LikeBlock) {
 	switch (blocks.length) {
+		case 3: forceUpdate(blocks[2]);
+		case 2: forceUpdate(blocks[1]);
 		case 1: forceUpdate(blocks[0]); break;
+
 		default: blocks.forEach(forceUpdate);
 	}
 }
 
-function forceUpdate(block: {forceUpdate(): void}) {
+function forceUpdate(block: LikeBlock) {
 	block.forceUpdate();
 }
 

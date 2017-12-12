@@ -1,6 +1,10 @@
 import Block from '@exility/block';
 import {ThemeProvider} from '@exility/css';
 
+export interface LikeBlock {
+	forceUpdate(): void;
+}
+
 export interface ValueBox {
 	name?: string;
 	value?: string;
@@ -100,6 +104,7 @@ export interface UIElementAttrs {
 	type?: string;
 	value?: string;
 	checked?: boolean;
+	placeholder?: string;
 	required?: boolean;
 	readOnly?: boolean;
 	disabled?: boolean

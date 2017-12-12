@@ -48,8 +48,6 @@ export default class UIElement extends Block<UIElementAttrs, UIElementContext> {
 			selectedIndex=\${elem.selectedIndex}
 			placeholder=\${elem.placeholder}
 		]
-			if (tag === 'select') > for (opt in attrs.options)
-				option[value=\${opt.value}] | \${opt.text}
 	`;
 
 	private input: HTMLInputElement;

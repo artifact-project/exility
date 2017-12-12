@@ -15,9 +15,21 @@ function factory<
 	config: FormContextConfig<V>,
 	FormBlock: BlockClass<A>,
 ): BlockClass<R> {
+	class EnhancementFormBlock extends FormBlock {
+		connectedCallback() {
+			super.connectedCallback();
+			this.context.$form.connectForm(this);
+		}
+
+		disconnectedCallback() {
+			super.disconnectedCallback();
+			this.context.$form.disconnectForm(this);
+		}
+	}
+
 	class Formify extends Block<R> {
-		static blocks = {FormBlock};
-		static template = 'FormBlock[__attrs__=${attrs}]';
+		static blocks = {EnhancementFormBlock};
+		static template = 'EnhancementFormBlock[__attrs__=${attrs}]';
 
 		private formContext: FormContext<V>;
 
