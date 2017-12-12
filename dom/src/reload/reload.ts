@@ -1,14 +1,14 @@
 import {dom} from '@exility/stdlib';
 
-type VMap = WeakMap<VElement, HTMLElement>;
+type VMap = WeakMap<VDOMElement, HTMLElement>;
 
 const {ATTR_TO_PROPS, LIFECYCLE} = dom;
 const {createElement, createTextNode} = document;
 
-class VElement {
+class VDOMElement {
 	tagName: string;
 	nodeValue: string;
-	childNodes: VElement[] = [];
+	childNodes: VDOMElement[] = [];
 
 	events: Array<[string, EventListenerOrEventListenerObject, object|boolean]> = [];
 	attributes: {[name: string]: string} = {};
@@ -25,6 +25,10 @@ class VElement {
 		this.attributes[name] = value;
 	}
 
+	removeAttribute(name) {
+		delete this.attributes[name];
+	}
+
 	hasAttribute(name) {
 		return this.attributes.hasOwnProperty(name);
 	}
@@ -35,7 +39,7 @@ class VElement {
 }
 
 Object.keys(dom.ATTR_TO_PROPS).forEach(key => {
-	Object.defineProperty(VElement.prototype, key, {
+	Object.defineProperty(VDOMElement.prototype, key, {
 		get() {
 			return this.attributes[ATTR_TO_PROPS[key]];
 		},
@@ -46,7 +50,7 @@ Object.keys(dom.ATTR_TO_PROPS).forEach(key => {
 	});
 });
 
-function updateAttributes(el: HTMLElement, vnode: VElement, onlySet?) {
+function updateAttributes(el: HTMLElement, vnode: VDOMElement, onlySet?) {
 	const {attributes, events} = vnode;
 
 	for (const attrName in attributes) {
@@ -83,7 +87,7 @@ function updateAttributes(el: HTMLElement, vnode: VElement, onlySet?) {
 	});
 }
 
-function createNode(vnode: VElement): HTMLElement {
+function createNode(vnode: VDOMElement): HTMLElement {
 	let el;
 
 	if (vnode.tagName) {
@@ -96,7 +100,7 @@ function createNode(vnode: VElement): HTMLElement {
 	return el;
 }
 
-function updateNode(map: VMap, parentNode: HTMLElement, el: HTMLElement, vnode: VElement) {
+function updateNode(map: VMap, parentNode: HTMLElement, el: HTMLElement, vnode: VDOMElement) {
 	let isNew = false;
 
 	if (el) {
@@ -125,7 +129,7 @@ function updateNode(map: VMap, parentNode: HTMLElement, el: HTMLElement, vnode: 
 	map.set(vnode, el);
 }
 
-function updateChildren(map: VMap, el: HTMLElement, newChildren: VElement[]) {
+function updateChildren(map: VMap, el: HTMLElement, newChildren: VDOMElement[]) {
 	const newLength = newChildren.length;
 
 	if (newLength) {
@@ -222,10 +226,10 @@ function removeOldListeners(ctx) {
 }
 
 export default function reload(view, template, scope) {
-	document.createElement = (name) => <any>new VElement(name);
+	document.createElement = (name) => <any>new VDOMElement(name);
 	document.createTextNode = (value) => <any>({nodeValue: value});
 
-	const map: VMap = new WeakMap<VElement, HTMLElement>();
+	const map: VMap = new WeakMap<VDOMElement, HTMLElement>();
 	const newView = template(scope, {});
 
 	newView.container = view.container;

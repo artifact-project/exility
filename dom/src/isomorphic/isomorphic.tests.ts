@@ -392,3 +392,12 @@ it('iso / page', async () => {
 	expect(sandbox.body.className).toBe('is-interactive');
 	expect(sandbox.body.innerHTML).toBe('<!--(-->Ultimate isomorphic page!<!--)-->');
 });
+
+// it('iso / tag + if', () => {
+// 	const {view, container} = fromString(
+// 		'${x ? "img" : "div"} > if (y) > | ${y}',
+// 		{x: 1, y: 0},
+// 	);
+//
+// 	expect(container.innerHTML).toBe('');
+// });
