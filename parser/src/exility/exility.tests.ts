@@ -755,6 +755,41 @@ describe('syntax / exility', () => {
 		});
 	});
 
+	it('trait / define', () => {
+		const frag = exilityParser('trait isMod > .is-${x}');
+
+		expect(frag.length).toBe(1);
+		expect(frag.first.raw).toEqual({
+			name: 'trait',
+			attrs: {name: 'isMod'},
+		});
+		expect(frag.first.first.raw).toEqualFrag({
+			name: 'div',
+			attrs: {class: 'is-${x}'},
+		});
+	});
+
+	// it('trait / define with args', () => {
+	// 	const frag = exilityParser('trait isMod(x, y) > b.is-${x}');
+	//
+	// 	expect(frag.length).toBe(1);
+	// 	expect(frag.first.raw).toEqual({
+	// 		name: 'trait',
+	// 		attrs: {name: 'isMod', args: ['x', 'y']},
+	// 	});
+	// });
+
+	it('trait / use', () => {
+		const frag = exilityParser('b[+isMod]');
+
+		expect(frag.length).toBe(1);
+		expect(frag.first.raw).toEqual({
+			name: 'b',
+			attrs: {},
+			traits: [{name: 'isMod'}]
+		});
+	});
+
 	describe('if', () => {
 		function testMe(val, tpl, length?) {
 			it(`val: ${val}, tpl: ${tpl}, length: ${length}`, () => {

@@ -17,6 +17,7 @@ const DEFINE_TYPE = utils.DEFINE_TYPE;
 const CALL_TYPE = utils.CALL_TYPE;
 const EXPRESSION_TYPE = utils.EXPRESSION_TYPE;
 const GROUP_TYPE = utils.GROUP_TYPE;
+const TRAIT_TYPE = utils.TRAIT_TYPE;
 
 // Shortcut codes
 const ENTER_CODE = utils.ENTER_CODE; // "\n"
@@ -48,6 +49,7 @@ const CONTINUE = '->';
 const REWIND = '-->';
 const TO = '>';
 
+// States
 const DTD = 'dtd';
 const VAR_OR_TAG = 'var_or_tag';
 const HIDDEN_CLASS = 'hidden_class';
@@ -79,10 +81,12 @@ const KW_TYPE = 'KW_TYPE';
 const KW_TYPE_VAR = KW_TYPE + '_var';
 const KW_TYPE_VAR_NEXT = KW_TYPE_VAR + '_next';
 const KW_TYPE_JS = KW_TYPE + '_js';
+const KW_TYPE_ARGS = KW_TYPE + '_args';
 const FN_CALL = 'fn-call';
 const DEFINE = 'define';
 const DEFINE_ARGS = 'define_args';
 
+// To state
 const TO_TEXT = TO + TEXT;
 const TO_ENTRY = TO + ENTRY;
 const TO_ENTRY_GROUP = TO + ENTRY_GROUP;
@@ -445,6 +449,7 @@ export default <SkeletikParser>skeletik({
 
 	[INLINE_ATTR_AWAIT]: {
 		'$stn': CONTINUE,
+		'+': 'trait',
 		'$name': `!${INLINE_ATTR}`,
 		'$ws_mode': TO_ENTRY_WS_MODE,
 		'': fail
@@ -457,6 +462,21 @@ export default <SkeletikParser>skeletik({
 		},
 		']': INLINE_ATTR_NEXT,
 		'': fail
+	},
+
+	'trait': {
+		'$name': CONTINUE,
+		'': (lex: Lexer, bone) => {
+			if (lex.code === SPACE_CODE || lex.code === CLOSE_BRACKET_CODE) {
+				(bone.raw.traits || (bone.raw.traits = [])).push({
+					name: lex.getToken(),
+				});
+
+				return `>${INLINE_ATTR_NEXT_WS}`;
+			}
+
+			fail(lex, bone);
+		},
 	},
 
 	[INLINE_ATTR]: {
@@ -607,6 +627,10 @@ export default <SkeletikParser>skeletik({
 
 	[KW_TYPE_JS]: {
 		'': (lex, bone) => _keyword.attr(bone, parseJS(lex, _keyword.stopper)),
+	},
+
+	[KW_TYPE_ARGS]: {
+		'': (lex, bone) => _keyword.attr(bone, parseJSCallArgs(lex)),
 	},
 
 	[DEFINE]: {
@@ -870,6 +894,8 @@ export const keywords = (function () {
 keywords.add('const', ' @name:var = @expr:js ', {
 	stopper: ENTER_CODE
 });
+
+keywords.add('trait', [' @name:var ']);
 
 keywords.add('if', ' ( @test:js )');
 

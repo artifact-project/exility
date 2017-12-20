@@ -16,6 +16,7 @@ export const EXPRESSION_TYPE = 'expression';
 export const GROUP_TYPE = 'group';
 export const CDATA_TYPE = 'cdata';
 export const INHERIT_TYPE = 'inherit';
+export const TRAIT_TYPE = 'trait';
 
 // Codes
 export const ENTER_CODE = 10; // "\n"
@@ -95,9 +96,14 @@ export function parseJS(lex: Lexer, stopper: number, initialOffset: number = 0) 
 	return lex.input.substring(start, lex.idx - offset).trim();
 }
 
-export function parseJSCallArgs(lex: Lexer) {
+export function parseJSCallArgs(lex: Lexer, skipFirst?: boolean) {
 	const args = [];
 	let idx = lex.idx;
+
+	if (skipFirst) {
+		idx++;
+		lex.skipNext(1);
+	}
 
 	expressionParser.capture(lex, {
 		onpeek(lex, bone) {
