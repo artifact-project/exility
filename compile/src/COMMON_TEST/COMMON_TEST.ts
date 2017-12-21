@@ -79,6 +79,17 @@ const COMMON_TEST:ICT[] = [
 	},
 
 	{
+		title: 'traits',
+		template: `
+			trait mod > .is-\${x}
+			b[+mod] + i[+mod]
+		`,
+		snapshot: true,
+		data: {x: true},
+		results: '<b class="is-true"></b><i class="is-true"></i>'
+	},
+
+	{
 		title: 'IF statement',
 		template: 'foo\nif (x)\n  bar',
 		snapshot: true,

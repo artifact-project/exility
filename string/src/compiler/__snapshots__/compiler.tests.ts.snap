@@ -144,6 +144,20 @@ function templateFactory() {
 }
 `;
 
+exports[`COMMON_TEST traits {"x":true} 1`] = `
+function templateFactory(__DEPS__) {
+	"use strict";
+	var __STDLIB = __DEPS__.stdlib;
+	var __STDLIB_HTML_ENCODE = __STDLIB.HTML_ENCODE;
+	return function compiledTemplate(__SCOPE__, __OPTIONS__) {
+		__SCOPE__ = __SCOPE__ || {};
+		var x = __SCOPE__.x;
+
+		return "<b class=\\"is-" + __STDLIB_HTML_ENCODE(x) + "\\"></b><i class=\\"is-" + __STDLIB_HTML_ENCODE(x) + "\\"></i>";
+	}
+}
+`;
+
 exports[`doctype 1`] = `
 function templateFactory() {
 	"use strict";

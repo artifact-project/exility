@@ -7,6 +7,8 @@ import {
 	stringifyObjectKey,
 	stringifyParsedValue,
 	stringifyAttributeValue,
+
+	applyTraits,
 } from '@exility/compile';
 import {core as stdlib, dom as stddom} from '@exility/stdlib';
 import {XNode, IXNode, XNodeConstructor, utils} from '@exility/parser';
@@ -94,6 +96,7 @@ const compiler = createCompiler<StringModeOptions>((options) => (node: XNode) =>
 	const HTML_ENCODE = '__STDLIB_HTML_ENCODE';
 	const HTML_TEXT_ENCODE = metaComments ? `${HTML_ENCODE}_MC` : HTML_ENCODE;
 	const slotsCode = [];
+	const traits = {};
 	const useCSSModule = cssModule && scopeVars.includes('__classNames__');
 	let domDepth = 0;
 
@@ -178,6 +181,8 @@ const compiler = createCompiler<StringModeOptions>((options) => (node: XNode) =>
 			pad = '';
 		}
 
+		applyTraits(traits, raw);
+
 		if (CUSTOM_ELEMENTS[name] && CUSTOM_ELEMENTS[name].external) {
 			CUSTOM_ELEMENTS[name].slots = node.nodes.length ? compileSlots(node.nodes, PSEUDO_ELEMENT_TYPE) : 'null';
 			node.nodes = [];
@@ -209,24 +214,28 @@ const compiler = createCompiler<StringModeOptions>((options) => (node: XNode) =>
 			if (ROOT_TYPE === type) {
 				code = content;
 			} else if (KEYWORD_TYPE === type) {
-				const pair = KEYWORDS[name](raw.attrs);
+				if (name === 'trait') {
+					traits[raw.attrs.name] = node.first.raw.attrs;
+				} else {
+					const pair = KEYWORDS[name](raw.attrs);
 
-				code = `${pair[0]}\n${content}\n${pair[1]}`;
+					code = `${pair[0]}\n${content}\n${pair[1]}`;
 
-				if (metaComments) {
-					if (name === 'if' || name === 'for') {
-						const cid = ++mcid;
+					if (metaComments) {
+						if (name === 'if' || name === 'for') {
+							const cid = ++mcid;
 
-						raw.cid = cid;
-						code = `\n__ROOT += "<!--${name}${cid}-->";\n${code}`;
-						(name !== 'if')  && (code += `\n__ROOT += "<!--/${name}${cid}-->";`);
-					}
+							raw.cid = cid;
+							code = `\n__ROOT += "<!--${name}${cid}-->";\n${code}`;
+							(name !== 'if') && (code += `\n__ROOT += "<!--/${name}${cid}-->";`);
+						}
 
-					if (name === 'if' || name === 'else') {
-						if (!node.next || node.next.raw.name !== 'else') {
-							code += `\n__ROOT += "<!--/if${node.raw.cid}-->";`;
-						} else {
-							node.next.raw.cid = raw.cid;
+						if (name === 'if' || name === 'else') {
+							if (!node.next || node.next.raw.name !== 'else') {
+								code += `\n__ROOT += "<!--/if${node.raw.cid}-->";`;
+							} else {
+								node.next.raw.cid = raw.cid;
+							}
 						}
 					}
 				}

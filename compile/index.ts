@@ -22,3 +22,20 @@ export {
 	simpleJavaScriptBeautifier,
 };
 
+export function applyTraits(traits, raw) {
+	raw.traits && raw.traits.forEach(({name}) => {
+		if (traits.hasOwnProperty(name)) {
+			const trait = traits[name];
+
+			for (let key in trait) {
+				if (trait.hasOwnProperty(key)) {
+					if (raw.attrs.hasOwnProperty(key)) {
+						raw.attrs[key] = trait[key].concat(raw.attrs[key]);
+					} else {
+						raw.attrs[key]= trait[key];
+					}
+				}
+			}
+		}
+	});
+}
