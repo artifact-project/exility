@@ -5,6 +5,8 @@ import {
 	stringifyObjectKey,
 	stringifyParsedValue,
 	stringifyAttributeValue,
+
+	applyTraits
 } from '@exility/compile';
 import {XNode, IXNode, XNodeConstructor, utils} from '@exility/parser';
 
@@ -68,6 +70,7 @@ const compiler = createCompiler<IDOMCompilerOptions>((options: IDOMCompilerOptio
 	const TO_STR = '__STDLIB_TO_STRING';
 	const constPrefix = '_$';
 	const constObjects = [];
+	const traits = {};
 
 	const customElems = [];
 	const isCustomElems = {};
@@ -155,6 +158,7 @@ const compiler = createCompiler<IDOMCompilerOptions>((options: IDOMCompilerOptio
 		// 		external: true,
 		// 	};
 		// }
+		applyTraits(traits, raw);
 
 		if (type === TAG_TYPE) {
 			domDepth++;
@@ -215,7 +219,9 @@ const compiler = createCompiler<IDOMCompilerOptions>((options: IDOMCompilerOptio
 		bone.nodes.forEach((childBone: IXNode) => {
 			const type = childBone.type;
 
-			if (DEFINE_TYPE === type) {
+			if (KEYWORD_TYPE === type && childBone.raw.name === 'trait') {
+				traits[childBone.raw.attrs.name] = childBone.first.raw.attrs;
+			} else if (DEFINE_TYPE === type) {
 				if (childBone.raw.type === 'parenthesis') {
 					// Определение слота
 					const node = preprocessing(childBone);
