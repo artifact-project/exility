@@ -30,7 +30,7 @@
     "glob": "^7.1.2"
   },
   "peerDependencies": {
-      "typescript": ">=2.6.1"
+      "typescript": "^2.6.1"
   },
   "devDependencies": {
     "@types/jest": "^19.2.3",
