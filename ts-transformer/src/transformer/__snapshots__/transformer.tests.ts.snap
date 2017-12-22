@@ -368,7 +368,7 @@ App.prototype.__template__ = (process.env.RUN_AT === \\"server\\"
 		var XBlock = blocks[name];
 
 		if (XBlock.template) {
-			blocks[name] = process.env.__EXILITY_COMPILER__.compileBlock(blocks[name]);
+			blocks[name] = require(\\"@exility/string\\").runtimeBlockActivate(blocks[name], {metaComments: true})
 		}
 	}
 
