@@ -175,7 +175,7 @@ function visitNode(node, imports, compiled, options: TXOptions) {
 	);
 
 	compiled.push([node.parent, ts.createStatement(ts.createBinary(
-		ts.createIdentifier(`${node.parent.name.escapedText}.prototype.__template__`),
+		ts.createIdentifier(`${node.parent.name.text || node.parent.name.escapedText}.prototype.__template__`),
 		ts.SyntaxKind.EqualsToken,
 		__template__,
 	))]);

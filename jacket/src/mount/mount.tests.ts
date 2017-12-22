@@ -9,15 +9,15 @@ interface BtnAttrs {
 
 class Btn extends Block<BtnAttrs, null> {
 	static template = `
-		button.btn[
-			@click
-			type=\${attrs.type}
-			disabled=\${attrs.disabled}
-			class.is-disabled=\${attrs.disabled}
-		]
-			i.icon[@click="iconTap \${attrs}"]
-			| \${attrs.value}
-	`;
+	button.btn[
+		@click
+		type=\${attrs.type}
+		disabled=\${attrs.disabled}
+		class.is-disabled=\${attrs.disabled}
+	]
+		i.icon[@mousedown="iconTap \${attrs}"]
+		| \${attrs.value}
+`;
 
 	getDefaults() {
 		return {
@@ -70,7 +70,7 @@ describe('api', () => {
 	});
 
 	it('find + simulate', () => {
-		wrapper.find('.icon').simulate('click');
+		wrapper.find('.icon').simulate('mousedown');
 
 		expect(eventsLog.length).toBe(1);
 		expect(eventsLog[0].type).toBe('iconTap');
