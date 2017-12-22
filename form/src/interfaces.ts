@@ -55,6 +55,7 @@ export interface IFormElement {
 		[name: string]: Validity;
 	};
 	invalid: boolean;
+	focus(): void;
 }
 
 export interface IFormContext {
@@ -68,7 +69,7 @@ export interface IFormContext {
 	handleSubmit(event: Event);
 	handleReset(event: Event);
 
-	getElementByLabel(name: string): IUIElement;
+	get(name: string): IFormElement;
 
 	connectForm(ui: Block<any, any>): void;
 	disconnectForm(ui: Block<any, any>): void;

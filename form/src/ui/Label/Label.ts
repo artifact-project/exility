@@ -12,7 +12,7 @@ export default class UIForm extends Block<UILabelAttrs, UIFormContext> {
 	`;
 
 	'@click'() {
-		const elem = this.context.$form.getElementByLabel(this.attrs.for);
+		const elem = this.context.$form.get(this.attrs.for);
 
 		if (elem) {
 			elem.focus();

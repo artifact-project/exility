@@ -8,7 +8,7 @@ export default class UIElement extends Block<UIElementAttrs, UIElementContext> {
 		const elem = __this__.getFormElement();
 		const tag = (elem.type === 'textarea' || elem.type === 'select') ? elem.type : 'input';
 	
-		trait inputtable = .is-\${elem.type}[
+		trait inputtable > .is-\${elem.type}[
 			ref="input"
 		
 			@blur
@@ -49,12 +49,12 @@ export default class UIElement extends Block<UIElementAttrs, UIElementContext> {
 			placeholder=\${elem.placeholder}
 		]
 		
-		if (tag !== 'select')
-			\${tag}[+inputtable]
-		else
+		if (tag === 'select')
 			select[+inputtable]
 				for (opt in attrs.options)
 					option[value=\${opt.value}] | \${opt.text}
+		else
+			\${tag}[+inputtable]
 	`;
 
 	private input: HTMLInputElement;

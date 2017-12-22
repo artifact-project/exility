@@ -99,6 +99,10 @@ export class Element implements IFormElement {
 	forceUpdate() {
 		this.block.forceUpdate();
 	}
+
+	focus() {
+		this.block.focus()
+	}
 }
 
 export class ElementsGroup {
@@ -564,7 +568,7 @@ export class FormContext<V extends object = {}> implements IFormContext {
 	}
 }
 
-function forceUpdateAll(blocks: LikeBlock) {
+function forceUpdateAll(blocks: LikeBlock[]) {
 	switch (blocks.length) {
 		case 3: forceUpdate(blocks[2]);
 		case 2: forceUpdate(blocks[1]);
