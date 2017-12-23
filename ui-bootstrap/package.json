@@ -32,7 +32,7 @@
     "jest": "^20.0.3",
     "ts-jest": "^20.0.4",
     "tx-reflector": "^0.3.0",
-    "typescript": "^2.6.1",
+    "typescript": "2.6.2",
     "@exility/block": "*",
     "@exility/dom": "*",
     "@exility/storybook": "*",
