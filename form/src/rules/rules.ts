@@ -61,7 +61,7 @@ export function required(): ValidateRule {
 }
 
 export function email(): ValidateRule {
-	return createComplexRule('email', {}, [regexp(/^.@[^@]+\..+$/)]);
+	return createComplexRule('email', {}, [regexp(/^.+@[^@]+\..+$/)]);
 }
 
 export function password(additionalRules: ValidateRule[] = []): ValidateRule {
