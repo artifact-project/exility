@@ -12,7 +12,7 @@ import {
 	rules,
 	Form,
 	Element,
-} from '@exility/form`;
+} from '@exility/form';
 
 export default formify({
 	masks: {
@@ -51,8 +51,8 @@ export default formify({
 #### Theming
 
 ```ts
-import {theme} from '@exility/css`;
-import {Form, Element} from '@exility/form`;
+import {theme} from '@exility/css';
+import {Form, Element} from '@exility/form';
 
 const myTheme = theme.create(
 	css.for(Form, {
