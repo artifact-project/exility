@@ -39,7 +39,7 @@ export interface UIFormContext {
 }
 
 export interface IUIElement {
-	attrs: UIElementAttrs;
+	attrs: UIButtonAttrs;
 	focus(): void;
 }
 
@@ -97,11 +97,14 @@ export type FormContextConfig<V> = {
 	submitSucceeded?: (results: any, values: V, context: IFormContext) => void,
 }
 
+export type UIElementShape = string;
+export type UIElementSizes = 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl'
+
 export interface UIElementAttrs {
 	id?: string;
 	name: string;
-	shape?: string;
-	size?: 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl';
+	shape?: UIElementShape;
+	size?: UIElementSizes;
 	type?: string;
 	value?: string;
 	checked?: boolean;
@@ -114,6 +117,18 @@ export interface UIElementAttrs {
 	maxLength?: number;
 	tabIndex?: number;
 	options?: ElementOptionAttrs[];
+}
+
+export interface UIButtonAttrs {
+	id?: string;
+	name: string;
+	shape?: UIElementShape;
+	size?: UIElementSizes;
+	type?: string;
+	value?: string;
+	disabled?: boolean
+	autoFocus?: boolean
+	tabIndex?: number;
 }
 
 export interface ElementOptionAttrs {

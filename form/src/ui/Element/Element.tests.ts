@@ -2,7 +2,7 @@ import {create} from '@exility/jacket';
 import UIElement from './Element';
 import {FormContext} from '../../Context/Context';
 import {requestFrame} from '@perf-tools/balancer';
-import {UIElementAttrs, UIElementContext} from '../../interfaces';
+import {UIButtonAttrs, UIElementContext} from '../../interfaces';
 
 UIElement.classNames = false;
 
@@ -45,7 +45,7 @@ describe('ui / Element', () => {
 
 	describe('text', () => {
 		it('empty', async () => {
-			const text = create<UIElementAttrs, UIElementContext>(
+			const text = create<UIButtonAttrs, UIElementContext>(
 				UIElement,
 				{name: 'empty'},
 				context,
@@ -72,7 +72,7 @@ describe('ui / Element', () => {
 		});
 
 		it('with value', async () => {
-			expect(create<UIElementAttrs, UIElementContext>(
+			expect(create<UIButtonAttrs, UIElementContext>(
 				UIElement,
 				{name: 'inline'},
 				context,
@@ -223,7 +223,7 @@ describe('ui / Element', () => {
 	});
 
 	it('focus/blur', async () => {
-		const text = create<UIElementAttrs, UIElementContext>(
+		const text = create<UIButtonAttrs, UIElementContext>(
 			UIElement,
 			{name: 'empty'},
 			context,
@@ -237,7 +237,7 @@ describe('ui / Element', () => {
 	});
 
 	it('changed', async () => {
-		const text = create<UIElementAttrs, UIElementContext>(
+		const text = create<UIButtonAttrs, UIElementContext>(
 			UIElement,
 			{name: 'empty'},
 			context,
@@ -302,7 +302,7 @@ describe('ui / Element', () => {
 	});
 
 	it('readOnly/LockedForm', async () => {
-		const text = create<UIElementAttrs, UIElementContext>(
+		const text = create<UIButtonAttrs, UIElementContext>(
 			UIElement,
 			{name: 'empty'},
 			context,

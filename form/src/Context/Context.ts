@@ -296,6 +296,7 @@ export class FormContext<V extends object = {}> implements IFormContext {
 		const {type, name} = block.attrs;
 		const element = new Element(this, block);
 		const elementsGroup = this.getElementsGroup(name);
+
 		let {value} = block.attrs;
 		let values = this.initialValues[name];
 
@@ -386,7 +387,7 @@ export class FormContext<V extends object = {}> implements IFormContext {
 		const elementsGroup = this.elementsGroups[block.attrs.name];
 
 		if (elementsGroup === void 0 || elementsGroup.length === 0) {
-			console.warn('[@exility/form] Finding unregister element');
+			console.warn(`[@exility/form] Finding unregister element: ${block.attrs.name}`);
 			return;
 		}
 

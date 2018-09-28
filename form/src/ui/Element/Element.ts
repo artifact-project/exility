@@ -72,10 +72,8 @@ export default class UIElement extends Block<UIElementAttrs, UIElementContext> {
 		return this.formElement;
 	}
 
-	getDefaults() {
-		return {
-			type: 'text',
-		};
+	connectedCallback() {
+		this.getFormElement();
 	}
 
 	disconnectedCallback() {
@@ -92,5 +90,11 @@ export default class UIElement extends Block<UIElementAttrs, UIElementContext> {
 				console.warn('[@exility/form] ui/Element', err);
 			}
 		});
+	}
+
+	getDefaults() {
+		return {
+			type: 'text',
+		};
 	}
 }

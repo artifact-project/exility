@@ -17,6 +17,7 @@
     "*.d.ts",
     "src/*.js",
     "src/*.d.ts",
+    "src/*/",
     "src/*/*.js",
     "src/*/*.d.ts",
     "src/ui/*/*.js",
