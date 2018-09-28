@@ -33,7 +33,7 @@ export interface IUsedCSS {
 
 const R_UPPER = /[A-Z]/;
 const R_SELECTOR_GLUE = /\s*,\s*/;
-const R_SELECTOR = /(?:^|\.)([a-z][a-z\d_-]+|:host)/ig;
+const R_SELECTOR = /(?:(?:^|\.)([a-z][a-z\d_-]+))|(\.?:host)/ig;
 const R_HAS_REF = /&/;
 const R_REFS = /&/g;
 
@@ -42,6 +42,8 @@ const DOT_CODE = '.'.charCodeAt(0);
 const nextTick = typeof requestAnimationFrame === 'function' ? requestAnimationFrame : setTimeout;
 
 const notPx = {
+	flexGrow: 1,
+	fontWeight: 1,
 	opacity: 1,
 };
 
@@ -162,6 +164,10 @@ export function resetCSS(newSeed) {
 	__cssQueue__.length = 0;
 }
 
+export function getSeed() {
+	return SEED;
+}
+
 function preparePublicName(name: string): string {
 	return name === ':host' ? '--host' : name;
 }
@@ -230,7 +236,8 @@ function compileRawRule(selectors: string, rawRule: IRuleEntries, exports, linke
 		const cssText = compileRawRuleProps(rawRule, origSelector, linkedRules, exports);
 		const origNames = [];
 		const computedRule = getComputedRule(cssText);
-		const publicSelector = origSelector.replace(R_SELECTOR, (_, origName) => {
+		const publicSelector = origSelector.replace(R_SELECTOR, (_, origName, isHost) => {
+			origName = isHost ? ':host' : origName;
 			origNames.push(origName);
 			return addDot(getPublicName(exports, origName, computedRule.name));
 		});
@@ -255,9 +262,14 @@ export function fx(keyframes: {[frame:string]: IRuleEntries}) {
 	});
 }
 
+export function gradient(vector: string, colors: string[]) {
+	return `linear-gradient(${vector}, ${colors.join(', ')})`;
+}
+
 export interface ICSSFactory {
 	(rules: IRuleDefinitions): {[name: string]: string};
 	fx: (keyframes: {[frame:string]: IRuleEntries}) => (detail: string) => IFx;
+	gradient: (vector: string, colors: string[]) => string;
 	scheme: (name: string, list: string[]) => {[name: string]: string};
 }
 
@@ -325,6 +337,7 @@ export function scheme(id: string, list: string[]) {
 }
 
 css['fx'] = fx;
+css['gradient'] = gradient;
 css['scheme'] = scheme;
 
 export function addPrefix(prefix: string, list: string[]) {

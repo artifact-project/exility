@@ -188,13 +188,17 @@ it(':host', () => {
 	process.env.RUN_AT = 'server';
 
 	const cx = css({
-		':host': {color: 'red'},
+		':host': {
+			color: 'red',
+			'&:focus': {color: 'blue'},
+		},
+		':host + :host': {marginTop: 3},
 		'item': {color: 'red'},
 	});
 
 	expect(cx[':host']).toBe('_rs');
 	expect(getUsedCSS()).toEqual({
-		names: ['nnolt3'],
-		cssText: '._rs,._rt{color:red;}\n',
+		names: ['5dcpuy', 'nnolt3', 'pvcstm'],
+		cssText: '._rs:focus{color:blue;}\n._rs,._rt{color:red;}\n._rs + ._rs{margin-top:3px;}\n',
 	});
 });
