@@ -68,10 +68,10 @@ it('dev', () => {
 
 	const cx = css({'foo': {color: 'red'}});
 
-	expect(cx.foo).toBe('foo-nnolt3');
+	expect(cx.foo).toBe('foo-mujwv');
 	expect(getUsedCSS(true)).toEqual({
-		names: ['nnolt3'],
-		cssText: '._nnolt3,.foo-nnolt3{color:red;}\n',
+		names: ['mujwv'],
+		cssText: '._mujwv,.foo-mujwv{color:red;}\n',
 	});
 });
 
@@ -144,7 +144,7 @@ it('hrm', async () => {
 	setStyleNode(__css__);
 
 	expect(__css__.sheet['cssRules'].length).toBe(1);
-	expect(__css__.sheet['cssRules'][0].selectorText).toBe('._nnolt3,.foo-nnolt3');
+	expect(__css__.sheet['cssRules'][0].selectorText).toBe('._mujwv,.foo-mujwv');
 
 	// Client: add class (deduplicate)
 	process.env.RUN_AT = 'client';
@@ -153,7 +153,7 @@ it('hrm', async () => {
 	await pause();
 
 	expect(__css__.sheet['cssRules'].length).toBe(1);
-	expect(__css__.sheet['cssRules'][0].selectorText).toBe('.nnolt3,.foo-nnolt3,.bar-nnolt3');
+	expect(__css__.sheet['cssRules'][0].selectorText).toBe('.mujwv,.foo-mujwv,.bar-mujwv');
 
 	// Client: add class
 	process.env.RUN_AT = 'client';
@@ -162,7 +162,7 @@ it('hrm', async () => {
 	await pause();
 
 	expect(__css__.sheet['cssRules'].length).toBe(2);
-	expect(__css__.sheet['cssRules'][1].selectorText).toBe('._g8rsf,.qux-g8rsf');
+	expect(__css__.sheet['cssRules'][1].selectorText).toBe('._10hl3mm,.qux-10hl3mm');
 
 	// Client: change class
 	process.env.RUN_AT = 'client';
@@ -171,7 +171,7 @@ it('hrm', async () => {
 	await pause();
 
 	expect(__css__.sheet['cssRules'].length).toBe(2);
-	expect(__css__.sheet['cssRules'][1].selectorText).toBe('.g8rsf,.qux-g8rsf,.foo-g8rsf');
+	expect(__css__.sheet['cssRules'][1].selectorText).toBe('.10hl3mm,.qux-10hl3mm,.foo-10hl3mm');
 
 	// Client: revert class
 	process.env.RUN_AT = 'client';
@@ -180,8 +180,8 @@ it('hrm', async () => {
 	await pause();
 
 	expect(__css__.sheet['cssRules'].length).toBe(2);
-	expect(__css__.sheet['cssRules'][0].selectorText).toBe('.nnolt3,.foo-nnolt3,.bar-nnolt3');
-	expect(__css__.sheet['cssRules'][1].selectorText).toBe('.g8rsf,.qux-g8rsf,.foo-g8rsf');
+	expect(__css__.sheet['cssRules'][0].selectorText).toBe('.mujwv,.foo-mujwv,.bar-mujwv');
+	expect(__css__.sheet['cssRules'][1].selectorText).toBe('.10hl3mm,.qux-10hl3mm,.foo-10hl3mm');
 });
 
 it(':host', () => {
@@ -198,7 +198,7 @@ it(':host', () => {
 
 	expect(cx[':host']).toBe('_rs');
 	expect(getUsedCSS()).toEqual({
-		names: ['5dcpuy', 'nnolt3', 'pvcstm'],
+		names: ['t7j1ge', 'mujwv', 'a4h9z4'],
 		cssText: '._rs:focus{color:blue;}\n._rs,._rt{color:red;}\n._rs + ._rs{margin-top:3px;}\n',
 	});
 });

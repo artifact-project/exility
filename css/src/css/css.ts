@@ -1,3 +1,5 @@
+import { murmurhash3 } from '../util/murmurhash3';
+
 export interface IRuleDefinitions {
 	[selector: string]: IRuleEntries;
 }
@@ -77,17 +79,6 @@ export function setStyleNode(el: HTMLElement, names?: string[]) {
 
 function getNextName() {
 	return `_${(cid++).toString(36)}`;
-}
-
-function hash(value: string): string {
-	let idx = value.length;
-	let hash = SEED;
-
-	while (idx--) {
-		hash = (hash * 33) ^ value.charCodeAt(idx);
-	}
-
-	return (hash >>> 0).toString(36);
 }
 
 function computeCSSPropValue(name, value) {
@@ -185,7 +176,7 @@ function getPublicName(exports, name, computedName) {
 }
 
 function getComputedRule(cssText, isFx = false) {
-	const computedName = hash(cssText);
+	const computedName = murmurhash3(cssText, SEED).toString(36);
 
 	if (!registry.hasOwnProperty(computedName)) {
 		registry[computedName] = {

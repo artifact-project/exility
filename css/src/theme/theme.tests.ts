@@ -19,11 +19,11 @@ it('create', () => {
 	const fooMap = factory(foo);
 	const barMap = factory(bar);
 
-	expect(fooMap[':host']).toBe('--host-nnolt3');
-	expect(barMap.root).toBe('root-1p7yqyb');
+	expect(fooMap[':host']).toBe('--host-mujwv');
+	expect(barMap.root).toBe('root-168fhco');
 
 	expect(getUsedCSS(true)).toEqual({
-		names: ['nnolt3', '1p7yqyb'],
-		cssText: `._nnolt3,.--host-nnolt3{color:red;}\n._1p7yqyb,.root-1p7yqyb{color:black;}\n`,
+		names: ['mujwv', '168fhco'],
+		cssText: `._mujwv,.--host-mujwv{color:red;}\n._168fhco,.root-168fhco{color:black;}\n`,
 	});
 });

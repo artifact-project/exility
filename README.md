@@ -327,5 +327,6 @@ p > img[<] + img[<>] + img[>]
 
 ### Development
 
+ - `npm run dev` — the only way
  - `npm test` — run tests on all subprojects
  - `npm run release -- [major|minor|patch]` — publish the current version and put the tag
