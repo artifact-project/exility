@@ -7,27 +7,27 @@ export default class UIElement extends Block<UIElementAttrs, UIElementContext> {
 	static template = `
 		const elem = __this__.getFormElement();
 		const tag = (elem.type === 'textarea' || elem.type === 'select') ? elem.type : 'input';
-	
+
 		trait inputtable > .is-\${elem.type}[
 			ref="input"
-		
+
 			@blur
 			@focus
-			
+
 			@input="input"
 			@change="input"
-			
+
 			@keydown="input"
 			@keyup="input"
 			@keypress="input"
-			
+
 			@cut="input"
 			@copy="input"
 			@paste="input"
-						
+
 			class.shape-\${elem.shape}=\${elem.shape}
 			class.size-\${elem.size}=\${elem.size}
-			
+
 			class.active=\${elem.active}
 			class.checked=\${elem.checked}
 			class.readOnly=\${elem.readOnly}
@@ -36,7 +36,7 @@ export default class UIElement extends Block<UIElementAttrs, UIElementContext> {
 			class.touched=\${elem.touched}
 			class.invalid=\${elem.invalid}
 			class.submitting=\${elem.submitting}
-			
+
 			name=\${elem.name}
 			type=\${elem.type}
 			value=\${elem.value}
@@ -48,7 +48,7 @@ export default class UIElement extends Block<UIElementAttrs, UIElementContext> {
 			selectedIndex=\${elem.selectedIndex}
 			placeholder=\${elem.placeholder}
 		]
-		
+
 		if (tag === 'select')
 			select[+inputtable]
 				for (opt in attrs.options)
@@ -57,15 +57,15 @@ export default class UIElement extends Block<UIElementAttrs, UIElementContext> {
 			\${tag}[+inputtable]
 	`;
 
-	private input: HTMLInputElement;
-	private formElement: IFormElement;
+	private input: HTMLInputElement = null;
+	private formElement: IFormElement = null;
 
 	registerRef(name: 'input', el) {
 		this[name] = el;
 	}
 
 	getFormElement() {
-		if (this.formElement == null) {
+		if (this.formElement === null) {
 			this.formElement = this.context.$form.connectElement(this);
 		}
 
@@ -73,6 +73,7 @@ export default class UIElement extends Block<UIElementAttrs, UIElementContext> {
 	}
 
 	connectedCallback() {
+		// Connect element to $form
 		this.getFormElement();
 	}
 

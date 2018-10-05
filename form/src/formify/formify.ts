@@ -1,5 +1,5 @@
 import Block, {BlockClass} from '@exility/block';
-import {FormContextConfig} from '../interfaces';
+import {FormContextConfig, IFormContext} from '../interfaces';
 import {FormContext} from '../Context/Context';
 
 export type FormifyAttrs<A, V extends object> = A & {
@@ -13,7 +13,7 @@ function factory<
 	R extends FormifyAttrs<A, V>
 >(
 	config: FormContextConfig<V>,
-	FormBlock: BlockClass<A>,
+	FormBlock: BlockClass<A, {$form?: IFormContext}>,
 ): BlockClass<R> {
 	class EnhancementFormBlock extends FormBlock {
 		connectedCallback() {
@@ -31,7 +31,7 @@ function factory<
 		static blocks = {EnhancementFormBlock};
 		static template = 'EnhancementFormBlock[__attrs__=${attrs}]';
 
-		private formContext: FormContext<V>;
+		private formContext: FormContext<V> = null;
 
 		getDefaults() {
 			return {
@@ -40,7 +40,7 @@ function factory<
 		}
 
 		getContextForNested() {
-			if (this.formContext === void 0) {
+			if (this.formContext === null) {
 				this.formContext = new FormContext<V>(this.attrs.initialValues, config);
 			}
 
@@ -50,7 +50,7 @@ function factory<
 			};
 		}
 
-		attributeChangedCallback(name: string, newValue) {
+		attributeChangedCallback(name, newValue) {
 			if (name === 'initialValues') {
 				this.formContext.setInitialValues(newValue);
 			}

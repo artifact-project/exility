@@ -185,9 +185,9 @@ function relinking(map: VMap, frag, ctx) {
 				item.parent = map.get(item.parent);
 			}
 
-			if (item.node) { // IF
+			if (item.node) { // `IF` statement
 				relinking(map, item.node.frag, item.node.ctx);
-			} else if (!item.el && item.pool) { // FOR
+			} else if (!item.el && item.pool) { // `FOR` statement
 				item.nodes.forEach(node => {
 					relinking(map, node.frag, node.ctx);
 				});
@@ -229,6 +229,7 @@ export default function reload(view, template, scope) {
 	document.createElement = (name) => <any>new VDOMElement(name);
 	document.createTextNode = (value) => <any>({nodeValue: value});
 
+	// `map` — будет хранить связку: "виртуальная нода" => "реальный dom-элемент"
 	const map: VMap = new WeakMap<VDOMElement, HTMLElement>();
 	const newView = template(scope, {});
 

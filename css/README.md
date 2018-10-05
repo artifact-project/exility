@@ -32,6 +32,7 @@ console.log(getUsedCSS());
 // }
 ```
 
+---
 
 ### Usage
 Add `style#__css__` into `head` and before including `@exility/css`.
@@ -39,7 +40,7 @@ Add `style#__css__` into `head` and before including `@exility/css`.
 ```html
 <style id="__css__" data-names="%__USED_CSS_NAMES__%">%__USED_CSS_TEXT__%</style>
 <script type="module">
-	import css from '/node_modules/@exility/css/index.js';
+	import css from './node_modules/@exility/css/index.js';
 
 	const cx = css({
 		'link': {
@@ -53,6 +54,7 @@ Add `style#__css__` into `head` and before including `@exility/css`.
 </script>
 ```
 
+---
 
 ### API
 
@@ -60,8 +62,10 @@ Add `style#__css__` into `head` and before including `@exility/css`.
  - `fx(keyframes): (detail: string) => object`
  - `getUsedCSS(all?: boolean): {names: string[], cssText: string}`
 
+---
 
 ### Killer-feature
+Deduplication & critical css.
 
 ```ts
 import css, {getUsedCSS} from '@exility/css';
@@ -110,12 +114,14 @@ console.log(getUsedCSS().cssText);
 //  ._rs:hover{animation:_xsdcv 0.3s;}
 ```
 
+---
 
 ### Configuration
 
- - `process.env.NODE_ENV: 'production' | 'dev'`
- - `process.env.RUN_AT: 'server' | 'client'`
+ - **process.env.NODE_ENV**: `'production' | 'dev'`
+ - **process.env.RUN_AT**: `'server' | 'client'`
 
+---
 
 ### Development
 
