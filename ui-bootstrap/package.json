@@ -10,7 +10,7 @@
     "build-storybook": "exility-storybook build && npm run git-clean",
     "ts-build": "tsc",
     "git-clean": "git clean -f",
-    "prepublish": "npm run test && npm run ts-build",
+    "prepublishOnly": "npm run test && npm run ts-build",
     "postpublish": "npm run git-clean"
   },
   "files": [
@@ -22,7 +22,12 @@
   "author": "RubaXa <ibnRubaXa@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "tslib": ">=1.8.1"
+    "@types/react": "^16.4.16",
+    "@types/react-dom": "^16.0.8",
+    "glob": "^7.1.3",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "tslib": "^1.9.3"
   },
   "devDependencies": {
     "@exility/block": "*",
@@ -30,14 +35,14 @@
     "@exility/jacket": "*",
     "@exility/storybook": "*",
     "@exility/ts-transformer": "*",
-    "@types/jest": "^19.2.3",
-    "@types/node": "^7.0.28",
+    "@types/jest": "^23.3.3",
+    "@types/node": "^10.11.4",
     "awesome-typescript-loader": "^3.1.3",
     "ibi": "^0.3.2",
-    "jest": "^20.0.3",
-    "ts-jest": "^20.0.4",
+    "jest": "^23.6.0",
+    "ts-jest": "^23.10.4",
     "tx-reflector": "^0.3.0",
-    "typescript": "^2.6.2"
+    "typescript": "^3.1.1"
   },
   "jest": {
     "transform": {

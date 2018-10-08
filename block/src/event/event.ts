@@ -1,27 +1,21 @@
 export type DOMEvent = Event;
 
-export interface IEvent<T, D, E> {
-	readonly type: string;
-	readonly detail: D;
-	readonly originalEvent: E;
-
-	readonly target: T;
-	readonly currentTarget: T;
-	readonly domType: string;
-	readonly domTarget: HTMLElement;
-
-	readonly defaultPrevented: boolean;
-	readonly propagationStopped: boolean;
-	readonly propagationImmediateStopped: boolean;
-}
-
-interface IWritable<T> {
+export interface IWritable<T> {
 	target: T;
 	currentTarget: T;
 
 	defaultPrevented: boolean;
 	propagationStopped: boolean;
 	propagationImmediateStopped: boolean;
+}
+
+export interface IEvent<T, D, E> extends Readonly<IWritable<T>> {
+	readonly type: string;
+	readonly detail: D;
+	readonly originalEvent: E;
+
+	readonly domType: string;
+	readonly domTarget: HTMLElement;
 }
 
 function _callOriginalEventMethod(target, name) {

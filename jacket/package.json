@@ -7,7 +7,7 @@
     "test": "jest --coverage",
     "ts-build": "tsc",
     "git-clean": "git clean -f",
-    "prepublish": "npm run test && npm run ts-build",
+    "prepublishOnly": "npm run test && npm run ts-build",
     "postpublish": "npm run git-clean"
   },
   "files": [
@@ -19,16 +19,17 @@
   "author": "RubaXa <ibnRubaXa@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "tslib": ">=1.8.1"
+    "@types/node": "^10.11.4",
+    "tslib": "^1.9.3"
   },
   "devDependencies": {
-    "@types/jest": "^19.2.3",
-    "jest": "^20.0.3",
-    "ts-jest": "^20.0.4",
-    "typescript": "2.6.2",
-    "@exility/ts-transformer": "*",
     "@exility/block": "*",
-    "@exility/dom": "*"
+    "@exility/dom": "*",
+    "@exility/ts-transformer": "*",
+    "@types/jest": "^23.3.3",
+    "jest": "^23.6.0",
+    "ts-jest": "^23.10.4",
+    "typescript": "^3.1.1"
   },
   "jest": {
     "transform": {

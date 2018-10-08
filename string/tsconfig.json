@@ -8,10 +8,11 @@
     "importHelpers": true,
     "noEmitHelpers": true,
     "lib": [
-		"es5",
-		"es2015.promise",
-		"es2016.array.include"
-	]
+      "es5",
+      "dom",
+      "es2015.promise",
+      "es2016.array.include"
+    ]
   },
   "exclude": ["dist", "node_modules"]
 }

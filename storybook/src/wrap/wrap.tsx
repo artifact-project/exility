@@ -36,7 +36,7 @@ export default function wrap(Target, slots, blocks: object = {}, events = {}) {
 		displayName = Target.name;
 
 		componentDidMount() {
-			const root = ReactDOM.findDOMNode(this);
+			const root = ReactDOM.findDOMNode(this) as HTMLElement;
 
 			this.block = new (TargetWithSlots as any)({...this.props}, {
 				events: Object.keys(events).reduce((obj, name) => {

@@ -7,10 +7,11 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "noEmitHelpers": true,
-	"lib": [
-		"es5",
-		"es2016.array.include"
-	]
+    "lib": [
+      "es5",
+      "dom",
+      "es2016.array.include"
+    ]
   },
   "exclude": ["dist", "node_modules"]
 }

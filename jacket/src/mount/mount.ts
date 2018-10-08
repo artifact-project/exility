@@ -4,7 +4,7 @@ import {mountTo, runtimeBlockActivate} from '@exility/dom';
 export class DOMWrapper {
 	isDOMWrapper: boolean = true;
 
-	constructor(public target: Block<any, any>, private el: Element) {
+	constructor(public target: Block<any, any>, private el: HTMLElement) {
 	}
 
 	get classList() {
@@ -100,10 +100,23 @@ export class DOMWrapper {
 	}
 }
 
-export function create<A, C extends object>(UI: BlockClass<A, C>, attrs: A = {}, context: C = {}, events?) {
+export function create<
+	A extends object,
+	C extends object
+>(
+	UI: BlockClass<A, C>,
+	attrs?: A,
+	context?: C,
+	events?,
+) {
 	runtimeBlockActivate(UI);
 
-	return mount(new UI(attrs, {context}), events);
+	return mount(new UI(
+		attrs || {} as A,
+		{
+			context: context || {} as C,
+		},
+	), events);
 }
 
 export default function mount(block: Block<any, any>, events: object = {}): DOMWrapper {
